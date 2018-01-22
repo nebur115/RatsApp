@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">"Rats App"</string>
+    <string name="Stufe"></string>
+    <string name="title_activity_vertretungsplan">@string/</string>
+</resources>
