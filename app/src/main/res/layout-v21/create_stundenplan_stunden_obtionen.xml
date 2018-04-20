@@ -34,35 +34,31 @@
 
         <ImageButton
             android:id="@+id/delete"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="4dp"
-
+            style="@android:style/Widget.DeviceDefault.ImageButton"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="5dp"
             android:adjustViewBounds="true"
             android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@drawable/delete"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/delete" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/save"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="4dp"
+
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="5dp"
             android:adjustViewBounds="true"
             android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@drawable/tick"
             android:cropToPadding="true"
-            android:padding="10dp"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/tick" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>

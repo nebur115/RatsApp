@@ -9,10 +9,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewTreeObserver;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 
 /**
  * Created by User on 27.03.2018.
@@ -26,6 +22,7 @@ public class loading extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
+
 
 
         Intent intent = getIntent();

@@ -287,7 +287,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
         ImageButton delete = findViewById(R.id.delete);
-
+        delete.setImageResource(R.drawable.delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -337,6 +337,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
         ImageButton save = findViewById(R.id.save);
+        save.setImageResource(R.drawable.tick);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
