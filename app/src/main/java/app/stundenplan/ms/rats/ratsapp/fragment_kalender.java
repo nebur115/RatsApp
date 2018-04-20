@@ -1,17 +1,14 @@
 package app.stundenplan.ms.rats.ratsapp;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-
-
 public class fragment_kalender extends Fragment {
 
-    public fragment_kalender() {
 
+    public fragment_kalender() {
     }
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,11 +16,12 @@ public class fragment_kalender extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.kalender_fragment, container, false);
+
+        View view=inflater.inflate(R.layout.kalender_fragment, container, false);
 
 
 
 
-
+        return view;
     }
 }

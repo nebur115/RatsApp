@@ -3,4 +3,5 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#585858</color>
+    <color name="Entfällt">#ff4500</color>
 </resources>

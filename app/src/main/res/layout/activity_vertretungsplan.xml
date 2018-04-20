@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="app.stundenplan.ms.rats.ratsapp.Stufenwahl">
@@ -15,7 +16,8 @@
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="lollipop">
 
         <TextView
             android:id="@+id/title"
@@ -23,63 +25,50 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="21dp"
             android:layout_toEndOf="@+id/imageView"
             android:layout_toRightOf="@+id/imageView"
-            android:text="Vertretungsplan"
+            android:text="@string/vertretungsplan"
             android:textAllCaps="false"
             android:textColor="#000000"
-            android:textSize="21sp"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="35dp"
-            android:layout_height="47dp"
+            android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:adjustViewBounds="false"
+            android:contentDescription="@string/ratslogo"
             android:cropToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ratslogo" />
 
         <ImageButton
-            android:id="@+id/btnlogin"
-            android:layout_width="46dp"
-            android:layout_height="42dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="15dp"
-            android:adjustViewBounds="true"
-            android:backgroundTint="@android:color/transparent"
-            android:cropToPadding="true"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logoutbutton" />
-
-        <ImageButton
             android:id="@+id/imageButton2"
-            android:layout_width="46dp"
-            android:layout_height="42dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignTop="@+id/btnlogin"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="15dp"
             android:layout_toLeftOf="@+id/btnlogin"
             android:layout_toStartOf="@+id/btnlogin"
             android:adjustViewBounds="true"
             android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/settingsbutton"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
-            app:layout_constraintEnd_toStartOf="@+id/btnlogin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.7"
             app:srcCompat="@drawable/settingbutton" />
 
 
@@ -91,11 +80,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#FFFFFF"
+        android:elevation="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:tabMode="fixed"
-        android:elevation="15dp"/>
+        tools:targetApi="lollipop" />
 
     <FrameLayout
         android:id="@+id/simpleframelayout"
@@ -107,7 +97,9 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
     </android.support.v4.view.ViewPager>
 

@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\User\AndroidStudioProjects\AppRats-master\AppRats.iml" filepath="C:\Users\User\AndroidStudioProjects\AppRats-master\AppRats.iml" />
-      <module fileurl="file://C:\Users\User\AndroidStudioProjects\Rats Vertretungsplan\AppRats-master.iml" filepath="C:\Users\User\AndroidStudioProjects\Rats Vertretungsplan\AppRats-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/Rats Vertretungsplan.iml" filepath="$PROJECT_DIR$/Rats Vertretungsplan.iml" />
-      <module fileurl="file://D:\Dateien\RatsApp\AppRats\RatsApp.iml" filepath="D:\Dateien\RatsApp\AppRats\RatsApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

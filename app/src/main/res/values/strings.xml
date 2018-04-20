@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">"Rats App"</string>
     <string name="Stufe"></string>
-    <string name="title_activity_vertretungsplan">@string/</string>
+    <string name="title_activity_vertretungsplan">Vertretungsplan</string>
+    <string name="klasse_stufe">Klasse / Stufe</string>
+    <string name="logo_vom_rats">Logo_vom_Rats</string>
+    <string name="login">Login</string>
+    <string name="bitte_gib_deine_klasse_oder_stufe_ein">Bitte gib deine Klasse oder Stufe ein!</string>
+    <string name="vertretungsplan">Vertretungsplan</string>
+    <string name="ratslogo">Ratslogo</string>
+    <string name="logout">Logout</string>
+    <string name="settingsbutton">settingsButton</string>
+    <string name="ausfall">Ausfall</string>
+    <string name="stunde">Stunde</string>
+    <string name="lehrer">Lehrer</string>
+    <string name="kurs">Kurs</string>
+    <string name="grund_grund">Grund: Grund</string>
+    <string name="fach">Fach</string>
+    <string name="kalender">Kalender</string>
+    <string name="noten">Noten</string>
+    <string name="stundenplan">Stundenplan</string>
+    <string name="dienstag_20_2_18">Dienstag 20.2.18</string>
+    <string name="alle_kurse">Alle Kurse</string>
+    <string name="ef">EF</string>
 </resources>
