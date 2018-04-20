@@ -13,7 +13,7 @@ import java.util.List;
 
 public class fragment_vertretungsplan extends Fragment {
 
-
+    boolean isCreated = false;
     public fragment_vertretungsplan() {
 
     }
@@ -52,16 +52,21 @@ public class fragment_vertretungsplan extends Fragment {
         ItemAdapter = new ItemAdapter(getActivity());
         recyclerView.setAdapter(ItemAdapter);
 
+        //Nur Daten anzeigen nicht Downloaden
         VertretungsPlanMethoden.VertretungsPlan(ItemList ,this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);
 
         ItemAdapter.setitemFeed(ItemList);
         ItemAdapter.notifyDataSetChanged();
+        isCreated = true;
     }
 
     public void reload(){
+        if(!isCreated){
 
-        //Hier
-        ItemAdapter.notifyDataSetChanged();
+            //Daten anzeigen
+            ItemAdapter.notifyDataSetChanged();
+        }
+
 
     }
 
