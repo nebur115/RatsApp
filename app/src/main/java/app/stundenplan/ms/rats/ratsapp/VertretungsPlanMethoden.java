@@ -118,7 +118,7 @@ public class VertretungsPlanMethoden {
     static String[][] replacements = {{"KU", "Kunst"}};
 
     public static String schreibeAus(String Fach, int mode) throws Exception{
-        String[] input = Fach.split(" ");
+        String[] input = Fach.split("( )+");
         if(input.length > 1){
             if(mode == 1){
                 for(String[] replacement: replacements) {

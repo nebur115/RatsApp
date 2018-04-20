@@ -37,7 +37,7 @@ public class fragment_vertretungsplan extends Fragment {
         View view = inflater.inflate(R.layout.vertretungsplan_fragment, container, false);
 
         recyclerView = view.findViewById(R.id.Recycler_View);
- 
+
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
