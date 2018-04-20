@@ -187,15 +187,19 @@ public class VertretungsPlanMethoden {
      * @param ItemList
      * @param s
      */
-    public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen) {
+    public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
         itemlist = ItemList;
         try {
             if(AlleKlassen)
                 zeigeDaten(ItemList, s, "");
             else
                 zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
+            if(fragment != null){
+                fragment.reload();
+            }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
         }
+
     }
 }
