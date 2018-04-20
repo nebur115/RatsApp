@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewTreeObserver;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 
 /**
@@ -27,7 +32,17 @@ public class loading extends AppCompatActivity {
         final String Stufe = intent.getExtras().getString("Stufe");
 
         try {
-            VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0));
+            Thread download = new HandlerThread("DownloadHandler") {
+                @Override
+                public void run() {
+                    try{
+                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0));
+                    }catch(Exception e){
+
+                    }
+                }
+            };
+            download.start();
         }catch(Exception e){
 
         }

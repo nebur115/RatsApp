@@ -22,6 +22,8 @@ public class VertretungsPlanMethoden {
     public static String Ziel;
     public static String htmlInput;
     public static List<Object> itemlist;
+    public static boolean downloadedDaten = false;
+    //public static Thread download;
 
     /**
      * Downloader für Webseiten usw.
@@ -176,6 +178,7 @@ public class VertretungsPlanMethoden {
                 s.setString("VertretungsPlanInhalt", y[1]);
             }
         }
+        downloadedDaten = true;
     }
 
     /**
@@ -187,7 +190,6 @@ public class VertretungsPlanMethoden {
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen) {
         itemlist = ItemList;
         try {
-            downloadDaten(s);
             if(AlleKlassen)
                 zeigeDaten(ItemList, s, "");
             else
