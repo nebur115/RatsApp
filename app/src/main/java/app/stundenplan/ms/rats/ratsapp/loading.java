@@ -26,8 +26,11 @@ public class loading extends AppCompatActivity {
         Intent intent = getIntent();
         final String Stufe = intent.getExtras().getString("Stufe");
 
+        try {
+            VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0));
+        }catch(Exception e){
 
-
+        }
         ConstraintLayout loading_frame = findViewById(R.id.loading_frame);
     final ViewTreeObserver observer = loading_frame.getViewTreeObserver();
                 observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
