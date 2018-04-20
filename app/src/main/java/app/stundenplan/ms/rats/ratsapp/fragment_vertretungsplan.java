@@ -51,14 +51,14 @@ public class fragment_vertretungsplan extends Fragment {
     private void init() {
         ItemAdapter = new ItemAdapter(getActivity());
         recyclerView.setAdapter(ItemAdapter);
-        while(!VertretungsPlanMethoden.downloadedDaten) {}
+
         VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);
         ItemAdapter.setitemFeed(ItemList);
         ItemAdapter.notifyDataSetChanged();
     }
 
     public void reload(){
-
+        while(!VertretungsPlanMethoden.downloadedDaten) {}
         VertretungsPlanMethoden.VertretungsPlan(ItemList ,this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);
         ItemAdapter.notifyDataSetChanged();
 
