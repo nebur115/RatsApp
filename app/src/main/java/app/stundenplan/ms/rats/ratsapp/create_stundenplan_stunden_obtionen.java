@@ -130,7 +130,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         Fach.setAdapter(adapter);
         Fach.setThreshold(1);
 
-        
+
         if(!zweiWöchentlich){
             cWiederholungAuswahl.setVisibility(View.GONE);
         }
