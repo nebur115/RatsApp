@@ -65,7 +65,7 @@ public class fragment_stundenplan extends Fragment {
             stundenplan_recyclerView.setLayoutManager(mystaggeredGridLayoutManager);
             stundenplan_recyclerView.setNestedScrollingEnabled(false);
             int menuHeight = 64 + 50 + 40;
-            int StundenAnzahl = 11;
+
 
             String DateMonday;
             String DateTuesday;
@@ -126,9 +126,9 @@ public class fragment_stundenplan extends Fragment {
             int Week = calendar.get(Calendar.WEEK_OF_YEAR);
 
 
-
         SharedPreferences settings = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
+        int StundenAnzahl = settings.getInt("MaxStunden", 11);
         Height = settings.getInt("Height", 0);
 
 

@@ -29,7 +29,7 @@ public class create_stundenplan extends AppCompatActivity {
         setContentView(R.layout.create_stundenplan);
 
         Intent intent = getIntent();
-        intent.getExtras().getInt("Woche");
+        int iWoche = intent.getExtras().getInt("Woche");
         final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
 
@@ -45,9 +45,11 @@ public class create_stundenplan extends AppCompatActivity {
 
         Boolean Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
         int MaxStunden = settings.getInt("MaxStunden",0);
-        grade_woche_button.setVisibility(View.GONE);
+
 
        final Fragment UngradeWoche ;
+
+        final Fragment GradeWoche = new create_stundenplan_stundenplan(MaxStunden, Zweiwöchentlich, 1);
 
         if(!Zweiwöchentlich){
             ungrade_woche_button.setVisibility(View.GONE);
@@ -57,13 +59,22 @@ public class create_stundenplan extends AppCompatActivity {
         else
         {
             UngradeWoche = new create_stundenplan_stundenplan(MaxStunden, Zweiwöchentlich, 2);
-            ft.add(R.id.stundenplan_create_framelayout, UngradeWoche);
-            ft.hide(UngradeWoche);
+            if(iWoche==1){
+                ft.add(R.id.stundenplan_create_framelayout, UngradeWoche);
+                ft.hide(UngradeWoche);
+                ft.add(R.id.stundenplan_create_framelayout, GradeWoche);
+                grade_woche_button.setVisibility(View.GONE);
+            }
+            else{
+                ungrade_woche_button.setVisibility(View.GONE);
+                ft.add(R.id.stundenplan_create_framelayout, GradeWoche);
+                ft.hide(GradeWoche);
+                ft.add(R.id.stundenplan_create_framelayout, UngradeWoche);
+                Woche.setText("ungrade Woche");
+
+            }
 
         }
-
-        final Fragment GradeWoche = new create_stundenplan_stundenplan(MaxStunden, Zweiwöchentlich, 1);
-        ft.add(R.id.stundenplan_create_framelayout, GradeWoche);
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();

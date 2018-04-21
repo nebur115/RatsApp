@@ -32,7 +32,7 @@ public class Stufenwahl extends AppCompatActivity {
             SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
             if(settings.contains("Stufe")){
                 Intent i = new Intent(Stufenwahl.this, loading.class);
-                i.putExtra("Stufe", "exstitingStunde");
+                i.putExtra("Stufe", "EXISTINGSTUNDE");
                 startActivity(i);
             }
         }catch(ClassCastException e){

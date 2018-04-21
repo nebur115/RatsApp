@@ -44,11 +44,12 @@ public class vertretungsplan extends AppCompatActivity {
         setContentView(R.layout.activity_vertretungsplan);
 
         Intent intent = getIntent();
-        String Stufe = intent.getExtras().getString("Stufe");
+        String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
 
 
-        if(!(Stufe.equals("exstitingStunde"))){
-            Stufe.toUpperCase();
+
+        if(!(Stufe.equals("EXISTINGSTUNDE"))){
+
             if(Stufe.charAt(0) != '0' && !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
                 Stufe = "0"+ Stufe; }
 
@@ -95,11 +96,6 @@ public class vertretungsplan extends AppCompatActivity {
         final TabLayout.Tab WebsiteTab= tablayout.newTab();
         WebsiteTab.setIcon(R.drawable.webiteinactive);
         tablayout.addTab(WebsiteTab);
-
-
-
-
-
 
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
