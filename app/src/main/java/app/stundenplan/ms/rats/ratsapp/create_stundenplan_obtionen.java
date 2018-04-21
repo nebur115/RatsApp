@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,9 @@ import java.util.List;
 
 public class create_stundenplan_obtionen  extends AppCompatActivity {
     private List<Object> StundenListe = new ArrayList<>();
+    private List<Object> aStundenListe = new ArrayList<>();
+    private List<Object> bStundenListe = new ArrayList<>();
     private List<Object> WocheBStundenListe = new ArrayList<>();
-    int Woche;
 
     @Override
     public  void onCreate(Bundle savedInstanceState) {
@@ -37,34 +40,102 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
 
         final SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp",0);
 
+
+        if(settings.contains("MaxStunden")){
+            MaxStunden.setText(Integer.toString(settings.getInt("MaxStunden", 0)));
+        }
+        if(settings.contains("zweiWöchentlich")){
+            switch_Zweiwöchentlich.setChecked(settings.getBoolean("zweiWöchentlich", false));
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!MaxStunden.getText().toString().equals("") && Integer.parseInt(MaxStunden.getText().toString()) >= 6 && Integer.parseInt(MaxStunden.getText().toString()) <= 13) {
 
+                    if(!settings.contains("Stundenliste")) {
+                        for (int i = 0; i < Integer.parseInt(MaxStunden.getText().toString()) * 5; i++) {
+                            StundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                        }
+                    }
+                    else{
+                        String ajson;
+                        String bjson;
+                        Gson gson = new Gson();
+                        ajson = settings.getString("Stundenliste", null);
+                        Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
+                        aStundenListe = gson.fromJson(ajson , type);
 
-                    for(int i=0; i<Integer.parseInt(MaxStunden.getText().toString())*5; i++) {
-                        StundenListe.add(new Memory_Stunde(true, "","","", "", "","", false));
+
+                        if(settings.getInt("MaxStunden", 0) > Integer.parseInt(MaxStunden.getText().toString())){
+
+                            for(int j = 0; j < settings.getInt("MaxStunden", 0) - Integer.parseInt(MaxStunden.getText().toString()); j++){
+                                aStundenListe.remove(settings.getInt("MaxStunden", 0)-j);
+                            }
+
+                        }
+                        else if (settings.getInt("MaxStunden", 0) < Integer.parseInt(MaxStunden.getText().toString())){
+
+                            for(int j = 0; j < settings.getInt("MaxStunden", 0) + Integer.parseInt(MaxStunden.getText().toString()); j++){
+                                aStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                            }
+
+                        }
+
+                        if(settings.getBoolean("zweiWöchentlich", false)){
+                            bjson = settings.getString("WocheBStundenListe", null);
+                            bStundenListe = gson.fromJson(bjson , type);
+
+
+                            if(settings.getInt("MaxStunden", 0) > Integer.parseInt(MaxStunden.getText().toString())){
+                                for(int j = 0; j < settings.getInt("MaxStunden", 0) - Integer.parseInt(MaxStunden.getText().toString()); j++){
+                                    bStundenListe.remove(settings.getInt("MaxStunden", 0)-j);
+                                }
+                            }
+                            else if (settings.getInt("MaxStunden", 0) < Integer.parseInt(MaxStunden.getText().toString())){
+                                for(int j = 0; j < settings.getInt("MaxStunden", 0) + Integer.parseInt(MaxStunden.getText().toString()); j++){
+                                    bStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                                }
+                            }
+                        }
                     }
 
                     SharedPreferences.Editor editor = settings.edit();
 
                     boolean ZweiWöchentlich = switch_Zweiwöchentlich.isChecked();
 
-                    if(ZweiWöchentlich){
-                        for(int i=0; i<Integer.parseInt(MaxStunden.getText().toString())*5; i++) {
-                            WocheBStundenListe.add(new Memory_Stunde(true, "","","", "", "","", false));
+                    if(ZweiWöchentlich) {
+                        for (int i = 0; i < Integer.parseInt(MaxStunden.getText().toString()) * 5; i++) {
+                            WocheBStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+
+                            Gson bGson = new Gson();
+                            String bJson;
+                            if (!settings.contains("WocheBStundenListe")) {
+                                bJson = bGson.toJson(WocheBStundenListe);
+
+                            } else {
+                                bJson = bGson.toJson(bStundenListe);
+                            }
+                            editor.putString("WocheBStundenListe", bJson);
                         }
-                        Gson bGson = new Gson();
-                        String bJson = bGson.toJson(WocheBStundenListe);
-                        editor.putString("WocheBStundenListe", bJson);
                     }
 
+
                     Gson gson = new Gson();
-                    String json = gson.toJson(StundenListe);
+                    String json;
+
+                        if(!settings.contains("Stundenliste")){
+                            json =  gson.toJson(StundenListe);
+
+                        }
+                        else{
+                            json =  gson.toJson(aStundenListe);
+                        }
+
+
+                        editor.putString("WocheBStundenListe", json);
                     editor.putString("Stundenliste", json);
 
                     editor.apply();
-
 
 
                     settings.edit().putInt("MaxStunden", Integer.parseInt(MaxStunden.getText().toString())).apply();

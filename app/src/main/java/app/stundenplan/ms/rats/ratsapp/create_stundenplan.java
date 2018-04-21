@@ -81,15 +81,21 @@ public class create_stundenplan extends AppCompatActivity {
 
         ImageButton Speichern = (ImageButton) findViewById(R.id.Speichern);
 
+        ImageButton Einstellungen = (ImageButton) findViewById(R.id.einstellungen);
 
+
+        Einstellungen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(create_stundenplan.this, create_stundenplan_obtionen.class);
+                startActivity(i);
+            }
+        });
 
 
         Speichern.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
                 Intent i = new Intent(create_stundenplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);
                 startActivity(i);
