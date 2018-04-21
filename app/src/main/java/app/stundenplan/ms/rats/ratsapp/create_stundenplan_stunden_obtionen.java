@@ -33,7 +33,8 @@ import java.util.List;
 public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
     private List<Memory_Stunde> MemoryStundenListe = new ArrayList<>();
-
+    int pos;
+    int Stunde;
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
 
     Toast toast = null;
@@ -52,7 +53,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         Intent intent = getIntent();
         Woche = intent.getExtras().getInt("Woche");
-        final int pos = intent.getExtras().getInt("Position");
+        pos = intent.getExtras().getInt("Position");
         final boolean zweiWöchentlich = intent.getExtras().getBoolean("ZweiWöchentlich");
         setContentView(R.layout.create_stundenplan_stunden_obtionen);
 
@@ -97,8 +98,18 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
         MemoryStundenListe = gson.fromJson(json , type);
 
+        Stunde=  ((pos/5)-((pos/5)%1));
 
-        
+
+        if(pos>=10 && !MemoryStundenListe.get(pos-5).isFreistunde()){
+            if((Stunde%2==0 || !(MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos).getFach()))) && MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos-10).getFach())){
+                pos = pos-5;
+                Stunde = Stunde-1;
+            }
+        }
+
+
+
         switch (pos%5){
             case 0:
                 Wochentag = "Montag";
@@ -118,12 +129,16 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             default:
                 Wochentag = "Error: Modulo 5 >= 5";
         }
-
-        final int Stunde;
-
-        Stunde=  ((pos/5)-((pos/5)%1));
-
         DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+" Stunde");
+
+
+
+        if(MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos).getFach()) && !MemoryStundenListe.get(pos-5).isFreistunde()){
+            eDoppelstunde.setChecked(true);
+            DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ " & " + Integer.toString(Stunde+1)+" Stunde");
+        }
+
+
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -166,17 +181,62 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         Wochenwiederholung.add("Jede Woche");
 
         List<String> MündlichSchriftlich = new ArrayList<String>();
-        MündlichSchriftlich.add("Mündl. / Schrift.");
-        MündlichSchriftlich.add("Mündlich");
-        MündlichSchriftlich.add("Schriftlich");
+
+        if(!MemoryStundenListe.get(pos-5).isFreistunde()){
+        if(MemoryStundenListe.get(pos-5).isSchriftlich()){
+            MündlichSchriftlich.add("Schriftlich");
+            MündlichSchriftlich.add("Mündlich");
+        }
+        else {
+            MündlichSchriftlich.add("Mündlich");
+            MündlichSchriftlich.add("Schriftlich");
+        }
+        }else {
+            MündlichSchriftlich.add("Mündl. / Schrift.");
+            MündlichSchriftlich.add("Schriftlich");
+            MündlichSchriftlich.add("Mündlich");
+        }
 
         List<String> RaumSchule = new ArrayList<>();
-        RaumSchule.add("Raum");
-        RaumSchule.add("Schule");
 
         List<String> Halle = new ArrayList<>();
         Halle.add("kleine Halle");
         Halle.add("große Halle");
+
+
+        if(!(MemoryStundenListe.get(pos-5).getRaum().equals(""))){
+            if(MemoryStundenListe.get(pos-5).getRaum().substring(1).matches("[0-9]+")){
+                eRaum.setText(MemoryStundenListe.get(pos-5).getRaum().substring(1));
+                RaumSchule.add("Raum");
+                RaumSchule.add("Schule");
+                eRaum.setVisibility(View.VISIBLE);
+                eSchule.setVisibility(View.GONE);
+
+            }else {
+                eSchule.setText(MemoryStundenListe.get(pos-5).getRaum());
+                RaumSchule.add("Schule");
+                RaumSchule.add("Raum");
+
+                eRaum.setVisibility(View.GONE);
+                eSchule.setVisibility(View.VISIBLE);
+                if(!(MemoryStundenListe.get(pos-5).getRaum().equals(""))){
+                    eSchule.setText("Rats");
+                }else {
+                    eSchule.setText(MemoryStundenListe.get(pos-5).getRaum());
+                }
+
+            }
+
+            eLehrer.setText(MemoryStundenListe.get(pos-5).getLehrer());
+            Fach.setText(MemoryStundenListe.get(pos-5).getFach());
+
+        }
+        else{
+            RaumSchule.add("Raum");
+            RaumSchule.add("Schule");
+        }
+
+
 
         cHalleEingabe.setVisibility(View.GONE);
 
@@ -201,22 +261,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         MündlichSchriftlichSpinner.setAdapter(MündlichSchrifltlichAdapter);
         WiederholungsSpinner.setAdapter(WiederholungApapter);
         KursartenSpinner.setAdapter(KursartAdapter);
-
-
-
-
-
-
-
-        if(!(MemoryStundenListe.get(pos-5).isFreistunde())){
-            eRaum.setText(MemoryStundenListe.get(pos-5).getRaum());
-            eLehrer.setText(MemoryStundenListe.get(pos-5).getLehrer());
-            Fach.setText(MemoryStundenListe.get(pos-5).getFach());
-
-        }
-
-
-
 
 
 
@@ -332,23 +376,25 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                int Kursnummer;
                String Unterichtbegin = eUnterichtbegin.getText().toString();
                String Bewertung = MündlichSchriftlichSpinner.getSelectedItem().toString();
-               String Raum = eRaum.getText().toString();
+               String Raum;
                String Lehrer = eLehrer.getText().toString();
                boolean Doppelstunde = eDoppelstunde.isChecked();
                String Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
                String fachkürzel;
                boolean Schriftlich = false;
 
-
-
-
-
-               if(!Raum.equals("")){
-                   Raum = "R"+Raum;
+               if(sRaumSchule.getSelectedItem().toString().equals("Schule")){
+                   Raum = eSchule.getText().toString();
+               }
+               else{
+                   Raum = eRaum.getText().toString();
+                   if(!(Raum.equals(""))){
+                       Raum="R"+Raum;
+                   }
                }
 
 
-               if(Bewertung == "Schriftlich"){
+               if(Bewertung == "Schriftlich" || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
                    Schriftlich=true;
                }
 
