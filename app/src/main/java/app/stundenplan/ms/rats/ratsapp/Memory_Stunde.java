@@ -14,13 +14,16 @@ public class Memory_Stunde {
     private String Fachkürzel;
     private int Kursnummer;
     private int StartJahr;
+    private int pStartjahr;
 
 
     public Memory_Stunde(){}
 
 
 
-    public Memory_Stunde(Boolean pFreistunde, String pFach, String pFachkürzel, String pLehrer, String pRaum, String pKurart, int pKursnummer, Boolean pSchriftlich){
+
+    public Memory_Stunde(Boolean pFreistunde, String pFach, String pFachkürzel, String pLehrer, String pRaum, String pKurart, int pKursnummer, Boolean pSchriftlich, int pStartjahr){
+        StartJahr = pStartjahr;
         Kursart = pKurart;
         Fachkürzel = pFachkürzel;
         Schriftlich = pSchriftlich;
@@ -32,7 +35,9 @@ public class Memory_Stunde {
 
     }
 
-
+    public int getStartJahr() {
+        return StartJahr;
+    }
 
     public void setStartJahr(int startJahr) {
         StartJahr = startJahr;

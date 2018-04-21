@@ -60,6 +60,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+
         final Spinner KursartenSpinner = (Spinner) findViewById(R.id.kursartspinner);
         final Spinner WiederholungsSpinner = (Spinner) findViewById(R.id.wiederholungspinner) ;
         final Spinner MündlichSchriftlichSpinner = (Spinner) findViewById(R.id.MüdnlichSchriftlichspinner) ;
@@ -95,8 +96,25 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             json = settings.getString("WocheBStundenListe", null);
         }
 
+
+
         Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
         MemoryStundenListe = gson.fromJson(json , type);
+
+
+        if(zweiWöchentlich){
+            String bjson;
+            if(!(Woche==1)){
+                bjson = settings.getString("Stundenliste", null);
+            }
+            else{
+                bjson = settings.getString("WocheBStundenListe", null);
+            }
+
+            WocheBStundenListe = gson.fromJson(bjson, type);
+        }
+
+
 
         Stunde=  ((pos/5)-((pos/5)%1));
 
@@ -141,6 +159,14 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
 
+        if(MemoryStundenListe.get(pos-5).getFach().equals("Französisch") ||MemoryStundenListe.get(pos-5).getFach().equals("Spanisch") || MemoryStundenListe.get(pos-5).getFach().equals("Italiensich") || MemoryStundenListe.get(pos-5).getFach().equals("Niederländisch")){
+            cUnterichtstartEingabe.setVisibility(View.VISIBLE);
+            eUnterichtbegin.setText(Integer.toString(MemoryStundenListe.get(pos-5).getStartJahr()));
+        }
+        else{
+            cUnterichtstartEingabe.setVisibility(View.GONE);
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, Fächer);
 
@@ -177,8 +203,15 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
         List<String> Wochenwiederholung = new ArrayList<String>();
-        Wochenwiederholung.add("Alle 2 Wochen");
-        Wochenwiederholung.add("Jede Woche");
+
+        if(!(MemoryStundenListe.get(pos-5).isFreistunde()) && ((!eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())) ||(eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())&& MemoryStundenListe.get(pos).getFach().equals(WocheBStundenListe.get(pos).getFach())))){
+            Wochenwiederholung.add("Jede Woche");
+            Wochenwiederholung.add("Alle 2 Wochen");
+        }else{
+            Wochenwiederholung.add("Alle 2 Wochen");
+            Wochenwiederholung.add("Jede Woche");
+        }
+
 
         List<String> MündlichSchriftlich = new ArrayList<String>();
 
@@ -327,10 +360,10 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 MemoryStundenListe = gson.fromJson(json , type);
 
 
-                MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false));
+                MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0));
 
                 if(Doppelstunde){
-                    MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false));
+                    MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0));
                 }
                 SharedPreferences.Editor editor = settings.edit();
                 String json2 = gson.toJson( MemoryStundenListe);
@@ -381,6 +414,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                boolean Doppelstunde = eDoppelstunde.isChecked();
                String Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
                String fachkürzel;
+               int StartJahr = Integer.parseInt("0"+eUnterichtbegin.getText().toString());
                boolean Schriftlich = false;
 
                if(sRaumSchule.getSelectedItem().toString().equals("Schule")){
@@ -528,12 +562,12 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                    SharedPreferences.Editor editor = settings.edit();
 
                    if(Wiederholung=="Jede Woche") {
-                       MemoryStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich));
-                       WocheBStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich));
+                       MemoryStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich,StartJahr));
+                       WocheBStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich,StartJahr));
 
                        if(Doppelstunde){
-                           MemoryStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich));
-                           WocheBStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich));
+                           MemoryStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich,StartJahr));
+                           WocheBStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich,StartJahr));
                        }
 
                        String jsonA = gson.toJson( MemoryStundenListe);
@@ -545,10 +579,10 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                    else{
 
                        if(Woche==1){
-                           MemoryStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich));
+                           MemoryStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich,StartJahr));
 
                            if(Doppelstunde){
-                               MemoryStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich));
+                               MemoryStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich,StartJahr));
                            }
 
                            String jsonA = gson.toJson( MemoryStundenListe);
@@ -557,10 +591,10 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                        else{
 
                            if(Doppelstunde){
-                               WocheBStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich));
+                               WocheBStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich, StartJahr));
                            }
 
-                           WocheBStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich));
+                           WocheBStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich, StartJahr));
                            String jsonB = gson.toJson(WocheBStundenListe);
                            editor.putString("WocheBStundenListe", jsonB);
                        }
