@@ -12,30 +12,62 @@ public class Memory_Stunde {
     private boolean Schriftlich;
     private String Kursart;
     private String Fachkürzel;
-    private String Kurs;
+    private int Kursnummer;
+    private int StartJahr;
 
 
     public Memory_Stunde(){}
 
 
-    public Memory_Stunde(Boolean pFreistunde, String pFach, String pFachkürzel, String pKurs, String pLehrer, String pRaum, String pKurart,  Boolean pSchriftlich){
+
+    public Memory_Stunde(Boolean pFreistunde, String pFach, String pFachkürzel, String pLehrer, String pRaum, String pKurart, int pKursnummer, Boolean pSchriftlich){
         Kursart = pKurart;
         Fachkürzel = pFachkürzel;
-        Kurs = pKurs;
         Schriftlich = pSchriftlich;
         Fach = pFach;
         Lehrer = pLehrer;
         Raum = pRaum;
         Freistunde = pFreistunde;
+        Kursnummer = pKursnummer;
+
+    }
+
+
+
+    public void setStartJahr(int startJahr) {
+        StartJahr = startJahr;
+    }
+
+
+    public int getKursnummer() {
+        return Kursnummer;
+    }
+
+    public void setFreistunde(boolean freistunde) {
+        Freistunde = freistunde;
+    }
+
+    public void setSchriftlich(boolean schriftlich) {
+        Schriftlich = schriftlich;
+    }
+
+    public void setKursart(String kursart) {
+        Kursart = kursart;
+    }
+
+    public void setFachkürzel(String fachkürzel) {
+        Fachkürzel = fachkürzel;
+    }
+
+    public void setKursnummer(int kursnummer) {
+        Kursnummer = kursnummer;
     }
 
     public String getFachkürzel() {
         return Fachkürzel;
     }
 
-    public String getKurs() {
-        return Kurs;
-    }
+
 
     public boolean isSchriftlich() {
         return Schriftlich;

@@ -33,7 +33,7 @@ public class create_stundenplan extends AppCompatActivity {
         final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
 
-        SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
+        final SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         final ImageButton ungrade_woche_button = (ImageButton) findViewById(R.id.ungrade_woche_button);
         final ImageButton grade_woche_button = (ImageButton) findViewById(R.id.grade_woche_button);

@@ -54,7 +54,7 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
 
                     if(!settings.contains("Stundenliste")) {
                         for (int i = 0; i < Integer.parseInt(MaxStunden.getText().toString()) * 5; i++) {
-                            StundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                            StundenListe.add(new Memory_Stunde(true, "", "", "", "", "", 0, false));
                         }
                     }
                     else{
@@ -76,7 +76,7 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
                         else if (settings.getInt("MaxStunden", 0) < Integer.parseInt(MaxStunden.getText().toString())){
 
                             for(int j = 0; j < settings.getInt("MaxStunden", 0) + Integer.parseInt(MaxStunden.getText().toString()); j++){
-                                aStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                                aStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", 0, false));
                             }
 
                         }
@@ -93,7 +93,7 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
                             }
                             else if (settings.getInt("MaxStunden", 0) < Integer.parseInt(MaxStunden.getText().toString())){
                                 for(int j = 0; j < settings.getInt("MaxStunden", 0) + Integer.parseInt(MaxStunden.getText().toString()); j++){
-                                    bStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                                    bStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", 0, false));
                                 }
                             }
                         }
@@ -105,7 +105,7 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
 
                     if(ZweiWöchentlich) {
                         for (int i = 0; i < Integer.parseInt(MaxStunden.getText().toString()) * 5; i++) {
-                            WocheBStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", "", false));
+                            WocheBStundenListe.add(new Memory_Stunde(true, "", "", "", "", "", 0, false));
 
                             Gson bGson = new Gson();
                             String bJson;
