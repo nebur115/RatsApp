@@ -98,6 +98,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         MemoryStundenListe = gson.fromJson(json , type);
 
 
+        
         switch (pos%5){
             case 0:
                 Wochentag = "Montag";
