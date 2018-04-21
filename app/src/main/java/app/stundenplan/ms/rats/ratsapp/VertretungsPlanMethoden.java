@@ -92,7 +92,6 @@ public class VertretungsPlanMethoden {
     public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe) throws Exception {
 
         SpeicherVerwaltung s = new SpeicherVerwaltung(share);
-        ItemList.add(new Obtionen(stufe));
         String Inhalt = s.getString("VertretungsPlanInhalt");
         String[] lines = Inhalt.split("\n");
         String temp = "";
