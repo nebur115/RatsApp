@@ -53,6 +53,7 @@ public class create_stundenplan extends AppCompatActivity {
 
         if(!Zweiwöchentlich){
             ungrade_woche_button.setVisibility(View.GONE);
+            grade_woche_button.setVisibility(View.GONE);
             UngradeWoche = null;
             Woche.setVisibility(View.GONE);
         }
