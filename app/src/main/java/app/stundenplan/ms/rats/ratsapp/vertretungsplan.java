@@ -10,7 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class vertretungsplan extends AppCompatActivity {
@@ -132,7 +134,16 @@ public class vertretungsplan extends AppCompatActivity {
 
         AktiveTap = "Stundenplan";
 
+        ImageButton settingsbutton = findViewById(R.id.imageButton2);
 
+        settingsbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(vertretungsplan.this, create_stundenplan.class);
+                i.putExtra("Woche", 1);
+                startActivity(i);
+            }
+        });
 
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 

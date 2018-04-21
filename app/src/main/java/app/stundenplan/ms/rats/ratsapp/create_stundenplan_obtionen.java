@@ -151,7 +151,4 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
 
     }
 
-
-
-
 }
