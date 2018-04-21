@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by User on 04.04.2018.
+ * Created by Ruben on 04.04.2018.
  */
 
 public class create_stundenplan_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 
 /**
- * Created by User on 02.04.2018.
+ * Created by Ruben on 02.04.2018.
  */
 
 public class create_stundenplan extends AppCompatActivity {

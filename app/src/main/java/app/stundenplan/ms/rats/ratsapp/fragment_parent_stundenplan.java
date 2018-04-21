@@ -59,7 +59,10 @@ public class fragment_parent_stundenplan extends Fragment {
             }
             public void onSwipeRight() {
 
-                if (!intranstion) {
+                if (vertretungsplan.isStundenlanactive()) {
+
+
+                    if (!intranstion) {
 
 
                         intranstion = true;
@@ -93,30 +96,30 @@ public class fragment_parent_stundenplan extends Fragment {
                         intranstion = false;
                     }
                 }
+            }
 
 
             public void onSwipeLeft() {
 
-                if(!intranstion) {
+                if (vertretungsplan.isStundenlanactive()) {
+
+                    if (!intranstion) {
 
                         intranstion = true;
                         currentpage++;
 
 
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.hide(Fragmentlayouts.get(currentpage - 1));
+                        ft.show(Fragmentlayouts.get(currentpage));
+
+                        ft.commitNow();
 
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    ft.hide(Fragmentlayouts.get(currentpage - 1));
-                    ft.show(Fragmentlayouts.get(currentpage));
-
-                    ft.commitNow();
-
-
-
-                    FragmentTransaction ft2 = getFragmentManager().beginTransaction();
-                    ft2.setCustomAnimations(R.anim.do_not_show, R.anim.do_not_show);
+                        FragmentTransaction ft2 = getFragmentManager().beginTransaction();
+                        ft2.setCustomAnimations(R.anim.do_not_show, R.anim.do_not_show);
                         ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
 
@@ -130,13 +133,10 @@ public class fragment_parent_stundenplan extends Fragment {
                         intranstion = false;
 
 
-
-
-
-
-                    if (lastCreatetPage == currentpage+1) {
-                        lastCreatetPage++;
-                        Fragmentlayouts.add(new fragment_stundenplan(currentpage + 2));
+                        if (lastCreatetPage == currentpage + 1) {
+                            lastCreatetPage++;
+                            Fragmentlayouts.add(new fragment_stundenplan(currentpage + 2));
+                        }
                     }
                 }
             }

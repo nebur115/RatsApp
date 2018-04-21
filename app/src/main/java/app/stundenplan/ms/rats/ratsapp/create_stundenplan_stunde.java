@@ -1,7 +1,7 @@
 package app.stundenplan.ms.rats.ratsapp;
 
 /**
- * Created by User on 04.04.2018.
+ * Created by Ruben on 03.04.2018.
  */
 
 public class create_stundenplan_stunde {

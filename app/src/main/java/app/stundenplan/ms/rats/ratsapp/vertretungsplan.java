@@ -27,7 +27,7 @@ public class vertretungsplan extends AppCompatActivity {
     public boolean vertretungsplan_created = false;
     public boolean stundenplan_created = false;
 
-    public String ActiveTap;
+ 
     
     FrameLayout SimpleFrameLayout;
     TabLayout tablayout;
