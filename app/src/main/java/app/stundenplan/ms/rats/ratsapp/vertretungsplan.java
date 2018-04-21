@@ -145,6 +145,8 @@ public class vertretungsplan extends AppCompatActivity {
             }
         });
 
+
+
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             public boolean noten_created =false;
@@ -306,7 +308,10 @@ public class vertretungsplan extends AppCompatActivity {
         });
 
 
-
+        if(!settings.contains("Stundenliste")){
+            TabLayout.Tab tab = tablayout.getTabAt(1);
+            tab.select();
+        }
 
     }
 
