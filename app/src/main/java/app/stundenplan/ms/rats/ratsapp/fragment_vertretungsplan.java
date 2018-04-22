@@ -60,11 +60,9 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(){
         while(!VertretungsPlanMethoden.downloadedDaten) {}
-
         ItemList.clear();
         VertretungsPlanMethoden.VertretungsPlan(ItemList ,this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false, null);
         ItemAdapter.notifyDataSetChanged();
-
     }
 
 }
