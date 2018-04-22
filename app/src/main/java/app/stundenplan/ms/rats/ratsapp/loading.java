@@ -33,7 +33,7 @@ public class loading extends AppCompatActivity {
                 @Override
                 public void run() {
                     try{
-                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0));
+                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), false);
                     }catch(Exception e){
 
                     }

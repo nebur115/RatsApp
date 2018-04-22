@@ -51,17 +51,17 @@ public class fragment_vertretungsplan extends Fragment {
     private void init() {
         ItemAdapter = new ItemAdapter(getActivity());
         recyclerView.setAdapter(ItemAdapter);
-
+        VertretungsPlanMethoden.context = this;
         VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false, this);
 
         ItemAdapter.setitemFeed(ItemList);
         ItemAdapter.notifyDataSetChanged();
     }
 
-    public void reload(){
+    public void reload(boolean AlleStunden){
         while(!VertretungsPlanMethoden.downloadedDaten) {}
         ItemList.clear();
-        VertretungsPlanMethoden.VertretungsPlan(ItemList ,this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false, null);
+        VertretungsPlanMethoden.VertretungsPlan(ItemList ,this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
         ItemAdapter.notifyDataSetChanged();
     }
 

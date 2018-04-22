@@ -7,6 +7,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,7 +24,7 @@ public class VertretungsPlanMethoden {
     public static String htmlInput;
     public static List<Object> itemlist;
     public static boolean downloadedDaten = false;
-    //public static Thread download;
+    public static fragment_vertretungsplan context = null;
 
     /**
      * Downloader für Webseiten usw.
@@ -32,7 +33,9 @@ public class VertretungsPlanMethoden {
      * @return
      * @throws Exception
      */
-    public static String htmlGet(String pZiel) throws Exception {
+    public static String htmlGet(String pZiel, boolean vorne) throws Exception {
+        if(vorne)
+            vertretungsplan.zeigeLaden();
         Ziel = pZiel;
         Thread download = new HandlerThread("DownloadHandler") {
             @Override
@@ -49,6 +52,8 @@ public class VertretungsPlanMethoden {
         };
         download.start();
         download.join();
+        if(vorne)
+            vertretungsplan.versteckeLaden();
         return htmlInput;
     }
 
@@ -59,18 +64,29 @@ public class VertretungsPlanMethoden {
      * @return
      * @throws Exception
      */
-    public static String[] htmlGetVertretung(String pZiel) throws Exception {
+    public static String[] htmlGetVertretung(String pZiel, boolean vorne) throws Exception {
+        //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
-        String input = htmlGet(pZiel);
+        String input = htmlGet(pZiel, vorne);
+
+        //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
+
+            //Teilt den input in die verschiedenen Zeilen auf
             String[] in = input.split("\n");
+
+            //Initialisieren von weiteren Variablen
             boolean first = true;
             int row = 0;
+
+            //Solange es weitere Zeilen gibt
             while (row < in.length) {
                 if (first) {
                     first = false;
+                    //Stand
                     output[0] = in[row];
                 } else {
+                    //Vertretungsstunden
                     output[1] += "\n" + in[row];
                 }
                 row++;
@@ -92,14 +108,15 @@ public class VertretungsPlanMethoden {
     public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe) throws Exception {
 
         SpeicherVerwaltung s = new SpeicherVerwaltung(share);
-
-        ItemList.add(new Obtionen(stufe));
+        if(stufe != null)
+            ItemList.add(new Obtionen(stufe));
         String Inhalt = s.getString("VertretungsPlanInhalt");
         String[] lines = Inhalt.split("\n");
         String temp = "";
         int row = 0;
+        Date heute = new Date();
         while (row + 12 < lines.length) {
-            if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
+            if (stufe == null||(stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe) && new Date(row+13).after(heute))) {
                 if (!temp.equals(lines[row + 12]))
                     ItemList.add(new Datum(lines[row + 12]+ " " + lines[row+13]));
                 temp = lines[row + 12];
@@ -140,7 +157,7 @@ public class VertretungsPlanMethoden {
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
-    public static void downloadDaten(SharedPreferences share) throws Exception {
+    public static void downloadDaten(SharedPreferences share, boolean vorne) throws Exception {
 
         //Variablen werden Deklariert und zum Teil initialisiert
         String Stand;
@@ -172,7 +189,7 @@ public class VertretungsPlanMethoden {
         }
 
 
-        String[] y = htmlGetVertretung(request);
+        String[] y = htmlGetVertretung(request, vorne);
         if(y.length > 1){
             if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
                 s.setString("Stand", y[0]);
@@ -191,17 +208,22 @@ public class VertretungsPlanMethoden {
      */
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
         itemlist = ItemList;
+        context = fragment;
         try {
             if(AlleKlassen)
-                zeigeDaten(ItemList, s, "");
+                zeigeDaten(ItemList, s, null);
             else
                 zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
             if(fragment != null){
-                fragment.reload();
+                fragment.reload(false);
             }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
         }
+
+    }
+
+    public static void KursInfo(SharedPreferences a, SharedPreferences b, boolean ZweiWöchentlich){
 
     }
 }

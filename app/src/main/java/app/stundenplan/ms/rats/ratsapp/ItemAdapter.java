@@ -170,18 +170,28 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if(!myswitch.isChecked()){
                         if(settings.contains("Stundenliste")){
                             editText.setVisibility(View.GONE);
-                            //Reaload nur mit eigenen Stunden
+                            //Alle Stunden wurden deaktiviert
+                            //try {
+                                VertretungsPlanMethoden.context.reload(false);
+                            //}catch (Exception e){
+
+                            //}
                         }
                         else{
 
                             Toast.makeText(context, "Du musst erst einen Stundenplan erstellen, um nur deine Stunden anzuzeigen", Toast.LENGTH_SHORT).show();
                             myswitch.setChecked(true);
                         }
+                        //try {
+                            //Alle Stunden wurden aktiviert
+                            VertretungsPlanMethoden.context.reload(true);
+                        //}catch(Exception e){
 
+                        //}
                     }
                     else {
                         editText.setVisibility(View.VISIBLE);
-                        //Reaload mit allen Stunden
+
                     }
                 }
             });
