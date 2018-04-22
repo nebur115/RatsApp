@@ -32,7 +32,14 @@ public class fragment_stundenplan extends Fragment {
     boolean isCreated = false;
     private List<Boolean> lastShowStunde = new ArrayList<>();
     private List<Boolean> lastDoppelStunde = new ArrayList<>();
-
+    Boolean Raumwechsel;
+    Boolean Lehrerwechsel;
+    Boolean Entfällt;
+    Boolean Klausur;
+    Boolean Veranstalltung;
+    String Kurs;
+    String Datum;
+    Boolean Schriftlich;
 
     @SuppressLint("ValidFragment")
     public fragment_stundenplan(int pWeek) {
@@ -172,25 +179,33 @@ public class fragment_stundenplan extends Fragment {
 
 
                 for(int i = 0; i<MaxStunden*5; i++) {
+
+
                     String Wochentag;
                     switch (i % 5) {
                         case 0:
                             Wochentag = "Montag";
+                            Datum = DateMonday;
                             break;
                         case 1:
                             Wochentag = "Dienstag";
+                            Datum = DateTuesday;
                             break;
                         case 2:
                             Wochentag = "Mittwoch";
+                            Datum = DateWednesday;
                             break;
                         case 3:
                             Wochentag = "Donnerstag";
+                            Datum = DateThurstday;
                             break;
                         case 4:
                             Wochentag = "Freitag";
+                            Datum = DateFriday;
                             break;
                         default:
                             Wochentag = "Montag";
+                            Datum = DateMonday;
                             break;
                     }
                     String Fach = MemoryStundenListe.get(i).getFachkürzel();
@@ -241,8 +256,27 @@ public class fragment_stundenplan extends Fragment {
 
                     }
 
+
+                    Raumwechsel = false;
+                    Lehrerwechsel = false;
+                    Entfällt = false;
+                    Klausur = false;
+                    Veranstalltung= false;
+
+
+                    Kurs = MemoryStundenListe.get(i).getKürzel();
+                    Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
+                    //int Datum
+
+                    //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Entfall vorhanden ist.
+                    //Es können mehrere Wert gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung aber nicht).
+                    //Wenn Fach Mündlich, Klausur und Restgruppe entfällt, dann Frei.
+
+
+
+
                     if(ShowStunde && !Freistunde){
-                        StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum));
+                        StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum, Raumwechsel, Lehrerwechsel, Entfällt, Klausur, Veranstalltung));
                     }
                     else if(ShowStunde){
                         StundenListe.add(new Freistunde(Wochentag, DoppelStunde, itemHeight, itemWidth));

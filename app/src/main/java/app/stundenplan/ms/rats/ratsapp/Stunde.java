@@ -15,12 +15,17 @@ public class Stunde {
     private String Raum;
     private float dphoehe;
     private String Wochentag;
+    private boolean Raumwechsel;
+    private boolean Lehrerwechsel;
+    private boolean Entfällt;
+    private boolean Klausur;
+    private boolean Veranstalltung;
 
 
     public Stunde(){}
 
 
-    public Stunde(String pWochentag,  boolean pdoppelstunde, int phoehe, int pbreite, float pdphoehe, String pFach, String pLehrer, String pRaum){
+    public Stunde(String pWochentag,  boolean pdoppelstunde, int phoehe, int pbreite, float pdphoehe, String pFach, String pLehrer, String pRaum, boolean pRaumwechsel,boolean pLehrerwechel,boolean pEntfällt, boolean pKlausur, boolean pVeranstalltung){
 
         doppelstunde = pdoppelstunde;
         hoehe = phoehe;
@@ -30,6 +35,52 @@ public class Stunde {
         Raum = pRaum;
         dphoehe = pdphoehe;
         Wochentag = pWochentag;
+        Raumwechsel = pRaumwechsel;
+        Lehrerwechsel = pLehrerwechel;
+        Entfällt = pEntfällt;
+        Klausur = pKlausur;
+        Veranstalltung = pVeranstalltung;
+    }
+
+
+    public void setRaumwechsel(boolean raumwechsel) {
+        Raumwechsel = raumwechsel;
+    }
+
+    public void setLehrerwechsel(boolean lehrerwechsel) {
+        Lehrerwechsel = lehrerwechsel;
+    }
+
+    public void setEntfällt(boolean entfällt) {
+        Entfällt = entfällt;
+    }
+
+    public void setKlausur(boolean klausur) {
+        Klausur = klausur;
+    }
+
+    public void setVeranstalltung(boolean veranstalltung) {
+        Veranstalltung = veranstalltung;
+    }
+
+    public boolean isRaumwechsel() {
+        return Raumwechsel;
+    }
+
+    public boolean isLehrerwechsel() {
+        return Lehrerwechsel;
+    }
+
+    public boolean isEntfällt() {
+        return Entfällt;
+    }
+
+    public boolean isKlausur() {
+        return Klausur;
+    }
+
+    public boolean isVeranstalltung() {
+        return Veranstalltung;
     }
 
     public void setWochentag(String pWochentag) {
