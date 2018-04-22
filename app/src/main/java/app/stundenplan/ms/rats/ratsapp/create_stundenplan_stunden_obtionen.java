@@ -3,6 +3,7 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -42,7 +44,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     int Stunde;
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
 
-    String kursname;
+    String kursname = "";
     Toast toast;
     String fach;
     String Kursart;
@@ -130,6 +132,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         eDoppelstunde = (CheckBox) findViewById(R.id.Doppelstunde);
         eLehrer = findViewById(R.id.Lehrer);
         eSchule = findViewById(R.id.Schule);
+        boolean hinweis;
         String json;
         Gson gson = new Gson();
         if(Woche==1){
@@ -258,6 +261,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         }
 
 
+        hinweis = false;
 
         List<String> MündlichSchriftlich = new ArrayList<String>();
 
@@ -271,6 +275,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             MündlichSchriftlich.add("Schriftlich");
         }
         }else {
+            hinweis = true;
             MündlichSchriftlich.add("Mündl. / Schrift.");
             MündlichSchriftlich.add("Schriftlich");
             MündlichSchriftlich.add("Mündlich");
@@ -282,6 +287,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         Halle.add("kleine Halle");
         Halle.add("große Halle");
 
+        ArrayAdapter<String> MündlichSchrifltlichAdapter;
 
         if(!(MemoryStundenListe.get(pos-5).getRaum().equals(""))){
             if(MemoryStundenListe.get(pos-5).getRaum().substring(1).matches("[0-9]+")){
@@ -306,8 +312,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
             }
 
-            eLehrer.setText(MemoryStundenListe.get(pos-5).getLehrer());
-            Fach.setText(MemoryStundenListe.get(pos-5).getFach());
+
 
         }
         else{
@@ -315,6 +320,9 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             RaumSchule.add("Schule");
         }
 
+
+        eLehrer.setText(MemoryStundenListe.get(pos-5).getLehrer());
+        Fach.setText(MemoryStundenListe.get(pos-5).getFach());
 
 
         cHalleEingabe.setVisibility(View.GONE);
@@ -328,7 +336,38 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         ArrayAdapter KursartAdapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,kursarten);
         KursartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        ArrayAdapter MündlichSchrifltlichAdapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,MündlichSchriftlich);
+        final boolean finalHinweis = hinweis;
+        MündlichSchrifltlichAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item,MündlichSchriftlich){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if(position == 0){
+                    if(finalHinweis){
+                        tv.setTextColor(Color.GRAY);
+                    }
+
+                }
+                else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+
+
         MündlichSchrifltlichAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
@@ -479,7 +518,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
                    kursname = (MemoryStundenListe.get(pos-5).getKürzel());
 
-                   if(!Arrays.asList(Fächer).contains(fach) &&  kursname == null ||kursname.equals("")){
+                   if(!Arrays.asList(Fächer).contains(fach) &&  (kursname == null ||kursname.equals(""))){
 
                        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this);
                        View mView = getLayoutInflater().inflate(R.layout.create_stundenplan_fachnichtbekannt_alert, null);
