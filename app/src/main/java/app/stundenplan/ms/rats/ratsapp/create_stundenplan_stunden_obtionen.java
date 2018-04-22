@@ -60,7 +60,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
+        final   int MaxStunden = settings.getInt("MaxStunden",0);
         final Spinner KursartenSpinner = (Spinner) findViewById(R.id.kursartspinner);
         final Spinner WiederholungsSpinner = (Spinner) findViewById(R.id.wiederholungspinner) ;
         final Spinner MündlichSchriftlichSpinner = (Spinner) findViewById(R.id.MüdnlichSchriftlichspinner) ;
@@ -114,19 +114,14 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             WocheBStundenListe = gson.fromJson(bjson, type);
         }
 
-
-
         Stunde=  ((pos/5)-((pos/5)%1));
 
-
-        if(pos>=10 && !MemoryStundenListe.get(pos-5).isFreistunde()){
+        if(pos>=10 && !MemoryStundenListe.get(pos-5).isFreistunde() && (pos<MaxStunden*5-5)){
             if((Stunde%2==0 || !(MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos).getFach()))) && MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos-10).getFach())){
                 pos = pos-5;
                 Stunde = Stunde-1;
             }
         }
-
-
 
         switch (pos%5){
             case 0:
@@ -150,10 +145,12 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+" Stunde");
 
 
+        if(pos<MaxStunden*5-5){
+            if(MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos).getFach()) && !MemoryStundenListe.get(pos-5).isFreistunde()){
+                eDoppelstunde.setChecked(true);
+                DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ " & " + Integer.toString(Stunde+1)+" Stunde");
+            }
 
-        if(MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos).getFach()) && !MemoryStundenListe.get(pos-5).isFreistunde()){
-            eDoppelstunde.setChecked(true);
-            DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ " & " + Integer.toString(Stunde+1)+" Stunde");
         }
 
 
@@ -204,6 +201,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         List<String> Wochenwiederholung = new ArrayList<String>();
 
+        if(pos<MaxStunden*5-5)
         if(!(MemoryStundenListe.get(pos-5).isFreistunde()) && ((!eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())) ||(eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())&& MemoryStundenListe.get(pos).getFach().equals(WocheBStundenListe.get(pos).getFach())))){
             Wochenwiederholung.add("Jede Woche");
             Wochenwiederholung.add("Alle 2 Wochen");
@@ -553,9 +551,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
                    }
-
-
-
 
 
 
