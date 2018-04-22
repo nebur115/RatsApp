@@ -341,6 +341,13 @@ public class vertretungsplan extends AppCompatActivity {
 
     }
 
+    public void zeigeLaden(){
+
+    }
+
+    public void versteckeLaden(){
+
+    }
 }
 
 
