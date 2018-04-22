@@ -822,8 +822,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             editor.putString("WocheBStundenListe", jsonB);
 
         }
-
-
+        
         editor.apply();
         Intent i = new Intent(create_stundenplan_stunden_obtionen.this, create_stundenplan.class);
         i.putExtra("Woche", Woche);
