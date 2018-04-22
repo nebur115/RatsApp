@@ -210,6 +210,9 @@ public class VertretungsPlanMethoden {
         itemlist = ItemList;
         context = fragment;
         try {
+            if(fragment == null){
+                downloadDaten(s, true);
+            }
             if(AlleKlassen)
                 zeigeDaten(ItemList, s, null);
             else
