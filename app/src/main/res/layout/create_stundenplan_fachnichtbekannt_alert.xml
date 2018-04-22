@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:paddingTop="5dp"
+        android:id="@+id/Hinweis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Uns ist dieses Fach leider nicht bekannt"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="21sp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:paddingBottom="0dp"
+        android:text="Damit wir diese Stunde eindeutig zu einem Kurs zuordnen können, gib bitte die genaue Bezeichnung des Kurses ein. So wie sie auf dem Vertretungsplan erscheinen würde."
+        android:textAlignment="center"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:text="Wenn du nichts eingibst wir die Stunde zwar auf deinem Stundenplan angezeigt. Ist aber nicht mit dem Vertretungsplan Verbunden."
+        android:textAlignment="center"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/Kursname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Kursname "
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+
+    <Button
+        android:id="@+id/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Okay"
+
+        android:textAlignment="center" />
+
+
+</LinearLayout>
