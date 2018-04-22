@@ -82,6 +82,7 @@ public class create_stundenplan extends AppCompatActivity {
 
         ImageButton Speichern = (ImageButton) findViewById(R.id.Speichern);
 
+        Speichern.setImageResource(R.drawable.tick);
         ImageButton Einstellungen = (ImageButton) findViewById(R.id.einstellungen);
 
 

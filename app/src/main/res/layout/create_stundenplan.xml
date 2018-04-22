@@ -61,22 +61,23 @@
 
         <ImageButton
             android:id="@+id/Speichern"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/tick"
-            android:padding="8dp"
+            android:layout_marginEnd="3dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@android:color/transparent"
+            android:cropToPadding="true"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.51" />
+            app:layout_constraintEnd_toEndOf="parent"  />
 
         <ImageButton
             android:id="@+id/einstellungen"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignTop="@+id/btnlogin"
+            android:layout_marginBottom="3dp"
             android:layout_marginStart="8dp"
             android:layout_toLeftOf="@+id/btnlogin"
             android:layout_toStartOf="@+id/btnlogin"
@@ -87,9 +88,7 @@
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.7"
-            app:srcCompat="@drawable/settingbutton" />
+            app:srcCompat="@drawable/createstundenplan_settingbutton" />
 
 
     </android.support.constraint.ConstraintLayout>

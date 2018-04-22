@@ -13,13 +13,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class vertretungsplan extends AppCompatActivity {
 
 
 
-
+    static ProgressBar progressBar2;
     public String AktiveTap;
     public boolean noten_created =false;
     public boolean kalender_created = false;
@@ -47,7 +48,6 @@ public class vertretungsplan extends AppCompatActivity {
 
         Intent intent = getIntent();
         String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
-
 
 
         if(!(Stufe.equals("EXISTINGSTUNDE"))){
@@ -340,6 +340,7 @@ public class vertretungsplan extends AppCompatActivity {
         }
 
     }
+
 }
 
 

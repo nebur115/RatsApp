@@ -180,6 +180,7 @@ public class VertretungsPlanMethoden {
             }
         }
         downloadedDaten = true;
+
     }
 
     /**
