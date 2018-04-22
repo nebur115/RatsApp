@@ -56,6 +56,7 @@ public class create_stundenplan extends AppCompatActivity {
             grade_woche_button.setVisibility(View.GONE);
             UngradeWoche = null;
             Woche.setVisibility(View.GONE);
+            ft.add(R.id.stundenplan_create_framelayout, GradeWoche)
         }
         else
         {
@@ -99,7 +100,9 @@ public class create_stundenplan extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //Hier Kursliste erstellen
+                //Hier Kursliste erstellen (Stundenplan in SharedPref durchgehen)
+                //Wenn keine Kursbezeichnung erstellt werden kann, nutze "Kürzel" atribut
+                //Setze Kürzel Atribut auf das Erhaltene Kürzel
 
                 Intent i = new Intent(create_stundenplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);

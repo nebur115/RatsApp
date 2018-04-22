@@ -262,15 +262,17 @@ public class fragment_stundenplan extends Fragment {
                     Entfällt = false;
                     Klausur = false;
                     Veranstalltung= false;
-
+                    //string Raum
+                    //string Lehrer
 
                     Kurs = MemoryStundenListe.get(i).getKürzel();
                     Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
                     //int Datum
 
-                    //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Entfall vorhanden ist.
-                    //Es können mehrere Wert gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung aber nicht).
-                    //Wenn Fach Mündlich, Klausur und Restgruppe entfällt, dann Frei.
+                    //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
+                    //Bei Raum / Lehrerwechsel Wert anpassen
+                    //Es können mehrere Werte gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung allerdings nicht).
+                    //Wenn Mündlich, Klausur und "Restgruppe entfällt", dann Frei.
 
 
 
