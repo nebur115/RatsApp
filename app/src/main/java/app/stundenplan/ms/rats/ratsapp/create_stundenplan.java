@@ -104,15 +104,7 @@ public class create_stundenplan extends AppCompatActivity {
                 //Wenn keine Kursbezeichnung erstellt werden kann, nutze "Kürzel" atribut
                 //Setze Kürzel Atribut auf das Erhaltene Kürzel
 
-                try {
-                    VertretungsPlanMethoden.KursInfo(getSharedPreferences("Stundenliste", 0), getSharedPreferences("WocheBStundenListe", 0), Zweiwöchentlich);
-                }catch(Exception e){
-                    try {
-                        VertretungsPlanMethoden.KursInfo(getSharedPreferences("Stundenliste", 0), null, Zweiwöchentlich);
-                    }catch(Exception f){
-                        //Fail
-                    }
-                }
+
                 Intent i = new Intent(create_stundenplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);
                 startActivity(i);

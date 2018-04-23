@@ -35,7 +35,7 @@ public class loading extends AppCompatActivity {
                     try{
                         VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), false);
                     }catch(Exception e){
-
+                        System.out.println("Debug: Fehler beim Download in loading.java");
                     }
                 }
             };

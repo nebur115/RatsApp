@@ -21,41 +21,13 @@ public class VertretungsPlanMethoden {
      * Created by Marius on 13.03.2018.
      */
     public static String Ziel;
-    public static String htmlInput;
     public static List<Object> itemlist;
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
+    public static String input = "";
+    public static String[][] replacements = {{"KU", "Kunst"}, {"D", "Deutsch"}, {"M", "Mathe"}, {"E5", "Englisch"}, {"S6", "Spanisch"}, {"GE", "Geschichte"}, {"Sw", "Sozialwissenschaften"},
+            {"If", "Informatik"},{"Pa", "Pädagogik"}, {"BI", "Biologie"}, {"Ek", "Erdkunde"}, {"PH", "Physik"}, {"ER", "ev. Religion"}, {"KR", "kath. Religion"}};
 
-    /**
-     * Downloader für Webseiten usw.
-     *
-     * @param pZiel
-     * @return
-     * @throws Exception
-     */
-    public static String htmlGet(String pZiel, boolean vorne) throws Exception {
-        if(vorne)
-            vertretungsplan.zeigeLaden();
-        Ziel = pZiel;
-        Thread download = new HandlerThread("DownloadHandler") {
-            @Override
-            public void run() {
-                try {
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder().url(Ziel).header("Content-Type", "application/json; charset=utf-8").build();
-                    Response response = client.newCall(request).execute();
-                    htmlInput = response.body().string();
-                } catch (Exception e) {
-                    htmlInput = "";
-                }
-            }
-        };
-        download.start();
-        download.join();
-        if(vorne)
-            vertretungsplan.versteckeLaden();
-        return htmlInput;
-    }
 
     /**
      * Bereitet das ergebnis von htmlGet auf
@@ -65,9 +37,29 @@ public class VertretungsPlanMethoden {
      * @throws Exception
      */
     public static String[] htmlGetVertretung(String pZiel, boolean vorne) throws Exception {
+
         //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
-        String input = htmlGet(pZiel, vorne);
+        if (vorne)
+            vertretungsplan.zeigeLaden();
+        Ziel = pZiel;
+        Thread download = new HandlerThread("DownloadHandler") {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().url(Ziel).header("Content-Type", "application/json; charset=utf-8").build();
+                    Response response = client.newCall(request).execute();
+                    input = response.body().string();
+                } catch (Exception e) {
+                    input = "";
+                }
+            }
+        };
+        download.start();
+        download.join();
+        if (vorne)
+            vertretungsplan.versteckeLaden();
 
         //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
@@ -97,63 +89,28 @@ public class VertretungsPlanMethoden {
         }
     }
 
-    /**
-     * Zeigt die Daten für den VertretungsPlan an
-     *
-     * @param ItemList
-     * @param share
-     * @param stufe
-     * @throws Exception
-     */
-    public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe) throws Exception {
 
-        SpeicherVerwaltung s = new SpeicherVerwaltung(share);
-        if(stufe != null)
-            ItemList.add(new Obtionen(stufe));
-        String Inhalt = s.getString("VertretungsPlanInhalt");
-        String[] lines = Inhalt.split("\n");
-        String temp = "";
-        int row = 0;
-        Date heute = new Date();
-        while (row + 12 < lines.length) {
-            if (stufe == null||(stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe) && new Date(row+13).after(heute))) {
-                if (!temp.equals(lines[row + 12]))
-                    ItemList.add(new Datum(lines[row + 12]+ " " + lines[row+13]));
-                temp = lines[row + 12];
-                if (lines[row + 8].equals("2"))
-                    ItemList.add(new Ereignis(schreibeAus(lines[row+ 7], 1), schreibeAus(lines[row+ 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
-                else if (lines[row + 8].equals("1"))
-                    ItemList.add(new Ereignis(schreibeAus(lines[row+ 7], 1), schreibeAus(lines[row+ 7], 2), lines[row + 10], lines[row + 9]+ " "+ lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
-                else if (lines[row + 8].equals("0"))
-                    ItemList.add(new Ereignis(schreibeAus(lines[row+ 7], 1), schreibeAus(lines[row+ 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
-                else
-                    ItemList.add(new Ereignis(schreibeAus(lines[row+ 7], 1), schreibeAus(lines[row+ 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
-            }
-            row += 13;
-        }
-    }
 
-    static String[][] replacements = {{"KU", "Kunst"},{"D", "Deutsch"},{"M", "Mathe"},{"E5", "Englisch"},{"S6", "Spanisch"},{"GE", "Geschichte"},{"Sw", "Sozialwissenschaften"},{"If", "Informatik"},{"Pa", "Pädagogik"},{"BI", "Biologie"},{"Ek", "Erdkunde"},{"PH", "Physik"},{"ER","ev. Religion"}, {"KR", "kath. Religion"}};
-
-    public static String schreibeAus(String Fach, int mode) throws Exception{
+    public static String schreibeAus(String Fach, int mode) throws Exception {
         String[] input = Fach.split("( )+");
-        if(input.length > 1){
-            if(mode == 1){
-                for(String[] replacement: replacements) {
+        if (input.length > 1) {
+            if (mode == 1) {
+                for (String[] replacement : replacements) {
                     input[0] = input[0].replace(replacement[0], replacement[1]);
                 }
                 return input[0];
-            }else{
+            } else {
                 return input[1];
             }
         }
-        if(mode == 1){
+        if (mode == 1) {
             return Fach;
-        }else{
+        } else {
             return "";
         }
 
     }
+
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
@@ -162,7 +119,7 @@ public class VertretungsPlanMethoden {
         //Variablen werden Deklariert und zum Teil initialisiert
         String Stand;
         String Stufe;
-        String request =  "https://rats-ms.de/services/stupla_s/output.php";
+        String request = "https://rats-ms.de/services/stupla_s/output.php";
         SpeicherVerwaltung s;
 
         //Vereinfachter Zugriff auf die SharedPreference
@@ -190,7 +147,7 @@ public class VertretungsPlanMethoden {
 
 
         String[] y = htmlGetVertretung(request, vorne);
-        if(y.length > 1){
+        if (y.length > 0) {
             if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
                 s.setString("Stand", y[0]);
                 s.setString("VertretungsPlanInhalt", y[1]);
@@ -208,16 +165,14 @@ public class VertretungsPlanMethoden {
      */
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
         itemlist = ItemList;
-        context = fragment;
         try {
-            if(fragment == null){
-                downloadDaten(s, true);
-            }
-            if(AlleKlassen)
+            if (AlleKlassen)
                 zeigeDaten(ItemList, s, null);
             else
                 zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
-            if(fragment != null){
+            if (fragment != null) {
+                context = fragment;
+                downloadDaten(s, true);
                 fragment.reload(false);
             }
         } catch (Exception e) {
@@ -226,7 +181,46 @@ public class VertretungsPlanMethoden {
 
     }
 
-    public static void KursInfo(SharedPreferences a, SharedPreferences b, boolean ZweiWöchentlich){
+    /**
+     * Zeigt die Daten für den VertretungsPlan an
+     *
+     * @param ItemList
+     * @param share
+     * @param stufe
+     * @throws Exception
+     */
+    public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe) throws Exception {
+        //Variablen
+        String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
+        String[] lines = Inhalt.split("\n");
+        String temp = "";
+        int row = 0;
 
+        if (stufe != null)
+            ItemList.add(new Obtionen(stufe));
+
+
+        while (row + 12 < lines.length) {
+            if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
+                if (!temp.equals(lines[row + 12]))
+                    ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
+                temp = lines[row + 12];
+                if (lines[row + 8].equals("2"))
+                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                else if (lines[row + 8].equals("1")) {
+                    if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                    else
+                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                } else if (lines[row + 8].equals("0"))
+                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+                else
+                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+
+            }
+            row += 13;
+        }
     }
+
+
 }

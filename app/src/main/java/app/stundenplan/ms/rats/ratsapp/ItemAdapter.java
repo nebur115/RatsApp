@@ -129,9 +129,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             grund = itemView.findViewById(R.id.Grund);
             lehrer = itemView.findViewById(R.id.FachTextView);
             zeichen = itemView.findViewById(R.id.Zeichen);
-
-            
-            
         }
 
         public void showereignisDetails(Ereignis ereignis){
@@ -171,23 +168,23 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         if(settings.contains("Stundenliste")){
                             editText.setVisibility(View.GONE);
                             //Alle Stunden wurden deaktiviert
-                            //try {
+                            try {
                                 VertretungsPlanMethoden.context.reload(false);
-                            //}catch (Exception e){
-
-                            //}
+                            }catch (Exception e){
+                                System.out.println(e.getMessage());
+                            }
                         }
                         else{
 
                             Toast.makeText(context, "Du musst erst einen Stundenplan erstellen, um nur deine Stunden anzuzeigen", Toast.LENGTH_SHORT).show();
                             myswitch.setChecked(true);
                         }
-                        //try {
+                        try {
                             //Alle Stunden wurden aktiviert
                             VertretungsPlanMethoden.context.reload(true);
-                        //}catch(Exception e){
-
-                        //}
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
                     }
                     else {
                         editText.setVisibility(View.VISIBLE);
