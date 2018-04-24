@@ -85,9 +85,12 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     EditText eLehrer;
     EditText eSchule;
 
-    private static  final String[] Fächer = {
-            "MathePhysikInformatik", "BioChemie", "Deutsch", "Englisch", "Französisch", "Latein", "Spanisch", "Italiensich", "Niederländisch", "Kunst", "Musik", "Literatur", "Geschichte", "Sozialwissenschaften", "Erdkunde", "Philosophie", "Pädagogik", "Religion (Ev.)","Religion (Kath.)", "Mathe", "Biologie", "Physik", "Chemie", "Informatik", "Sport", "Politik"
-    };
+    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französich","Geschichte","Italienisch","Informatig",
+            "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
+            "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
+
+    public String [] Kürzel = {"Bio","BiCh","D","E","Erd","ER","Fr","Ge","It","Inf","Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Nw","Päd",
+            "Phy","Po","Phil","PP","S","Sp","Sw"};
 
     int Woche;
 
@@ -435,11 +438,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             public void onClick(View view) {
                 boolean Doppelstunde = eDoppelstunde.isChecked();
 
-                if(zweiWöchentlich){
-                    String Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
-                }
-
-
 
                 SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
                 Gson gson = new Gson();
@@ -661,94 +659,16 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             }
         }
 
-        switch (fach){
-            case "Deutsch":
-                fachkürzel = "D";
-                break;
-            case "Englisch":
-                fachkürzel = "E";
-                break;
-            case "Französisch":
-                fachkürzel = "Fr";
-                break;
-            case "Latein":
-                fachkürzel = "La";
-                break;
-            case "Spanisch":
-                fachkürzel = "Spa";
-                break;
-            case "Italiensich":
-                fachkürzel = "It";
-                break;
-            case "Niederländisch":
-                fachkürzel = "Ni";
-                break;
-            case "Kunst":
-                fachkürzel = "Ku";
-                break;
-            case "Musik":
-                fachkürzel = "Mu";
-                break;
-            case "Literatur":
-                fachkürzel = "Li";
-                break;
-            case "Geschichte":
-                fachkürzel = "Ge";
-                break;
-            case "Sozialwissenschaften":
-                fachkürzel = "Sow";
-                break;
-            case "Erdkunde":
-                fachkürzel = "Erd";
-                break;
-            case "Philosophie":
-                fachkürzel = "Phi";
-                break;
-            case "Pädagogik":
-                fachkürzel = "Pä";
-                break;
-            case "Religion (Ev.)":
-                fachkürzel = "Re";
-                break;
-            case"Religion (Kath.)":
-                fachkürzel = "Re";
-                break;
-            case "Mathe":
-                fachkürzel = "M";
-                break;
-            case "Biologie":
-                fachkürzel = "Bi";
-                break;
-            case "Physik":
-                fachkürzel = "Ph";
-                break;
-            case "Chemie":
-                fachkürzel = "Ch";
-                break;
-            case "Informatik":
-                fachkürzel = "If";
-                break;
-            case "Sport":
-                fachkürzel = "Sp";
-                break;
-            case "Politik":
-                fachkürzel = "Pol";
-                break;
-            default:
-                if(fach.length()>=3){
-                    fachkürzel = fach.substring(0,2);
-                }else{
-                    fachkürzel = fach;
-                }
 
-                break;
+        String fachkürzel;
 
 
+        if(Arrays.asList(Fächer).contains(fach)){
+            fachkürzel = Kürzel[Arrays.asList(Fächer).indexOf(fach)];
+
+        }else{
+            fachkürzel = fach.substring(0,2);
         }
-
-
-
-
 
 
         SharedPreferences.Editor editor = settings.edit();

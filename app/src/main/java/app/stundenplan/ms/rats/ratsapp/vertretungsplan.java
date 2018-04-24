@@ -342,7 +342,7 @@ public class vertretungsplan extends AppCompatActivity {
     }
 
     public static void zeigeLaden(){
-        progressBar2.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.GONE);
 
     }
 

@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -28,9 +29,18 @@ public class create_stundenplan extends AppCompatActivity {
     public int shownWeek;
     private List<Memory_Stunde> WocheAStundenListe = new ArrayList<>();
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
+    private List<String> Kursliste = new ArrayList<String>();
+    String Stufe;
 
     boolean Zweiwöchentlich;
     int MaxStunden;
+
+    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französich","Geschichte","Italienisch","Informatig",
+    "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
+    "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
+    public String [] Kürzel = {"BI","BI/CH","D","E5","ER","F","Ge","I","If","IFGR","KR","Ku","L","Li","M","M/PH/INF","MU","N","NW AG","Pa",
+    "Ph","PK","PL","PP","S","Sp","Sw"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,7 @@ public class create_stundenplan extends AppCompatActivity {
         final ImageButton grade_woche_button = (ImageButton) findViewById(R.id.grade_woche_button);
         final TextView Woche = findViewById(R.id.Woche);
 
-        final String Stufe = settings.getString("Stufe", null);
+        Stufe = settings.getString("Stufe", null);
 
 
 
@@ -87,60 +97,6 @@ public class create_stundenplan extends AppCompatActivity {
 
         }
 
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.commit();
-
-        ImageButton Speichern = (ImageButton) findViewById(R.id.Speichern);
-
-        Speichern.setImageResource(R.drawable.tick);
-        ImageButton Einstellungen = (ImageButton) findViewById(R.id.einstellungen);
-
-
-        Einstellungen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(create_stundenplan.this, create_stundenplan_obtionen.class);
-                startActivity(i);
-            }
-        });
-
-
-        Speichern.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String jsona;
-                String jsonb;
-                Gson gson = new Gson();
-                int länge = MaxStunden*5;
-
-                    jsona = settings.getString("Stundenliste", null);
-                    Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
-
-                    if(Zweiwöchentlich){
-                        Gson gsona = new Gson();
-                        jsonb = settings.getString("WocheBStundenListe", null);
-                        WocheBStundenListe = gsona.fromJson(jsonb , type);
-                        länge = MaxStunden*10;
-                    }
-
-                WocheAStundenListe = gson.fromJson(jsona , type);
-
-
-
-
-
-
-
-
-                Intent i = new Intent(create_stundenplan.this, loading.class);
-                i.putExtra("Stufe", Stufe);
-                startActivity(i);
-            }
-        });
-
-
-
 
         ungrade_woche_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,10 +131,138 @@ public class create_stundenplan extends AppCompatActivity {
             }
         });
 
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+
+        ImageButton Speichern = (ImageButton) findViewById(R.id.Speichern);
+
+        Speichern.setImageResource(R.drawable.tick);
+        ImageButton Einstellungen = (ImageButton) findViewById(R.id.einstellungen);
+
+
+        Einstellungen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(create_stundenplan.this, create_stundenplan_obtionen.class);
+                startActivity(i);
+            }
+        });
+
+
+        Speichern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String jsona;
+                String jsonb;
+                Gson gson = new Gson();
+
+
+                jsona = settings.getString("Stundenliste", null);
+                Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
+                WocheAStundenListe = gson.fromJson(jsona , type);
+                WerteWocheAus(WocheAStundenListe);
+
+                if(Zweiwöchentlich){
+                        Gson gsona = new Gson();
+                        jsonb = settings.getString("WocheBStundenListe", null);
+                        WocheBStundenListe = gsona.fromJson(jsonb , type);
+                        WerteWocheAus(WocheBStundenListe);
+                }
+
+                Intent i = new Intent(create_stundenplan.this, loading.class);
+                i.putExtra("Stufe", Stufe);
+                startActivity(i);
+            }
+        });
+
+
+
+
+
     }
 
     @Override
     public void onBackPressed() {
 
+    }
+
+
+    private void WerteWocheAus(List<Memory_Stunde> pStundenListe){
+
+        for(int i=0; i>MaxStunden*5; i++){
+
+
+
+            if(!pStundenListe.get(i).isFreistunde()) {
+
+                String Kursname;
+
+
+                String Fach = pStundenListe.get(i).getFach();
+
+
+
+                int Kursnummer = pStundenListe.get(i).getKursnummer();
+                String Kursart = pStundenListe.get(i).getKursart();
+
+
+                String Startjahr;
+
+
+                if (Arrays.asList(Fächer).contains(Fach)) {
+
+                    String shortFach = Kürzel[Arrays.asList(Fächer).indexOf(Fach)];
+
+
+                    if (!(pStundenListe.get(i).getStartJahr() == 0)) {
+                        Startjahr = Integer.toString(pStundenListe.get(i).getStartJahr()).substring(0,1);
+                    } else {
+                        Startjahr = "";
+                    }
+
+
+                    String shortKursart;
+
+                    if (Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) {
+                        switch (Kursart) {
+                            case "Grundkurs":
+                                Kursname = shortFach + Startjahr + " G" + Integer.toString(Kursnummer);
+                                break;
+                            case "Leistungskurs":
+                                Kursname = shortFach + Startjahr + " L" + Integer.toString(Kursnummer);
+                                break;
+                            case "Vertiefungsfach":
+                                Kursname = "VT " + shortFach + Integer.toString(Kursnummer);
+                                break;
+                            case "Zusatzkurs":
+                                Kursname = shortFach.substring(0, 1) + "Z G" + Integer.toString(Kursnummer);
+                                break;
+                            case "Ergänzung" :
+                                Kursname = "ERG " + shortFach;
+                                break;
+                            default:
+                                Kursname = shortFach + Startjahr + " G" + Integer.toString(Kursnummer);
+                                break;
+                        }
+                    } else {
+                        if (!(Kursnummer == 0)) {
+                            Kursname = shortFach + Startjahr;
+                        } else {
+                            Kursname = shortFach + Startjahr + "-" + Kursnummer;
+                        }
+                    }
+
+                } else {
+                    Kursname = WocheAStundenListe.get(i).getKürzel();
+                }
+
+
+                if (!Kursliste.contains(Kursname) && !Kursname.equals("")) {
+                    Kursliste.add(Kursname);
+                }
+            }
+
+        }
     }
 }

@@ -36,18 +36,12 @@ public class Memory_Stunde {
         kürzel = pkursname;
     }
 
-    public void setpStartjahr(int pStartjahr) {
-        this.pStartjahr = pStartjahr;
-    }
+
 
     public void setKürzel(String kürzel) {
         this.kürzel = kürzel;
     }
 
-    public int getpStartjahr() {
-
-        return pStartjahr;
-    }
 
     public String getKürzel() {
         return kürzel;
