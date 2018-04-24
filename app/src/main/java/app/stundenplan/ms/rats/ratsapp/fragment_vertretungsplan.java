@@ -58,11 +58,17 @@ public class fragment_vertretungsplan extends Fragment {
         ItemAdapter.notifyDataSetChanged();
     }
 
-    public void reload(boolean AlleStunden){
-        while(!VertretungsPlanMethoden.downloadedDaten) {}
-        ItemList.clear();
-        VertretungsPlanMethoden.VertretungsPlan(ItemList ,this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
-        ItemAdapter.notifyDataSetChanged();
-    }
+    public void reload(boolean AlleStunden) {
+        try {
+            VertretungsPlanMethoden.downloadDaten(this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), true);
+            while (!VertretungsPlanMethoden.downloadedDaten) {
+            }
+            ItemList.clear();
+            VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
+            ItemAdapter.notifyDataSetChanged();
 
+        }catch(Exception e){
+            System.out.println("Debug: Fehler reload");
+        }
+    }
 }

@@ -118,7 +118,6 @@ public class VertretungsPlanMethoden {
 
         //Variablen werden Deklariert und zum Teil initialisiert
         String Stand;
-        String Stufe;
         String request = "https://rats-ms.de/services/stupla_s/output.php";
         SpeicherVerwaltung s;
 
@@ -129,21 +128,11 @@ public class VertretungsPlanMethoden {
         try {
             Stand = s.getString("Stand");
         } catch (Exception e) {
-            Stand = null;
-        }
-        try {
-            Stufe = s.getString("Stufe");
-        } catch (Exception e) {
-            Stufe = null;
+            Stand = "";
         }
 
-        if (Stand != null && !Stand.equals("")) {
+        if (Stand != null && !Stand.equals(""))
             request += "?Stand=" + Stand;
-            if (Stufe != null && !Stufe.equals(""))
-                request += "&Stufe=" + Stufe;
-        } else if (Stufe != null && !Stufe.equals("")) {
-            request += "?Stufe=" + Stufe;
-        }
 
 
         String[] y = htmlGetVertretung(request, vorne);
@@ -167,12 +156,11 @@ public class VertretungsPlanMethoden {
         itemlist = ItemList;
         try {
             if (AlleKlassen)
-                zeigeDaten(ItemList, s, null);
+                zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
             else
                 zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
             if (fragment != null) {
                 context = fragment;
-                downloadDaten(s, true);
                 fragment.reload(false);
             }
         } catch (Exception e) {
