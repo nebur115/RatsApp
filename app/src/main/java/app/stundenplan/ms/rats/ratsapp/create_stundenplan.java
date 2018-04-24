@@ -28,8 +28,9 @@ public class create_stundenplan extends AppCompatActivity {
     public int shownWeek;
     private List<Memory_Stunde> WocheAStundenListe = new ArrayList<>();
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
-    boolean Zweiwöchentlich;
 
+    boolean Zweiwöchentlich;
+    int MaxStunden;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class create_stundenplan extends AppCompatActivity {
 
 
         Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
-        int MaxStunden = settings.getInt("MaxStunden",0);
+        MaxStunden = settings.getInt("MaxStunden",0);
 
 
         final Fragment UngradeWoche ;
@@ -111,7 +112,7 @@ public class create_stundenplan extends AppCompatActivity {
                 String jsona;
                 String jsonb;
                 Gson gson = new Gson();
-
+                int länge = MaxStunden*5;
 
                     jsona = settings.getString("Stundenliste", null);
                     Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
@@ -120,9 +121,12 @@ public class create_stundenplan extends AppCompatActivity {
                         Gson gsona = new Gson();
                         jsonb = settings.getString("WocheBStundenListe", null);
                         WocheBStundenListe = gsona.fromJson(jsonb , type);
+                        länge = MaxStunden*10;
                     }
 
                 WocheAStundenListe = gson.fromJson(jsona , type);
+
+
 
 
 

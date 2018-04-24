@@ -434,7 +434,11 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean Doppelstunde = eDoppelstunde.isChecked();
-                String Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
+
+                if(zweiWöchentlich){
+                    String Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
+                }
+
 
 
                 SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
