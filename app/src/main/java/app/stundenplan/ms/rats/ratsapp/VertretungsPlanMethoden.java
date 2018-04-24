@@ -1,3 +1,4 @@
+//FICK DICH
 package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
