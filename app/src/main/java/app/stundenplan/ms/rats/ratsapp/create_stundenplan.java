@@ -11,6 +11,13 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Ruben on 02.04.2018.
@@ -19,8 +26,9 @@ import android.widget.TextView;
 public class create_stundenplan extends AppCompatActivity {
 
     public int shownWeek;
-
-
+    private List<Memory_Stunde> WocheAStundenListe = new ArrayList<>();
+    private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
+    boolean Zweiwöchentlich;
 
 
     @Override
@@ -43,7 +51,7 @@ public class create_stundenplan extends AppCompatActivity {
 
 
 
-        Boolean Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
+        Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
         int MaxStunden = settings.getInt("MaxStunden",0);
 
 
@@ -100,9 +108,26 @@ public class create_stundenplan extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //Hier Kursliste erstellen (Stundenplan in SharedPref durchgehen)
-                //Wenn keine Kursbezeichnung erstellt werden kann, nutze "Kürzel" atribut
-                //Setze Kürzel Atribut auf das Erhaltene Kürzel
+                String jsona;
+                String jsonb;
+                Gson gson = new Gson();
+
+
+                    jsona = settings.getString("Stundenliste", null);
+                    Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
+
+                    if(Zweiwöchentlich){
+                        Gson gsona = new Gson();
+                        jsonb = settings.getString("WocheBStundenListe", null);
+                        WocheBStundenListe = gsona.fromJson(jsonb , type);
+                    }
+
+                WocheAStundenListe = gson.fromJson(jsona , type);
+
+
+
+
+
 
                 Intent i = new Intent(create_stundenplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);

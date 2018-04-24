@@ -39,8 +39,12 @@ public class VertretungsPlanMethoden {
 
         //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
-        if (vorne)
+        if (vorne){
+
             vertretungsplan.zeigeLaden();
+        }
+
+
         Ziel = pZiel;
         Thread download = new HandlerThread("DownloadHandler") {
             @Override
@@ -57,8 +61,10 @@ public class VertretungsPlanMethoden {
         };
         download.start();
         download.join();
-        if (vorne)
+        if (vorne) {
             vertretungsplan.versteckeLaden();
+        }
+
 
         //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {

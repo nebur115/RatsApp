@@ -99,9 +99,6 @@ public class create_stundenplan_stundenplan extends Fragment {
 
         for(int i=0; i<MaxStunden*5; i++) {
 
-
-
-
                 if(MemoryStundenListe.get(i).isFreistunde()){
                     StundenListe.add(new create_stundenplan_createstunde((i+1)%5, itemHeight, itemWidth, Woche));
                 }

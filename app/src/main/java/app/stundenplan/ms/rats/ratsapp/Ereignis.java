@@ -25,9 +25,6 @@ public class Ereignis {
 
 
 
-
-
-
     public String getFach() {
         return Fach;
     }
