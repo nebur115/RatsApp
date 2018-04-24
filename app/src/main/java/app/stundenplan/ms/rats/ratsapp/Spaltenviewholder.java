@@ -1,5 +1,7 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,6 +28,7 @@ public class Spaltenviewholder extends RecyclerView.ViewHolder {
         String tWochentag = pSpalte.getWochentag();
         String tDatum = pSpalte.getDatum();
         int tBreite = pSpalte.getBreite();
+        boolean Today = pSpalte.isToday();
 
 
         if(tWochentag == "Dienstag" || tWochentag == "Donnerstag"){
@@ -38,6 +41,14 @@ public class Spaltenviewholder extends RecyclerView.ViewHolder {
 
         Datum.setText(tDatum);
         Wochentag.setText(tWochentag);
+
+        if(Today){
+            Datum.setTextColor(Color.parseColor("#000000"));
+            Datum.setTypeface(Typeface.DEFAULT_BOLD);
+            Wochentag.setTextSize(14);
+            Wochentag.setTextColor(Color.parseColor("#000000"));
+        }
+
         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) Frame.getLayoutParams();
 
         layoutParams.width = tBreite;

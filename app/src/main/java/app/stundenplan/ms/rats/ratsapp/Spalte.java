@@ -8,15 +8,26 @@ public class Spalte {
     String Wochentag;
     String Datum;
     int Breite;
+    boolean Today;
+
+    public boolean isToday() {
+        return Today;
+    }
 
     public Spalte(){
 
     }
 
-    public Spalte(String pWochentag, String pDatum, int pBreite){
+    public void setToday(boolean today) {
+        Today = today;
+    }
+
+    public Spalte(String pWochentag, String pDatum, int pBreite, boolean pToday){
         Wochentag = pWochentag;
         Datum = pDatum;
         Breite = pBreite;
+        Today = pToday;
+
     }
 
     public void setBreite(int breite) {

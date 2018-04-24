@@ -41,7 +41,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     int pos;
     int Stunde;
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
-
     int orgStunde;
     int orgPos;
     Boolean wasDopellstunde = false;
@@ -253,19 +252,20 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         List<String> Wochenwiederholung = new ArrayList<String>();
 
-        if(pos<MaxStunden*5-5){
-            if(!(MemoryStundenListe.get(pos-5).isFreistunde()) && ((!eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())) ||(eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())&& MemoryStundenListe.get(pos).getFach().equals(WocheBStundenListe.get(pos).getFach())))){
-                wasWöchentlich = true;
-                Wochenwiederholung.add("Jede Woche");
-                Wochenwiederholung.add("Alle 2 Wochen");
+        if(zweiWöchentlich){
+            if(pos<MaxStunden*5-5){
+                if(!(MemoryStundenListe.get(pos-5).isFreistunde()) && ((!eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())) ||(eDoppelstunde.isChecked() && MemoryStundenListe.get(pos-5).getFach().equals(WocheBStundenListe.get(pos-5).getFach())&& MemoryStundenListe.get(pos).getFach().equals(WocheBStundenListe.get(pos).getFach())))){
+                    wasWöchentlich = true;
+                    Wochenwiederholung.add("Jede Woche");
+                    Wochenwiederholung.add("Alle 2 Wochen");
+                }else{
+                    Wochenwiederholung.add("Alle 2 Wochen");
+                    Wochenwiederholung.add("Jede Woche");
+                }
             }else{
                 Wochenwiederholung.add("Alle 2 Wochen");
                 Wochenwiederholung.add("Jede Woche");
-            }
-        }else{
-            Wochenwiederholung.add("Alle 2 Wochen");
-            Wochenwiederholung.add("Jede Woche");
-        }
+            }}
 
 
         hinweis = false;
@@ -273,14 +273,14 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         List<String> MündlichSchriftlich = new ArrayList<String>();
 
         if(!MemoryStundenListe.get(pos-5).isFreistunde()){
-        if(MemoryStundenListe.get(pos-5).isSchriftlich()){
-            MündlichSchriftlich.add("Schriftlich");
-            MündlichSchriftlich.add("Mündlich");
-        }
-        else {
-            MündlichSchriftlich.add("Mündlich");
-            MündlichSchriftlich.add("Schriftlich");
-        }
+            if(MemoryStundenListe.get(pos-5).isSchriftlich()){
+                MündlichSchriftlich.add("Schriftlich");
+                MündlichSchriftlich.add("Mündlich");
+            }
+            else {
+                MündlichSchriftlich.add("Mündlich");
+                MündlichSchriftlich.add("Schriftlich");
+            }
         }else {
             hinweis = true;
             MündlichSchriftlich.add("Mündl. / Schrift.");
@@ -378,7 +378,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         MündlichSchrifltlichAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        ArrayAdapter WiederholungApapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,Wochenwiederholung);
+        final ArrayAdapter WiederholungApapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,Wochenwiederholung);
         WiederholungApapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         sHalle.setAdapter(HalleAdapter);
@@ -440,32 +440,36 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
                 Gson gson = new Gson();
                 String json = settings.getString("Stundenliste", null);
+                String bjson = settings.getString("Stundenliste", null);
                 Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
                 MemoryStundenListe = gson.fromJson(json , type);
-
+                WocheBStundenListe = gson.fromJson(bjson, type);
 
                 MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0,null));
+                WocheBStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0,null));
+
+
 
                 if(Doppelstunde){
                     MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
+                    WocheBStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
                 }
                 SharedPreferences.Editor editor = settings.edit();
-                String json2 = gson.toJson( MemoryStundenListe);
-
-
+                String jsona = gson.toJson( MemoryStundenListe);
+                String jsonb = gson.toJson(WocheBStundenListe);
 
 
                 if(Wiederholung=="Jede Woche") {
-                    editor.putString("Stundenliste", json2);
-                    editor.putString("WocheBStundenListe", json2);
+                    editor.putString("Stundenliste", jsona);
+                    editor.putString("WocheBStundenListe", jsonb);
                 }
                 else{
 
                     if(Woche==1){
-                        editor.putString("Stundenliste", json2);
+                        editor.putString("Stundenliste", jsona);
                     }
                     else{
-                        editor.putString("WocheBStundenListe", json2);
+                        editor.putString("WocheBStundenListe",  jsonb);
                     }
                 }
 
@@ -488,74 +492,79 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              fach = Fach.getText().toString();
+                fach = Fach.getText().toString();
                 Kursart = KursartenSpinner.getSelectedItem().toString();
                 Unterichtbegin = eUnterichtbegin.getText().toString();
                 Bewertung = MündlichSchriftlichSpinner.getSelectedItem().toString();
                 Lehrer = eLehrer.getText().toString();
                 Doppelstunde = eDoppelstunde.isChecked();
-                Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
+                if(zweiWöchentlich){
+                    Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
+                }else{
+                    Wiederholung = "Alle 2 Wochen";
+                }
+
                 StartJahr = Integer.parseInt("0"+eUnterichtbegin.getText().toString());
                 Schriftlich = false;
 
 
 
 
-               if(Bewertung == "Schriftlich" || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
-                   Schriftlich=true;
-               }
+                if(Bewertung == "Schriftlich" || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
+                    Schriftlich=true;
+                }
 
-               if(
-                            (
-                                     !(fach=="Spanisch" || fach=="Französisch" || fach=="Italiensich" || fach=="Niederländisch" )
-                               ||
-                                     ((fach=="Spanisch" || fach=="Französisch" || fach=="Italiensich" || fach=="Niederländisch" )&&!(Unterichtbegin==""))
-                            )
-                       &&
-                            (
-                                    !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))
-                               ||
-                                    ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && !(eKursnummer.getText().toString().equals("")) && !(Bewertung == "Mündl. / Schrift."))
-                            )
-                       &&
-                            !(fach=="")
-                  )
+                if(
+                        (
+                                !(fach=="Spanisch" || fach=="Französisch" || fach=="Italiensich" || fach=="Niederländisch" )
+                                        ||
+                                        ((fach=="Spanisch" || fach=="Französisch" || fach=="Italiensich" || fach=="Niederländisch" )&&!(Unterichtbegin==""))
+                        )
+                                &&
+                                (
+                                        !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))
+                                                ||
+                                                ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && !(eKursnummer.getText().toString().equals("")) && !(Bewertung == "Mündl. / Schrift."))
+                                )
+                                &&
+                                !(fach=="")
+                        )
 
-               {
+                {
 
-                   kursname = (MemoryStundenListe.get(pos-5).getKürzel());
+                    kursname = (MemoryStundenListe.get(pos-5).getKürzel());
 
-                   if(!Arrays.asList(Fächer).contains(fach) &&  (kursname == null ||kursname.equals(""))){
+                    if(!Arrays.asList(Fächer).contains(fach) &&  (kursname == null ||kursname.equals(""))){
 
-                       final AlertDialog.Builder mBuilder = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this);
-                       View mView = getLayoutInflater().inflate(R.layout.create_stundenplan_fachnichtbekannt_alert, null);
-                       final EditText Kursname = (EditText) mView.findViewById(R.id.Kursname);
-                       Button Okay = (Button) mView.findViewById(R.id.Button);
-                       mBuilder.setView(mView);
-                       final AlertDialog dialog = mBuilder.create();
-                       Okay.setOnClickListener(new View.OnClickListener() {
-                           @Override
-                           public void onClick(View view) {
+                        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this);
+                        View mView = getLayoutInflater().inflate(R.layout.create_stundenplan_fachnichtbekannt_alert, null);
+                        final EditText Kursname = (EditText) mView.findViewById(R.id.Kursname);
+                        Button Okay = (Button) mView.findViewById(R.id.Button);
+                        mBuilder.setView(mView);
+                        final AlertDialog dialog = mBuilder.create();
+                        Okay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
                                 if(!Kursname.getText().toString().equals("")){
                                     kursname = Kursname.getText().toString();
                                 }
                                 dialog.dismiss();
                                 DatenSpeichern();
 
-                           }
-                       });
-                       dialog.show();
+                            }
+                        });
+                        dialog.show();
 
-                   }else {
-                       DatenSpeichern();
-                   }
+                    }else {
+                        DatenSpeichern();
+                    }
 
-               }
-               else
-               {
-                      toast = Toast.makeText(create_stundenplan_stunden_obtionen.this, "Du hast nicht alle Pflichtfleder ausgefüllt"+fach, Toast.LENGTH_SHORT);
-                      toast.show();
-               }
+                }
+                else
+                {
+                    toast = Toast.makeText(create_stundenplan_stunden_obtionen.this, "Du hast nicht alle Pflichtfleder ausgefüllt"+fach, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
 
             }
         });
@@ -575,7 +584,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-               
+
                 if(Fach.getText().toString().equals("Französisch") ||Fach.getText().toString().equals("Spanisch") || Fach.getText().toString().equals("Italiensich") || Fach.getText().toString().equals("Niederländisch")){
                     cUnterichtstartEingabe.setVisibility(View.VISIBLE);
                 }
@@ -589,7 +598,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 }
                 else
                 {cHalleEingabe.setVisibility(View.GONE);
-                cRaumEingabe.setVisibility(View.VISIBLE);}
+                    cRaumEingabe.setVisibility(View.VISIBLE);}
             }
         });
 
@@ -614,6 +623,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             }
         }
 
+
         if ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
             Kursnummer = Integer.parseInt(eKursnummer.getText().toString());
         }
@@ -636,6 +646,16 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
         MemoryStundenListe = gson.fromJson(json , type);
+
+
+        if(fach.equals("Sport")){
+            if(sHalle.getSelectedItem().toString().equals("kleine Halle")) {
+                Raum = "kl H";
+            }
+            else{
+                Raum = "gr H";
+            }
+        }
 
         switch (fach){
             case "Deutsch":
@@ -772,13 +792,13 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 }
 
                 if(!Doppelstunde && wasDopellstunde){
-                 if(pos==orgPos){
-                     MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
-                 }
-                 else if(pos<orgPos){
-                     MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
-                     pos = pos+5;
-                 }
+                    if(pos==orgPos){
+                        MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
+                    }
+                    else if(pos<orgPos){
+                        MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
+                        pos = pos+5;
+                    }
 
                 }
                 MemoryStundenListe.set(pos-5, new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum,Kursart,Kursnummer, Schriftlich,StartJahr,kursname));
@@ -829,7 +849,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         i.putExtra("Stufe", settings.getString("Stufe", null));
         startActivity(i);
     }
-    }
+}
 
 
 

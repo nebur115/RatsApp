@@ -1,4 +1,3 @@
-//FICK DICH
 package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import java.util.Date;
 import java.util.List;
 
 

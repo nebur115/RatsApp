@@ -43,11 +43,11 @@ public class create_stundenplan extends AppCompatActivity {
 
 
 
-        final Boolean Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
+        Boolean Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
         int MaxStunden = settings.getInt("MaxStunden",0);
 
 
-       final Fragment UngradeWoche ;
+        final Fragment UngradeWoche ;
 
         final Fragment GradeWoche = new create_stundenplan_stundenplan(MaxStunden, Zweiwöchentlich, 1);
 
@@ -103,7 +103,6 @@ public class create_stundenplan extends AppCompatActivity {
                 //Hier Kursliste erstellen (Stundenplan in SharedPref durchgehen)
                 //Wenn keine Kursbezeichnung erstellt werden kann, nutze "Kürzel" atribut
                 //Setze Kürzel Atribut auf das Erhaltene Kürzel
-
 
                 Intent i = new Intent(create_stundenplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);

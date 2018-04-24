@@ -1,5 +1,7 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,6 +36,16 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         boolean tdoppelstunde = pStunde.isDoppelstunde();
         String tWochentag = pStunde.getWochentag();
 
+        boolean pnow = pStunde.isNow();
+        boolean Raumwechsel = pStunde.isRaumwechsel();
+        boolean Lehrerwechsel = pStunde.isLehrerwechsel();
+        boolean Entfällt = pStunde.isEntfällt();
+        boolean Klausur = pStunde.isKlausur();
+        boolean Veranstalltung = pStunde.isVeranstalltung();
+
+
+
+
 
         if (tdoppelstunde){
             thoehe = pStunde.getHoehe()*2;
@@ -64,6 +76,10 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
 
         if (tdphoehe<=75){
             Lehrer.setVisibility(View.GONE);
+            if(Raumwechsel){
+                tLehrer = tRaum;
+                Lehrer.setTextColor(Color.parseColor("#B13333"));
+            }
         }
 
         if (tdphoehe<=55){
@@ -77,6 +93,37 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         Lehrer.setText(tLehrer);
         Raum.setText(tRaum);
         Fach.setText(tFach);
+
+        if(pnow){
+            Lehrer.setTextColor(Color.parseColor("#000000"));
+            Raum.setTextColor(Color.parseColor("#000000"));
+            Fach.setTextColor(Color.parseColor("#000000"));
+            Lehrer.setTypeface(Typeface.DEFAULT_BOLD);
+            Raum.setTypeface(Typeface.DEFAULT_BOLD);
+        }
+
+        if(Raumwechsel){
+            Raum.setTextColor(Color.parseColor("#B13333"));
+        }
+
+        if(Lehrerwechsel){
+            Lehrer.setTextColor(Color.parseColor("#B13333"));
+        }
+
+        if(Entfällt){
+            Fach.setTextColor(Color.parseColor("#C7958C"));
+            Raum.setTextColor(Color.parseColor("#C7958C"));
+            Lehrer.setTextColor(Color.parseColor("#C7958C"));
+        }
+
+        if(Veranstalltung){
+            Fach.setTextColor(Color.parseColor("#EDAE33"));
+
+        }
+
+        if(Klausur){
+            Fach.setTextColor(Color.parseColor("#6D0BAA"));
+        }
 
     }
 

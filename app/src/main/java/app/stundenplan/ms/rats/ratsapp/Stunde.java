@@ -6,7 +6,7 @@ package app.stundenplan.ms.rats.ratsapp;
 
 public class Stunde {
 
-
+    private  boolean now;
     private boolean doppelstunde;
     private int hoehe;
     private int breite;
@@ -25,8 +25,9 @@ public class Stunde {
     public Stunde(){}
 
 
-    public Stunde(String pWochentag,  boolean pdoppelstunde, int phoehe, int pbreite, float pdphoehe, String pFach, String pLehrer, String pRaum, boolean pRaumwechsel,boolean pLehrerwechel,boolean pEntfällt, boolean pKlausur, boolean pVeranstalltung){
+    public Stunde(String pWochentag,  boolean pdoppelstunde, int phoehe, int pbreite, float pdphoehe, String pFach, String pLehrer, String pRaum, boolean pRaumwechsel,boolean pLehrerwechel,boolean pEntfällt, boolean pKlausur, boolean pVeranstalltung, boolean pnow){
 
+        now = pnow;
         doppelstunde = pdoppelstunde;
         hoehe = phoehe;
         breite = pbreite;
@@ -42,6 +43,15 @@ public class Stunde {
         Veranstalltung = pVeranstalltung;
     }
 
+
+
+    public boolean isNow() {
+        return now;
+    }
+
+    public void setNow(boolean now) {
+        this.now = now;
+    }
 
     public void setRaumwechsel(boolean raumwechsel) {
         Raumwechsel = raumwechsel;

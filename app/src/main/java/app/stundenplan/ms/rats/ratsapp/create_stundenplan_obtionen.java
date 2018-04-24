@@ -123,16 +123,16 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
                     Gson gson = new Gson();
                     String json;
 
-                        if(!settings.contains("Stundenliste")){
-                            json =  gson.toJson(StundenListe);
+                    if(!settings.contains("Stundenliste")){
+                        json =  gson.toJson(StundenListe);
 
-                        }
-                        else{
-                            json =  gson.toJson(aStundenListe);
-                        }
+                    }
+                    else{
+                        json =  gson.toJson(aStundenListe);
+                    }
 
 
-                        editor.putString("WocheBStundenListe", json);
+                    editor.putString("WocheBStundenListe", json);
                     editor.putString("Stundenliste", json);
 
                     editor.apply();

@@ -56,7 +56,7 @@ public class vertretungsplan extends AppCompatActivity {
                 Stufe = "0"+ Stufe; }
 
 
-
+            progressBar2 = findViewById(R.id.progressBar2);
 
 
             try{
@@ -342,11 +342,12 @@ public class vertretungsplan extends AppCompatActivity {
     }
 
     public static void zeigeLaden(){
+        progressBar2.setVisibility(View.VISIBLE);
 
     }
 
     public static void versteckeLaden(){
-
+        progressBar2.setVisibility(View.GONE);
     }
 }
 
