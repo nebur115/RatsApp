@@ -138,11 +138,12 @@ public class VertretungsPlanMethoden {
         String[] y = htmlGetVertretung(request, vorne);
         if (y.length > 0) {
             if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
+                System.out.print("Debug: Fehler im download");
                 s.setString("Stand", y[0]);
                 s.setString("VertretungsPlanInhalt", y[1]);
             }
         }
-        downloadedDaten = true;
+        downloadedDaten = vorne;
 
     }
 
