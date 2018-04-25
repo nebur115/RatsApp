@@ -96,7 +96,7 @@ public class VertretungsPlanMethoden {
         if (input.length > 1) {
             if (mode == 1) {
                 for (String[] replacement : replacements) {
-                    input[0] = input[0].replace(replacement[0], replacement[1]);
+                    input[0] = input[0].replaceAll(replacement[0], replacement[1]);
                     if(input[0].length()>2)
                         break;
                 }
