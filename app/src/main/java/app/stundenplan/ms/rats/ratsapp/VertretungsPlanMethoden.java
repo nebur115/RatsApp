@@ -2,11 +2,9 @@ package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
 import android.os.HandlerThread;
-import android.text.TextWatcher;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,9 +29,10 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
-    public static String[][] replacements = {{"KU", "Kunst"}, {"E5", "Englisch"}, {"S6", "Spanisch"}, {"L6", "Latein"}, {"GE", "Geschichte"}, {"Sw", "Sozialwissenschaften"}, {"MU", "Musik"},
-            {"If", "Informatik"}, {"Pa", "Pädagogik"}, {"BI", "Biologie"}, {"Ek", "Erdkunde"}, {"PH", "Physik"}, {"ER", "ev. Religion"}, {"KR", "kath. Religion"}, {"D", "Deutsch"}, {"M", "Mathe"}};
-
+    public static String[][] replacements = {{"BI","Bio"},{"BI/CH","Bio Chemie"},{"CH","Chemie"},{"D","Deutsch"},{"E","Englisch"},{"EK","Erdkunde"},{"ER","ev. Religion"},{"F","Französisch"}
+    ,{"Ge", "Geschichte"},{"I","Italienisch"},{"If", "Informatig"},{"IFGR", "Informatorische Grundbildung"},{"KR","kath. Religion"},{"Ku","Kunst"},{"L","Latein"},{"Li","Literatur"},{"M","Mathe"}
+    ,{"M/PH/IF", "Mathe Physik Informatig"},{"Mu", "Musik"},{"N", "Niederländisch"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"},
+            {"S","Spanisch"},{"Sp","Sport"},{"Sw","Sozialwissenschaften"}};
 
     /**
      * Bereitet das ergebnis von htmlGet auf

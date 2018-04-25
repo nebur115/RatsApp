@@ -87,7 +87,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     TextView textViewKursnummer;
     TextView textViewNr;
 
-    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französich","Geschichte","Italienisch","Informatig",
+    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
             "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
@@ -439,43 +439,73 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(zweiWöchentlich){
+                    Wiederholung = WiederholungsSpinner.getSelectedItem().toString();
+                }else{
+                    Wiederholung = "Alle 2 Wochen";
+                }
+
+
                 boolean Doppelstunde = eDoppelstunde.isChecked();
+
 
 
                 SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
                 Gson gson = new Gson();
                 String json = settings.getString("Stundenliste", null);
-                String bjson = settings.getString("Stundenliste", null);
+
                 Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
                 MemoryStundenListe = gson.fromJson(json , type);
-                WocheBStundenListe = gson.fromJson(bjson, type);
-
-                MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0,null));
-                WocheBStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0,null));
 
 
+                MemoryStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,""));
 
                 if(Doppelstunde){
-                    MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
-                    WocheBStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,null));
+                    MemoryStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "",0, false,0,""));
                 }
+
+                if(zweiWöchentlich){
+                    String bjson = settings.getString("WocheBStundenListe", null);
+
+                    WocheBStundenListe = gson.fromJson(bjson, type);
+                    WocheBStundenListe.set(pos-5, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0,""));
+
+
+                    if(Doppelstunde){
+                        WocheBStundenListe.set(pos, new Memory_Stunde(true,  "", "", "", "", "", 0, false, 0,""));
+
+                    }
+
+                }
+
+
+
+
                 SharedPreferences.Editor editor = settings.edit();
                 String jsona = gson.toJson( MemoryStundenListe);
+
+                if(zweiWöchentlich){
                 String jsonb = gson.toJson(WocheBStundenListe);
 
 
-                if(Wiederholung.equals("Jede Woche")) {
-                    editor.putString("Stundenliste", jsona);
-                    editor.putString("WocheBStundenListe", jsonb);
-                }
-                else{
 
-                    if(Woche==1){
+                    if(Wiederholung.equals("Jede Woche")) {
                         editor.putString("Stundenliste", jsona);
+                        editor.putString("WocheBStundenListe", jsonb);
                     }
                     else{
-                        editor.putString("WocheBStundenListe",  jsonb);
+
+                        if(Woche==1){
+                            editor.putString("Stundenliste", jsona);
+                        }
+                        else{
+                            editor.putString("WocheBStundenListe",  jsonb);
+                        }
                     }
+
+                }else {
+                    editor.putString("Stundenliste", jsona);
                 }
 
 
@@ -604,7 +634,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 {cHalleEingabe.setVisibility(View.GONE);
                     cRaumEingabe.setVisibility(View.VISIBLE);}
 
-                if(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))){
+                if(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))){
                     cKursEingabe.setVisibility(View.VISIBLE);
                     KursartenSpinner.setVisibility(View.GONE);
                     textViewNr.setVisibility(View.GONE);
