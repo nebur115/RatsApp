@@ -26,8 +26,6 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -63,6 +61,17 @@ public class fragment_vertretungsplan extends Fragment {
             while (!VertretungsPlanMethoden.downloadedDaten) {}
             ItemList.clear();
             VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
+            ItemAdapter.notifyDataSetChanged();
+
+        }catch(Exception e){
+            System.out.println("Debug: Fehler reload");
+        }
+    }
+    public void reload(boolean AlleStunden, String Stufe) {
+        try {
+            while (!VertretungsPlanMethoden.downloadedDaten) {}
+            ItemList.clear();
+            VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
             ItemAdapter.notifyDataSetChanged();
 
         }catch(Exception e){

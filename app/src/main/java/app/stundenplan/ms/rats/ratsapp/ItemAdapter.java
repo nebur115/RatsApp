@@ -201,13 +201,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    VertretungsPlanMethoden.context.reload(true, charSequence.toString().toUpperCase());
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
                     //Teste ob editText.getText einer exestierenden Stufe entspricht und wenn ja Reload mit der Stufe.
                     //Die änderung darf nicht in die SharedPref. gehen.
+
                 }
             });
 

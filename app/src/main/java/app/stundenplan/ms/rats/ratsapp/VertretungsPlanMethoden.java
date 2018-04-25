@@ -2,6 +2,7 @@ package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
 import android.os.HandlerThread;
+import android.text.TextWatcher;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -24,6 +25,7 @@ public class VertretungsPlanMethoden {
     /**
      * Created by Marius on 13.03.2018.
      */
+    public static Obtionen option;
     public static String Ziel;
     public static List<Object> itemlist;
     public static boolean downloadedDaten = false;
@@ -126,7 +128,6 @@ public class VertretungsPlanMethoden {
 
         //Vereinfachter Zugriff auf die SharedPreference
         s = new SpeicherVerwaltung(share);
-
         //Holt die beiden Variablen aus der SharedPreference
         /*
         Fehler mit dem Server muss nocheinmal mit Oeljeklaus reden
@@ -160,7 +161,9 @@ public class VertretungsPlanMethoden {
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
         itemlist = ItemList;
         try {
-            zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"), AlleKlassen);
+            String Stufe = new SpeicherVerwaltung(s).getString("Stufe");
+
+            zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
                 context = fragment;
                 fragment.reload(false);
@@ -168,7 +171,18 @@ public class VertretungsPlanMethoden {
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
         }
-
+    }
+    public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment, String Stufe) {
+        itemlist = ItemList;
+        try {
+            zeigeDaten(ItemList, s, Stufe, AlleKlassen);
+            if (fragment != null) {
+                context = fragment;
+                fragment.reload(false);
+            }
+        } catch (Exception e) {
+            ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
+        }
     }
 
     /**
@@ -187,7 +201,8 @@ public class VertretungsPlanMethoden {
         int row = 0;
 
         if (stufe != null) {
-            ItemList.add(new Obtionen(stufe));
+            option = new Obtionen(stufe);
+            ItemList.add(option);
 
             while (row + 12 < lines.length) {
                 //if (!lines[row + 13].equals(getYesterdayDateString())) {
@@ -231,4 +246,6 @@ public class VertretungsPlanMethoden {
         cal.add(Calendar.DATE, -1);
         return cal.getTime();
     }
+
+
 }
