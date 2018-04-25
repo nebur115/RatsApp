@@ -7,6 +7,9 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class VertretungsPlanMethoden {
     public static fragment_vertretungsplan context = null;
     public static String input = "";
     public static String[][] replacements = {{"KU", "Kunst"}, {"E5", "Englisch"}, {"S6", "Spanisch"}, {"L6", "Latein"}, {"GE", "Geschichte"}, {"Sw", "Sozialwissenschaften"}, {"MU", "Musik"},
-            {"If", "Informatik"},{"Pa", "Pädagogik"}, {"BI", "Biologie"}, {"Ek", "Erdkunde"}, {"PH", "Physik"}, {"ER", "ev. Religion"}, {"KR", "kath. Religion"}, {"D", "Deutsch"}, {"M", "Mathe"}};
+            {"If", "Informatik"}, {"Pa", "Pädagogik"}, {"BI", "Biologie"}, {"Ek", "Erdkunde"}, {"PH", "Physik"}, {"ER", "ev. Religion"}, {"KR", "kath. Religion"}, {"D", "Deutsch"}, {"M", "Mathe"}};
 
 
     /**
@@ -58,9 +61,22 @@ public class VertretungsPlanMethoden {
         download.start();
         download.join();
 
-        //vertretungsplan.versteckeLaden();
+        input = "Stand: 25.04.2018 10:03\n" +
+                "12548583\n" +
+                "EF\n" +
+                "---\n" +
+                "LOF\n" +
+                "---\n" +
+                "---\n" +
+                "L6 G1\n" +
+                "0\n" +
+                "EVA\n" +
+                "8\n" +
+                "17\n" +
+                "Mittwoch\n" +
+                "24.04.2018";
 
-        System.out.println("Debug: Inhalt von Input: "+input);
+        //vertretungsplan.versteckeLaden();
         //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
 
@@ -90,14 +106,13 @@ public class VertretungsPlanMethoden {
     }
 
 
-
     public static String schreibeAus(String Fach, int mode) throws Exception {
         String[] input = Fach.split("( )+");
         if (input.length > 1) {
             if (mode == 1) {
                 for (String[] replacement : replacements) {
                     input[0] = input[0].replaceAll(replacement[0], replacement[1]);
-                    if(input[0].length()>2)
+                    if (input[0].length() > 2)
                         break;
                 }
                 return input[0];
@@ -190,26 +205,37 @@ public class VertretungsPlanMethoden {
 
 
         while (row + 12 < lines.length) {
-            if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
-                if (!temp.equals(lines[row + 12]))
-                    ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
-                temp = lines[row + 12];
-                if (lines[row + 8].equals("2"))
-                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
-                else if (lines[row + 8].equals("1")) {
-                    if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+            if (!lines[row + 13].equals(getYesterdayDateString())) {
+                if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
+                    if (!temp.equals(lines[row + 13]))
+                        ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
+                    temp = lines[row + 12];
+                    if (lines[row + 8].equals("2"))
+                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                    else if (lines[row + 8].equals("1")) {
+                        if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                            ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                        else
+                            ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                    } else if (lines[row + 8].equals("0"))
+                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
                     else
-                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
-                } else if (lines[row + 8].equals("0"))
-                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
-                else
-                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
+                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
 
+                }
             }
             row += 13;
         }
     }
 
+    private static String getYesterdayDateString() {
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return dateFormat.format(yesterday());
+    }
 
+    private static Date yesterday() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
+    }
 }
