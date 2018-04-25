@@ -84,12 +84,14 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     CheckBox eDoppelstunde;
     EditText eLehrer;
     EditText eSchule;
+    TextView textViewKursnummer;
+    TextView textViewNr;
 
     public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französich","Geschichte","Italienisch","Informatig",
             "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
-            "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
+            "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
-    public String [] Kürzel = {"Bio","BiCh","D","E","Erd","ER","Fr","Ge","It","Inf","Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Nw","Päd",
+    public String [] Kürzel = {"Biol","BiCh","D","E","Erd","ER","Fr","Ge","It","Inf","Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Päd",
             "Phy","Po","Phil","PP","S","Sp","Sw"};
 
     int Woche;
@@ -111,7 +113,8 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
+        textViewKursnummer = findViewById(R.id.textViewKursnummer);
+        textViewNr = findViewById(R.id.textViewNr);
         MaxStunden = settings.getInt("MaxStunden",0);
         KursartenSpinner = (Spinner) findViewById(R.id.kursartspinner);
         WiederholungsSpinner = (Spinner) findViewById(R.id.wiederholungspinner) ;
@@ -461,7 +464,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 String jsonb = gson.toJson(WocheBStundenListe);
 
 
-                if(Wiederholung=="Jede Woche") {
+                if(Wiederholung.equals("Jede Woche")) {
                     editor.putString("Stundenliste", jsona);
                     editor.putString("WocheBStundenListe", jsonb);
                 }
@@ -531,7 +534,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                                 &&
                                 !(fach=="")
                         )
-
                 {
 
                     kursname = (MemoryStundenListe.get(pos-5).getKürzel());
@@ -587,7 +589,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                if(Fach.getText().toString().equals("Französisch") ||Fach.getText().toString().equals("Spanisch") || Fach.getText().toString().equals("Italiensich") || Fach.getText().toString().equals("Niederländisch")){
+                if(Fach.getText().toString().equals("Französisch") ||Fach.getText().toString().equals("Spanisch") || Fach.getText().toString().equals("Italiensich") || Fach.getText().toString().equals("Niederländisch") || Fach.getText().toString().equals("Latein")){
                     cUnterichtstartEingabe.setVisibility(View.VISIBLE);
                 }
                 else{
@@ -601,7 +603,19 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 else
                 {cHalleEingabe.setVisibility(View.GONE);
                     cRaumEingabe.setVisibility(View.VISIBLE);}
+
+                if(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))){
+                    cKursEingabe.setVisibility(View.VISIBLE);
+                    KursartenSpinner.setVisibility(View.GONE);
+                    textViewNr.setVisibility(View.GONE);
+                    textViewKursnummer.setVisibility(View.VISIBLE);
+                }
+                else{
+                    cKursEingabe.setVisibility(View.GONE);
+                }
+
             }
+
         });
 
     }
