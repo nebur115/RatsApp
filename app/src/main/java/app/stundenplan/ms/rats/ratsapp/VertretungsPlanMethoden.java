@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -60,21 +61,6 @@ public class VertretungsPlanMethoden {
         };
         download.start();
         download.join();
-
-        input = "Stand: 25.04.2018 10:03\n" +
-                "12548583\n" +
-                "EF\n" +
-                "---\n" +
-                "LOF\n" +
-                "---\n" +
-                "---\n" +
-                "L6 G1\n" +
-                "0\n" +
-                "EVA\n" +
-                "8\n" +
-                "17\n" +
-                "Mittwoch\n" +
-                "24.04.2018";
 
         //vertretungsplan.versteckeLaden();
         //Wenn es geupdated werden soll
@@ -193,43 +179,50 @@ public class VertretungsPlanMethoden {
      * @param stufe
      * @throws Exception
      */
-    public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
+    private static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         String[] lines = Inhalt.split("\n");
         String temp = "";
         int row = 0;
 
-        if (stufe != null)
+        if (stufe != null) {
             ItemList.add(new Obtionen(stufe));
 
+            while (row + 12 < lines.length) {
+                //if (!lines[row + 13].equals(getYesterdayDateString())) {
+                    if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
+                        if (!temp.equals(lines[row + 13])) {
+                            ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
+                            temp = lines[row + 13];
+                        }
+                        switch (lines[row + 8]) {
+                            case "2":
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                                break;
+                            case "1":
+                                if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                                else
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                                break;
+                            case "0":
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+                                break;
+                            default:
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
+                                break;
+                        }
 
-        while (row + 12 < lines.length) {
-            if (!lines[row + 13].equals(getYesterdayDateString())) {
-                if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
-                    if (!temp.equals(lines[row + 13]))
-                        ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
-                    temp = lines[row + 12];
-                    if (lines[row + 8].equals("2"))
-                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
-                    else if (lines[row + 8].equals("1")) {
-                        if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                            ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
-                        else
-                            ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
-                    } else if (lines[row + 8].equals("0"))
-                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
-                    else
-                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
-
-                }
+                    }
+                //}
+                row += 13;
             }
-            row += 13;
         }
     }
 
     private static String getYesterdayDateString() {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", new Locale("DE"));
         return dateFormat.format(yesterday());
     }
 
