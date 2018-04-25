@@ -29,7 +29,8 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
-    public static String[][] replacements = {{"BI","Bio"},{"BI/CH","Bio Chemie"},{"CH","Chemie"},{"D","Deutsch"},{"E","Englisch"},{"EK","Erdkunde"},{"ER","ev. Religion"},{"F","Französisch"}
+    public static String[][] replacements = {{"BI","Bio"},
+            {"BI/CH","Bio Chemie"},{"CH","Chemie"},{"D","Deutsch"},{"E","Englisch"},{"EK","Erdkunde"},{"ER","ev. Religion"},{"F","Französisch"}
     ,{"Ge", "Geschichte"},{"I","Italienisch"},{"If", "Informatig"},{"IFGR", "Informatorische Grundbildung"},{"KR","kath. Religion"},{"Ku","Kunst"},{"L","Latein"},{"Li","Literatur"},{"M","Mathe"}
     ,{"M/PH/IF", "Mathe Physik Informatig"},{"Mu", "Musik"},{"N", "Niederländisch"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"},
             {"S","Spanisch"},{"Sp","Sport"},{"Sw","Sozialwissenschaften"}};

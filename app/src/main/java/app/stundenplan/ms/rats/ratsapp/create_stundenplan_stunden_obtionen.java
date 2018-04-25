@@ -87,7 +87,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     TextView textViewKursnummer;
     TextView textViewNr;
 
-    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
+    public String[] Fächer = {"Bio", "Bio Chemie", "Chemie", "Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
             "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
