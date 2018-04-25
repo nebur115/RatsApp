@@ -60,9 +60,7 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(boolean AlleStunden) {
         try {
-            VertretungsPlanMethoden.downloadDaten(this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), true);
-            while (!VertretungsPlanMethoden.downloadedDaten) {
-            }
+            while (!VertretungsPlanMethoden.downloadedDaten) {}
             ItemList.clear();
             VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
             ItemAdapter.notifyDataSetChanged();

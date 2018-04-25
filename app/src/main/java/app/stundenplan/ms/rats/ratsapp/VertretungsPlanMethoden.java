@@ -7,6 +7,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,8 +25,8 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
-    public static String[][] replacements = {{"KU", "Kunst"}, {"D", "Deutsch"}, {"M", "Mathe"}, {"E5", "Englisch"}, {"S6", "Spanisch"}, {"GE", "Geschichte"}, {"Sw", "Sozialwissenschaften"},
-            {"If", "Informatik"},{"Pa", "Pädagogik"}, {"BI", "Biologie"}, {"Ek", "Erdkunde"}, {"PH", "Physik"}, {"ER", "ev. Religion"}, {"KR", "kath. Religion"}};
+    public static String[][] replacements = {{"KU", "Kunst"}, {"E5", "Englisch"}, {"S6", "Spanisch"}, {"L6", "Latein"}, {"GE", "Geschichte"}, {"Sw", "Sozialwissenschaften"}, {"MU", "Musik"},
+            {"If", "Informatik"},{"Pa", "Pädagogik"}, {"BI", "Biologie"}, {"Ek", "Erdkunde"}, {"PH", "Physik"}, {"ER", "ev. Religion"}, {"KR", "kath. Religion"}, {"D", "Deutsch"}, {"M", "Mathe"}};
 
 
     /**
@@ -35,25 +36,20 @@ public class VertretungsPlanMethoden {
      * @return
      * @throws Exception
      */
-    public static String[] htmlGetVertretung(String pZiel, boolean vorne) throws Exception {
+    public static String[] htmlGetVertretung(String pZiel) throws Exception {
 
         //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
-        if (vorne){
 
-            vertretungsplan.zeigeLaden();
-        }
-
+        //vertretungsplan.zeigeLaden();
 
         Ziel = pZiel;
         Thread download = new HandlerThread("DownloadHandler") {
             @Override
             public void run() {
                 try {
-                    OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder().url(Ziel).header("Content-Type", "application/json; charset=utf-8").build();
-                    Response response = client.newCall(request).execute();
-                    input = response.body().string();
+                    input = new OkHttpClient().newCall(request).execute().body().string();
                 } catch (Exception e) {
                     input = "";
                 }
@@ -61,11 +57,10 @@ public class VertretungsPlanMethoden {
         };
         download.start();
         download.join();
-        if (vorne) {
-            vertretungsplan.versteckeLaden();
-        }
 
+        //vertretungsplan.versteckeLaden();
 
+        System.out.println("Debug: Inhalt von Input: "+input);
         //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
 
@@ -102,6 +97,8 @@ public class VertretungsPlanMethoden {
             if (mode == 1) {
                 for (String[] replacement : replacements) {
                     input[0] = input[0].replace(replacement[0], replacement[1]);
+                    if(input[0].length()>2)
+                        break;
                 }
                 return input[0];
             } else {
@@ -119,7 +116,7 @@ public class VertretungsPlanMethoden {
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
-    public static void downloadDaten(SharedPreferences share, boolean vorne) throws Exception {
+    public static void downloadDaten(SharedPreferences share) throws Exception {
 
         //Variablen werden Deklariert und zum Teil initialisiert
         String Stand;
@@ -130,6 +127,8 @@ public class VertretungsPlanMethoden {
         s = new SpeicherVerwaltung(share);
 
         //Holt die beiden Variablen aus der SharedPreference
+        /*
+        Fehler mit dem Server muss nocheinmal mit Oeljeklaus reden
         try {
             Stand = s.getString("Stand");
         } catch (Exception e) {
@@ -138,17 +137,16 @@ public class VertretungsPlanMethoden {
 
         if (Stand != null && !Stand.equals(""))
             request += "?Stand=" + Stand;
+        */
 
-
-        String[] y = htmlGetVertretung(request, vorne);
+        String[] y = htmlGetVertretung(request);
         if (y.length > 0) {
             if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
-                System.out.print("Debug: Fehler im download");
                 s.setString("Stand", y[0]);
                 s.setString("VertretungsPlanInhalt", y[1]);
             }
         }
-        downloadedDaten = vorne;
+        downloadedDaten = true;
 
     }
 
@@ -161,10 +159,7 @@ public class VertretungsPlanMethoden {
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
         itemlist = ItemList;
         try {
-            if (AlleKlassen)
-                zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
-            else
-                zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"));
+            zeigeDaten(ItemList, s, new SpeicherVerwaltung(s).getString("Stufe"), AlleKlassen);
             if (fragment != null) {
                 context = fragment;
                 fragment.reload(false);
@@ -183,7 +178,7 @@ public class VertretungsPlanMethoden {
      * @param stufe
      * @throws Exception
      */
-    public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe) throws Exception {
+    public static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         String[] lines = Inhalt.split("\n");
