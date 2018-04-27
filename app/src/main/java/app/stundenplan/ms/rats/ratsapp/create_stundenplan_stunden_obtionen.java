@@ -91,7 +91,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
-    public String [] Kürzel = {"Biol","BiCh","D","E","Erd","ER","Fr","Ge","It","Inf","Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Päd",
+    public String [] Kürzel = {"Biol","BiCh","Ch", "D","E","Erd","ER","Fr","Ge","It","Inf","Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Päd",
             "Phy","Po","Phil","PP","S","Sp","Sw"};
 
     int Woche;
@@ -271,7 +271,12 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             }else{
                 Wochenwiederholung.add("Alle 2 Wochen");
                 Wochenwiederholung.add("Jede Woche");
-            }}
+            }
+        }
+
+
+
+
 
 
         hinweis = false;
@@ -297,8 +302,15 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         List<String> RaumSchule = new ArrayList<>();
 
         List<String> Halle = new ArrayList<>();
-        Halle.add("kleine Halle");
-        Halle.add("große Halle");
+
+        if(MemoryStundenListe.get(pos-5).getFach().equals("Sport") && MemoryStundenListe.get(pos-5).getRaum().equals("gr H")){
+            Halle.add("große Halle");
+            Halle.add("kleine Halle");
+        }else{
+            Halle.add("kleine Halle");
+            Halle.add("große Halle");
+        }
+
 
         ArrayAdapter<String> MündlichSchrifltlichAdapter;
 
@@ -742,10 +754,10 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         if(fach.equals("Sport")){
             if(sHalle.getSelectedItem().toString().equals("kleine Halle")) {
-                Raum = "kl H";
+                Raum = "kl. Hl.";
             }
             else{
-                Raum = "gr H";
+                Raum = "gr. Hl.";
             }
         }
 
