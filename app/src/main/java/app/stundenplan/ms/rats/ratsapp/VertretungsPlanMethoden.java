@@ -29,10 +29,10 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
-    public static String[][] replacements = {{"BI","Bio"},{"BI/CH","Bio Chemie"},{"CH","Chemie"},{"D","Deutsch"},{"E","Englisch"},{"EK","Erdkunde"},{"ER","ev. Religion"},{"F","Französisch"}
-    ,{"Ge", "Geschichte"},{"I","Italienisch"},{"If", "Informatig"},{"IFGR", "Informatorische Grundbildung"},{"KR","kath. Religion"},{"Ku","Kunst"},{"L","Latein"},{"Li","Literatur"},{"M","Mathe"}
-    ,{"M/PH/IF", "Mathe Physik Informatig"},{"Mu", "Musik"},{"N", "Niederländisch"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"},
-            {"S","Spanisch"},{"Sp","Sport"},{"Sw","Sozialwissenschaften"}};
+    public static String[][] replacements = {{"M/PH/IF", "Mathe Physik Informatig"},{"BI/CH","Bio Chemie"},{"BI","Bio"},{"CH","Chemie"},{"EK","Erdkunde"},{"ER","ev. Religion"}
+    ,{"Ge", "Geschichte"},{"IFGR", "Informatorische Grundbildung"},{"If", "Informatig"},{"KR","kath. Religion"},{"Ku","Kunst"},{"Li","Literatur"}
+    ,{"Mu", "Musik"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"}
+    ,{"Sp","Sport"},{"Sw","Sozialwissenschaften"},{"I","Italienisch"},{"D","Deutsch"},{"E","Englisch"},{"S","Spanisch"},{"F","Französisch"},{"M","Mathe"},{"N", "Niederländisch"},{"L","Latein"}};
 
     /**
      * Bereitet das ergebnis von htmlGet auf
@@ -92,28 +92,6 @@ public class VertretungsPlanMethoden {
         }
     }
 
-
-    public static String schreibeAus(String Fach, int mode) throws Exception {
-        String[] input = Fach.split("( )+");
-        if (input.length > 1) {
-            if (mode == 1) {
-                for (String[] replacement : replacements) {
-                    input[0] = input[0].replaceAll(replacement[0], replacement[1]);
-                    if (input[0].length() > 2)
-                        break;
-                }
-                return input[0];
-            } else {
-                return input[1];
-            }
-        }
-        if (mode == 1) {
-            return Fach;
-        } else {
-            return "";
-        }
-
-    }
 
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
@@ -204,40 +182,45 @@ public class VertretungsPlanMethoden {
             ItemList.add(option);
 
             while (row + 12 < lines.length) {
-                //if (!lines[row + 13].equals(getYesterdayDateString())) {
-                    if (stufe.equals(lines[row + 2]) || lines[row + 2].contains(stufe)) {
+                if (nachGestern(lines[row + 13])) {
+                    if ((AlleKlassen || true) && lines[row + 2].contains(stufe)) {
                         if (!temp.equals(lines[row + 13])) {
                             ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                             temp = lines[row + 13];
                         }
                         switch (lines[row + 8]) {
                             case "2":
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe), schreibeAus(lines[row + 7], 2, stufe), lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
                                 break;
                             case "1":
                                 if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe), schreibeAus(lines[row + 7], 2, stufe), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
                                 else
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe), schreibeAus(lines[row + 7], 2, stufe), lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
                                 break;
                             case "0":
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe), schreibeAus(lines[row + 7], 2, stufe), lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
                                 break;
                             default:
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1), schreibeAus(lines[row + 7], 2), lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe), schreibeAus(lines[row + 7], 2, stufe), lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
                                 break;
                         }
 
                     }
-                //}
+                }
                 row += 13;
             }
         }
     }
 
-    private static String getYesterdayDateString() {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", new Locale("DE"));
-        return dateFormat.format(yesterday());
+    private static boolean nachGestern(String Tag) {
+        try{
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+            Date result =  df.parse(Tag);
+            return result.after(yesterday());
+        }catch(Exception e){
+            return true;
+        }
     }
 
     private static Date yesterday() {
@@ -246,5 +229,34 @@ public class VertretungsPlanMethoden {
         return cal.getTime();
     }
 
+    public static String schreibeAus(String Fach, int mode, String Stufe) throws Exception {
+        String regex;
+        if(Stufe.equals("EF")||Stufe.equals("Q1") || Stufe.equals("Q2"))
+            regex = "( )+";
+        else
+            regex = "(-)+";
+        //Teilt den Kurs in Fach und Kursnummer
+        String[] input = Fach.split(regex);
+        if (input.length > 1) {
+            if (mode == 1) {
+                for (String[] replacement : replacements) {
+                    input[0] = input[0].replaceAll(replacement[0].toUpperCase(), replacement[1]);
+                    if (input[0].length() > 2)
+                        break;
+                }
+                input[0].replaceAll("[0-9]+", "");
+                return input[0];
+            } else {
+                //Kursnummer
+                return input[1];
+            }
+        }
+        //Falls ein Fehler eintritt
+        if (mode == 1) {
+            return Fach;
+        } else {
+            return "";
+        }
+    }
 
 }
