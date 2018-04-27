@@ -226,7 +226,7 @@ public class VertretungsPlanMethoden {
     private static Date yesterday() {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
-        return cal.getTime();
+        return cal.getTime(); 
     }
 
     public static String schreibeAus(String Fach, int mode, String Stufe) throws Exception {
