@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RatsAp.iml" filepath="$PROJECT_DIR$/RatsAp.iml" />
-      <module fileurl="file://C:\Users\User\AndroidStudioProjects\RatsAp\RatsApp.iml" filepath="C:\Users\User\AndroidStudioProjects\RatsAp\RatsApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RatsApp.iml" filepath="$PROJECT_DIR$/RatsApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

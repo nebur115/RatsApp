@@ -340,6 +340,33 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         cHalleEingabe.setVisibility(View.GONE);
 
+
+
+        if(Fach.getText().toString().equals("Französisch") ||Fach.getText().toString().equals("Spanisch") || Fach.getText().toString().equals("Italiensich") || Fach.getText().toString().equals("Niederländisch") || Fach.getText().toString().equals("Latein")){
+            cUnterichtstartEingabe.setVisibility(View.VISIBLE);
+        }
+        else{
+            cUnterichtstartEingabe.setVisibility(View.GONE);
+        }
+
+        if(Fach.getText().toString().equals("Sport")){
+            cHalleEingabe.setVisibility(View.VISIBLE);
+            cRaumEingabe.setVisibility(View.GONE);
+        }
+        else
+        {cHalleEingabe.setVisibility(View.GONE);
+            cRaumEingabe.setVisibility(View.VISIBLE);}
+
+        if(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))){
+            cKursEingabe.setVisibility(View.VISIBLE);
+            KursartenSpinner.setVisibility(View.GONE);
+            textViewNr.setVisibility(View.GONE);
+            textViewKursnummer.setVisibility(View.VISIBLE);
+        }
+        else if (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
+            cKursEingabe.setVisibility(View.GONE);
+        }
+
         ArrayAdapter HalleAdapter =new ArrayAdapter(getBaseContext(),R.layout.spinner_item, Halle);
         HalleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -562,21 +589,18 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                                                 ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && !(eKursnummer.getText().toString().equals("")) && !(Bewertung == "Mündl. / Schrift."))
                                 )
                                 &&
-                                !(fach=="")
+                                (!(fach.equals("")))
                                 &&
-                                (!((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))))
-                                &&
-                                        Kursnummer == 0
+                                (
+                                        (
+                                                !(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))
+                                        )
+                                                ||
+                                    ((!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))
+                                    &&
+                                    !(eKursnummer.getText().toString().equals("")))
+                                )
                         )
-
-
-
-
-
-
-
-
-
 
 
                 {
@@ -641,6 +665,13 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                     cUnterichtstartEingabe.setVisibility(View.GONE);
                 }
 
+
+                if((!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))){
+                    cKursEingabe.setVisibility(View.VISIBLE);
+                    KursartenSpinner.setVisibility(View.GONE);
+                    textViewKursnummer.setVisibility(View.VISIBLE);
+                }
+
                 if(Fach.getText().toString().equals("Sport")){
                     cHalleEingabe.setVisibility(View.VISIBLE);
                     cRaumEingabe.setVisibility(View.GONE);
@@ -655,7 +686,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                     textViewNr.setVisibility(View.GONE);
                     textViewKursnummer.setVisibility(View.VISIBLE);
                 }
-                else{
+                else if (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
                     cKursEingabe.setVisibility(View.GONE);
                 }
 
