@@ -29,8 +29,8 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
-    public static String[][] replacements = {{"M/PH/IF", "Mathe Physik Informatig"},{"BI/CH","Bio Chemie"},{"BI","Bio"},{"CH","Chemie"},{"EK","Erdkunde"},{"ER","ev. Religion"}
-    ,{"Ge", "Geschichte"},{"IFGR", "Informatorische Grundbildung"},{"If", "Informatig"},{"KR","kath. Religion"},{"Ku","Kunst"},{"Li","Literatur"}
+    public static String[][] replacements = {{"M/PH/IF", "Mathe Physik Informatik"},{"BI/CH","Bio Chemie"},{"BI","Bio"},{"CH","Chemie"},{"EK","Erdkunde"},{"ER","ev. Religion"}
+    ,{"Ge", "Geschichte"},{"IFGR", "Informatische Grundbildung"},{"If", "Informatik"},{"KR","kath. Religion"},{"Ku","Kunst"},{"Li","Literatur"}
     ,{"Mu", "Musik"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"}
     ,{"Sp","Sport"},{"Sw","Sozialwissenschaften"},{"I","Italienisch"},{"D","Deutsch"},{"E","Englisch"},{"S","Spanisch"},{"F","Französisch"},{"M","Mathe"},{"N", "Niederländisch"},{"L","Latein"}};
 
@@ -183,7 +183,7 @@ public class VertretungsPlanMethoden {
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if ((AlleKlassen || true) && lines[row + 2].contains(stufe)) {
+                    if ((AlleKlassen || /*hier test ob Kurs vom User ist*/true) && lines[row + 2].contains(stufe)) {
                         if (!temp.equals(lines[row + 13])) {
                             ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                             temp = lines[row + 13];
@@ -226,7 +226,7 @@ public class VertretungsPlanMethoden {
     private static Date yesterday() {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
-        return cal.getTime(); 
+        return cal.getTime();
     }
 
     public static String schreibeAus(String Fach, int mode, String Stufe) throws Exception {
@@ -252,7 +252,23 @@ public class VertretungsPlanMethoden {
             }
         }
         //Falls ein Fehler eintritt
+        if(Stufe.equals("EF")||Stufe.equals("Q1") || Stufe.equals("Q2")){
+
+            if (mode == 1) {
+                return Fach;
+            } else {
+                return "";
+            }
+        }
+        int row = 0;
         if (mode == 1) {
+            for (String[] replacement : replacements) {
+                Fach = Fach.replaceAll(replacement[0].toUpperCase(), replacement[1]);
+                if (Fach.length()>2 && row >1)
+                    break;
+                row++;
+            }
+            Fach.replaceAll("[0-9]+", "");
             return Fach;
         } else {
             return "";
