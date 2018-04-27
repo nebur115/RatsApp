@@ -17,7 +17,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -170,6 +172,14 @@ public class create_stundenplan extends AppCompatActivity {
                         WerteWocheAus(WocheBStundenListe);
                 }
 
+
+                // Speichert  ursliste (Liste (Strings)) in Shared Pref. als HashSet
+                SharedPreferences.Editor editor = settings.edit();
+                Set<String> Kurse  = new HashSet<String>(Kursliste);
+                editor.putStringSet("Kursliste", Kurse);
+                editor.apply();
+
+
                 Intent i = new Intent(create_stundenplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);
                 startActivity(i);
@@ -197,16 +207,9 @@ public class create_stundenplan extends AppCompatActivity {
             if(!pStundenListe.get(i).isFreistunde()) {
 
                 String Kursname;
-
-
                 String Fach = pStundenListe.get(i).getFach();
-
-
-
                 int Kursnummer = pStundenListe.get(i).getKursnummer();
                 String Kursart = pStundenListe.get(i).getKursart();
-
-
                 String Startjahr;
 
 
@@ -214,15 +217,11 @@ public class create_stundenplan extends AppCompatActivity {
 
                     String shortFach = Kürzel[Arrays.asList(Fächer).indexOf(Fach)];
 
-
                     if (!(pStundenListe.get(i).getStartJahr() == 0)) {
-                        Startjahr = Integer.toString(pStundenListe.get(i).getStartJahr()).substring(0,1);
+                        Startjahr = Integer.toString((pStundenListe.get(i).getStartJahr())%10);
                     } else {
                         Startjahr = "";
                     }
-
-
-                    String shortKursart;
 
                     if (Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) {
                         switch (Kursart) {
