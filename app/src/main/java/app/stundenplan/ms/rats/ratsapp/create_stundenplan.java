@@ -35,10 +35,10 @@ public class create_stundenplan extends AppCompatActivity {
     boolean Zweiwöchentlich;
     int MaxStunden;
 
-    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
+    public String[] Fächer = {"Bio","Bio Chemie","Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
     "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
     "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
-    public String [] Kürzel = {"BI","BI/CH","D","E5","ER","F","Ge","I","If","IFGR","KR","Ku","L","Li","M","M/PH/INF","MU","N","NW AG","Pa",
+    public String [] Kürzel = {"BI","BI/CH","Ch","D","E5","ER","F","Ge","I","If","IFGR","KR","Ku","L","Li","M","M/PH/INF","MU","N","NW AG","Pa",
     "Ph","PK","PL","PP","S","Sp","Sw"};
 
 

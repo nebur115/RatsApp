@@ -87,7 +87,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     TextView textViewKursnummer;
     TextView textViewNr;
 
-    public String[] Fächer = {"Bio","Bio Chemie","Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
+    public String[] Fächer = {"Bio", "Bio Chemie", "Chemie", "Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
             "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
@@ -551,9 +551,9 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
                 if(
                         (
-                                !(fach=="Spanisch" || fach=="Französisch" || fach=="Italiensich" || fach=="Niederländisch" )
+                                !(fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Italiensich") || fach.equals("Niederländisch") )
                                         ||
-                                        ((fach=="Spanisch" || fach=="Französisch" || fach=="Italiensich" || fach=="Niederländisch" )&&!(Unterichtbegin==""))
+                                        ((fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Italiensich" ) || fach.equals("Niederländisch") || fach.equals("Latein")&&!(Unterichtbegin=="")))
                         )
                                 &&
                                 (
@@ -563,7 +563,22 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                                 )
                                 &&
                                 !(fach=="")
+                                &&
+                                (!((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))))
+                                &&
+                                        Kursnummer == 0
                         )
+
+
+
+
+
+
+
+
+
+
+
                 {
 
                     kursname = (MemoryStundenListe.get(pos-5).getKürzel());
