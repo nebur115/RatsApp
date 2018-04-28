@@ -1,6 +1,7 @@
 package app.stundenplan.ms.rats.ratsapp;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -583,7 +584,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 Schriftlich = false;
 
 
-
                 if(Bewertung == "Schriftlich" || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
                     Schriftlich=true;
                 }
@@ -596,52 +596,65 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                         )
                                 &&
                                 (
-                                        !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))
-                                                ||
-                                                ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && !(eKursnummer.getText().toString().equals("")) && !(Bewertung == "Mündl. / Schrift."))
+                                        !(Bewertung == "Mündl. / Schrift.")
                                 )
                                 &&
                                 (!(fach.equals("")))
-                                &&
-                                (
-                                        (
-                                                !(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))
-                                        )
-                                                ||
-                                    ((!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))
-                                    &&
-                                    !(eKursnummer.getText().toString().equals("")))
-                                )
                         )
 
 
                 {
 
-                    kursname = (MemoryStundenListe.get(pos-5).getKürzel());
+                    if(((!(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))) || ((!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))) && !(eKursnummer.getText().toString().equals(""))))
+                            &&
+                            (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) || ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && !(eKursnummer.getText().toString().equals(""))))) {
 
-                    if(!Arrays.asList(Fächer).contains(fach) &&  (kursname == null ||kursname.equals(""))){
 
-                        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this);
-                        View mView = getLayoutInflater().inflate(R.layout.create_stundenplan_fachnichtbekannt_alert, null);
-                        final EditText Kursname = (EditText) mView.findViewById(R.id.Kursname);
-                        Button Okay = (Button) mView.findViewById(R.id.Button);
-                        mBuilder.setView(mView);
-                        final AlertDialog dialog = mBuilder.create();
-                        Okay.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if(!Kursname.getText().toString().equals("")){
-                                    kursname = Kursname.getText().toString();
+                        kursname = (MemoryStundenListe.get(pos - 5).getKürzel());
+
+                        if (!Arrays.asList(Fächer).contains(fach) && (kursname == null || kursname.equals(""))) {
+
+                            final AlertDialog.Builder mBuilder = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this);
+                            View mView = getLayoutInflater().inflate(R.layout.create_stundenplan_fachnichtbekannt_alert, null);
+                            final EditText Kursname = (EditText) mView.findViewById(R.id.Kursname);
+                            Button Okay = (Button) mView.findViewById(R.id.Button);
+                            mBuilder.setView(mView);
+                            final AlertDialog dialog = mBuilder.create();
+                            Okay.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (!Kursname.getText().toString().equals("")) {
+                                        kursname = Kursname.getText().toString();
+                                    }
+                                    dialog.dismiss();
+                                    DatenSpeichern();
+
                                 }
-                                dialog.dismiss();
-                                DatenSpeichern();
-
+                            });
+                            dialog.show();
+                        } else {
+                            DatenSpeichern();
+                        }
+                    }
+                    else{
+                        AlertDialog alertDialog = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this).create();
+                        alertDialog.setTitle("Achtung!");
+                        alertDialog.setMessage("Du hast keine Kursnummer eingegeben. Dieses Fach wird deshalb nicht im Vertretungsplan unter ´Meine Kurse angezeigt'");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Zurück", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
                             }
                         });
-                        dialog.show();
-
-                    }else {
-                        DatenSpeichern();
+                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ignorieren", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                eKursnummer.setText("0");
+                                DatenSpeichern();
+                            }
+                        });
+                        alertDialog.show();
                     }
 
                 }
@@ -805,9 +818,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             editor.putString("WocheBStundenListe", jsonB);
         }
         else{
-
-
-
 
             if(Woche==1){
 

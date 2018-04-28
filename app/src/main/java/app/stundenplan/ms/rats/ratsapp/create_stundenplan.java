@@ -200,6 +200,8 @@ public class create_stundenplan extends AppCompatActivity {
     }
 
 
+
+
     private void WerteWocheAus(List<Memory_Stunde> pStundenListe){
 
         for(int i=0; i<MaxStunden*5; i++){
