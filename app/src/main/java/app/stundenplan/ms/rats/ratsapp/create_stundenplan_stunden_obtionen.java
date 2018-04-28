@@ -87,11 +87,12 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     TextView textViewKursnummer;
     TextView textViewNr;
 
-    public String[] Fächer = {"Bio", "Bio Chemie", "Chemie", "Deutsch","Englisch","Erdkunde","ev. Religion","Französisch","Geschichte","Italienisch","Informatig",
-            "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
+    public String[] Fächer = {  "Bio",  "Bio Chemie",   "Chemie",   "Deutsch",  "Englisch", "Erdkunde", "ev. Religion",
+            "Französisch",  "Geschichte",   "Italienisch",  "Informatik",   "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
-    public String [] Kürzel = {"Biol","BiCh","Ch", "D","E","Erd","ER","Fr","Ge","It","Inf","Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Päd",
+    public String [] Kürzel = { "Bio",  "BiCh",         "Ch",       "D",        "E",        "Erd",      "Reli",
+            "Fr",           "Ge",           "It",           "Inf",          "Inf","Reli","Ku","La","Li","M","MPhI","Mu","Ni","Päd",
             "Phy","Po","Phil","PP","S","Sp","Sw"};
 
     int Woche;
@@ -583,7 +584,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
 
-
                 if(Bewertung == "Schriftlich" || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
                     Schriftlich=true;
                 }
@@ -726,6 +726,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 Raum="R"+Raum;
             }
         }
+
 
 
         if ((Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
