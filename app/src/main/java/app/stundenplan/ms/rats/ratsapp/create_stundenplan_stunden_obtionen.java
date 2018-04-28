@@ -436,8 +436,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
 
-
-
         sRaumSchule.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -639,7 +637,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                     else{
                         AlertDialog alertDialog = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this).create();
                         alertDialog.setTitle("Achtung!");
-                        alertDialog.setMessage("Du hast keine Kursnummer eingegeben. Dieses Fach wird deshalb nicht im Vertretungsplan unter ´Meine Kurse angezeigt'");
+                        alertDialog.setMessage("Du hast keine Kursnummer eingegeben. Dieses Fach wird deshalb nicht im Vertretungsplan unter 'Meine Kurse angezeigt'");
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Zurück", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

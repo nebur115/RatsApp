@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -173,6 +174,7 @@ public class VertretungsPlanMethoden {
     private static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
+        HashSet<String> meineKurse = (HashSet<String>) share.getStringSet("Kursliste", new HashSet<String>());
         String[] lines = Inhalt.split("\n");
         String temp = "";
         int row = 0;
@@ -183,8 +185,8 @@ public class VertretungsPlanMethoden {
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if ((AlleKlassen || /*hier test ob Kurs vom User ist*/true) && lines[row + 2].contains(stufe)) {
-                        if (!temp.equals(lines[row + 13])) {
+                    if ((AlleKlassen || meineKurse.contains(  "" /* Hier die Aktuelle Kursnummer aufrufen */  ) ) && lines[row + 2].contains(stufe)) {
+                        if (!temp.equals(lines[row ])) {
                             ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                             temp = lines[row + 13];
                         }
@@ -212,6 +214,7 @@ public class VertretungsPlanMethoden {
             }
         }
     }
+
 
     private static boolean nachGestern(String Tag) {
         try{
