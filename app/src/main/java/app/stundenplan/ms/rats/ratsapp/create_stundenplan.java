@@ -39,11 +39,12 @@ public class create_stundenplan extends AppCompatActivity {
 
     public String[] Fächer = {  "Bio",      "Bio Chemie",   "Chemie",   "Deutsch",  "Englisch", "Erdkunde",
             "ev. Religion",     "Französisch",  "Geschichte","Italienisch","Informatik",
-    "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
+    "Informatische Grundbildung", "kath. Religion", "Kunst", "Latein", "Literatur", "Mathematik", "MathePhysikInformatik", "Musik", "Niederländisch",
     "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
     public String [] Kürzel = { "BI",       "BI/CH",        "Ch",       "D",        "E5",       "EK",
             "ER",               "F","Ge","I","If","IFGR","KR","Ku","L","Li","M","M/PH/INF","MU","N","NW AG","Pa",
     "Ph","PK","PL","PP","S","Sp","Sw"};
+
 
 
     @Override
@@ -111,7 +112,7 @@ public class create_stundenplan extends AppCompatActivity {
                 ft2.show(UngradeWoche);
                 ft2.hide(GradeWoche);
                 ft2.commitNow();
-                Woche.setText("ungrade Woche");
+                Woche.setText("ungerade Woche");
                 grade_woche_button.setVisibility(View.VISIBLE);
                 ungrade_woche_button.setVisibility(View.GONE);
 
@@ -128,7 +129,7 @@ public class create_stundenplan extends AppCompatActivity {
                 ft2.hide(UngradeWoche);
                 ft2.show(GradeWoche);
                 ft2.commitNow();
-                Woche.setText("grade Woche");
+                Woche.setText("gerade Woche");
                 grade_woche_button.setVisibility(View.GONE);
                 ungrade_woche_button.setVisibility(View.VISIBLE);
 

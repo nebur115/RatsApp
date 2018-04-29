@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -89,7 +87,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
     TextView textViewNr;
 
     public String[] Fächer = {  "Bio",  "Bio Chemie",   "Chemie",   "Deutsch",  "Englisch", "Erdkunde", "ev. Religion",
-            "Französisch",  "Geschichte",   "Italienisch",  "Informatik",   "Informatorische Grundbildung", "kath. Religions", "Kunst", "Latein", "Literatur", "Mathe", "MathePhysikInformatik", "Musik", "Niederländisch",
+            "Französisch",  "Geschichte",   "Italienisch",  "Informatik",   "Informatische Grundbildung", "kath. Religion", "Kunst", "Latein", "Literatur", "Mathematik", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
 
     public String [] Kürzel = { "Bio",  "BiCh",         "Ch",       "D",        "E",        "Erd",      "Reli",
@@ -200,14 +198,14 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             default:
                 Wochentag = "Error: Modulo 5 >= 5";
         }
-        DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+" Stunde");
+        DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+". Stunde");
 
 
         if(pos<MaxStunden*5-5){
             if(MemoryStundenListe.get(pos-5).getFach().equals(MemoryStundenListe.get(pos).getFach()) && !MemoryStundenListe.get(pos-5).isFreistunde()){
                 eDoppelstunde.setChecked(true);
                 wasDopellstunde = true;
-                DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ " & " + Integer.toString(Stunde+1)+" Stunde");
+                DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ ". & " + Integer.toString(Stunde+1)+". Stunde");
             }
 
         }
@@ -296,9 +294,9 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             }
         }else {
             hinweis = true;
-            MündlichSchriftlich.add("Mündl. / Schrift.");
-            MündlichSchriftlich.add("Schriftlich");
             MündlichSchriftlich.add("Mündlich");
+            MündlichSchriftlich.add("Schriftlich");
+
         }
 
         List<String> RaumSchule = new ArrayList<>();
@@ -314,7 +312,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         }
 
 
-        ArrayAdapter<String> MündlichSchrifltlichAdapter;
 
         if(!(MemoryStundenListe.get(pos-5).getRaum().equals(""))){
             if(MemoryStundenListe.get(pos-5).getRaum().substring(1).matches("[0-9]+")){
@@ -390,40 +387,8 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         ArrayAdapter KursartAdapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,kursarten);
         KursartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        final boolean finalHinweis = hinweis;
-        MündlichSchrifltlichAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item,MündlichSchriftlich){
-            @Override
-            public boolean isEnabled(int position){
-                if(position == 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0){
-                    if(finalHinweis){
-                        tv.setTextColor(Color.GRAY);
-                    }
-
-                }
-                else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-        };
-
-
+        ArrayAdapter MündlichSchrifltlichAdapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,MündlichSchriftlich);
         MündlichSchrifltlichAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
         final ArrayAdapter WiederholungApapter = new ArrayAdapter(getBaseContext(),R.layout.spinner_item,Wochenwiederholung);
         WiederholungApapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -463,11 +428,11 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 if(isChecked){
-                    DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ " & " + Integer.toString(Stunde+1)+" Stunde");
+                    DatumStunde.setText(Wochentag+": "+ Integer.toString(Stunde)+ ". & " + Integer.toString(Stunde+1)+". Stunde");
                 }
                 else
                 {
-                    DatumStunde.setText(Wochentag+": "+ Integer.toString(orgStunde)+" Stunde");
+                    DatumStunde.setText(Wochentag+": "+ Integer.toString(orgStunde)+". Stunde");
                 }
             }}
         );
@@ -637,7 +602,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                     else{
                         AlertDialog alertDialog = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this).create();
                         alertDialog.setTitle("Achtung!");
-                        alertDialog.setMessage("Du hast keine Kursnummer eingegeben. Dieses Fach wird deshalb nicht im Vertretungsplan unter 'Meine Kurse angezeigt'");
+                        alertDialog.setMessage("Du hast keine Kursnummer eingegeben. Dieses Fach wird deshalb nicht im Vertretungsplan unter 'Meine Kurse' angezeigt");
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Zurück", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -658,7 +623,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 }
                 else
                 {
-                    toast = Toast.makeText(create_stundenplan_stunden_obtionen.this, "Du hast nicht alle Pflichtfleder ausgefüllt"+fach, Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(create_stundenplan_stunden_obtionen.this, "Du hast nicht alle Pflichtfelder ausgefüllt", Toast.LENGTH_SHORT);
                     toast.show();
                 }
 
