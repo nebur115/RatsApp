@@ -33,7 +33,6 @@ public class create_stundenplan extends AppCompatActivity {
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
     private List<String> Kursliste = new ArrayList<String>();
     String Stufe;
-
     boolean Zweiwöchentlich;
     int MaxStunden;
 
@@ -209,7 +208,7 @@ public class create_stundenplan extends AppCompatActivity {
 
             if(!pStundenListe.get(i).isFreistunde()) {
 
-                String Kursname;
+                String Kursname = "";
                 String Fach = pStundenListe.get(i).getFach();
                 int Kursnummer = pStundenListe.get(i).getKursnummer();
                 String Kursart = pStundenListe.get(i).getKursart();
@@ -260,9 +259,10 @@ public class create_stundenplan extends AppCompatActivity {
                 }
 
                 pStundenListe.get(i).setFachkürzel(Kursname);
+                if(!(Kursname==null)){
                 if (!Kursliste.contains(Kursname) && !Kursname.equals("")) {
                     Kursliste.add(Kursname);
-                }
+                }}
             }
 
         }

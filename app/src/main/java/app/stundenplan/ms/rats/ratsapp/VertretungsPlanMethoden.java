@@ -30,10 +30,12 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
-    public static String[][] replacements = {{"M/PH/IF", "Mathe Physik Informatik"},{"BI/CH","Bio Chemie"},{"BI","Bio"},{"CH","Chemie"},{"EK","Erdkunde"},{"ER","ev. Religion"}
-    ,{"Ge", "Geschichte"},{"IFGR", "Informatische Grundbildung"},{"If", "Informatik"},{"KR","kath. Religion"},{"Ku","Kunst"},{"Li","Literatur"}
-    ,{"Mu", "Musik"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"}
-    ,{"Sp","Sport"},{"Sw","Sozialwissenschaften"},{"I","Italienisch"},{"D","Deutsch"},{"E","Englisch"},{"S","Spanisch"},{"F","Französisch"},{"M","Mathe"},{"N", "Niederländisch"},{"L","Latein"}};
+    public static String[][] replacements = {
+            {"M/PH/IF", "Mathe Physik Informatik"},
+            {"BI/CH","Bio Chemie"},
+            {"IFGR", "Informatische Grundbildung"},
+            {"BI","Bio"},{"CH","Chemie"},{"Ek","Erdkunde"},{"ER","ev. Religion"},{"Ge", "Geschichte"},{"If", "Informatik"},{"KR","kath. Religion"},{"Ku","Kunst"},{"Li","Literatur"},{"Mu", "Musik"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"},{"Sp","Sport"},{"Sw","Sozialwissenschaften"},{"I","Italienisch"},
+            {"D","Deutsch"},{"S","Spanisch"},{"F","Französisch"},{"M","Mathe"},{"N", "Niederländisch"},{"L","Latein"}};
 
     /**
      * Bereitet das ergebnis von htmlGet auf
@@ -185,7 +187,7 @@ public class VertretungsPlanMethoden {
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if ((AlleKlassen || meineKurse.contains(  "" /* Hier die Aktuelle Kursnummer aufrufen */  ) ) && lines[row + 2].contains(stufe)) {
+                    if ((AlleKlassen || meineKurse.contains(lines[row + 7]) || !share.contains("Stundenliste")) && lines[row + 2].contains(stufe)) {
                         if (!temp.equals(lines[row ])) {
                             ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                             temp = lines[row + 13];

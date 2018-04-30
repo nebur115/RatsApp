@@ -1,5 +1,6 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +51,9 @@ public class fragment_vertretungsplan extends Fragment {
         ItemAdapter = new ItemAdapter(getActivity());
         recyclerView.setAdapter(ItemAdapter);
         VertretungsPlanMethoden.context = this;
-        VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false, this);
+
+        SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+        VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, setting.contains("Stundenliste"), this);
 
         ItemAdapter.setitemFeed(ItemList);
         ItemAdapter.notifyDataSetChanged();

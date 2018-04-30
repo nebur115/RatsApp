@@ -154,8 +154,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView editText;
         private Switch myswitch;
 
-
-        public obtionenViewHolder(View itemView) {
+        obtionenViewHolder(View itemView) {
             super(itemView);
             editText = (EditText) itemView.findViewById(R.id.editText2);
             myswitch = (Switch) itemView.findViewById(R.id.switch1);
@@ -179,15 +178,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             Toast.makeText(context, "Du musst erst einen Stundenplan erstellen, um nur deine Stunden anzuzeigen", Toast.LENGTH_SHORT).show();
                             myswitch.setChecked(true);
                         }
+
+                    }
+                    else {
+                        editText.setVisibility(View.VISIBLE);
                         try {
                             //Alle Stunden wurden aktiviert
                             VertretungsPlanMethoden.context.reload(true);
                         }catch(Exception e){
                             System.out.println(e.getMessage());
                         }
-                    }
-                    else {
-                        editText.setVisibility(View.VISIBLE);
 
                     }
                 }
@@ -201,14 +201,22 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    VertretungsPlanMethoden.context.reload(true, charSequence.toString().toUpperCase());
+
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
                     //Teste ob editText.getText einer exestierenden Stufe entspricht und wenn ja Reload mit der Stufe.
                     //Die änderung darf nicht in die SharedPref. gehen.
-
+                    String text;
+                    if(editText.getText().toString().equals("")){
+                        SharedPreferences settings = context.getSharedPreferences("RatsVertretungsPlanApp",0);
+                        text = settings.getString("Stufe","");
+                    }
+                    else{
+                        text = editText.getText().toString().toUpperCase();
+                    }
+                    VertretungsPlanMethoden.context.reload(true, text);
                 }
             });
 
@@ -233,6 +241,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void showObtionenDetails(Obtionen obtionen){
             String EditText = obtionen.getEditText();
             editText.setHint(EditText);
+            final SharedPreferences settings = context.getSharedPreferences("RatsVertretungsPlanApp",0);
+
+
         }
 
     }

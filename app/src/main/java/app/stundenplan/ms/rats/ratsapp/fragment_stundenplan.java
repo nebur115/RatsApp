@@ -71,7 +71,7 @@ public class fragment_stundenplan extends Fragment {
 
         stundenplan_recyclerView.setLayoutManager(mystaggeredGridLayoutManager);
         stundenplan_recyclerView.setNestedScrollingEnabled(false);
-        int menuHeight = 64 + 50 + 40;
+        int menuHeight = 60 + 50 + 36;
 
 
         String DateMonday;
@@ -171,7 +171,7 @@ public class fragment_stundenplan extends Fragment {
 
             }
 
-
+            
 
 
             Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
