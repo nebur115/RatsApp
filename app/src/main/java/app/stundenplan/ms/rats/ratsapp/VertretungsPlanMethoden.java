@@ -30,12 +30,16 @@ public class VertretungsPlanMethoden {
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
+    public static final int ANZAHL_LANGEKURSE = 5;
     public static String[][] replacements = {
             {"M/PH/IF", "Mathe Physik Informatik"},
-            {"BI/CH","Bio Chemie"},
+            {"BI/CH", "Bio Chemie"},
             {"IFGR", "Informatische Grundbildung"},
-            {"BI","Bio"},{"CH","Chemie"},{"Ek","Erdkunde"},{"ER","ev. Religion"},{"Ge", "Geschichte"},{"If", "Informatik"},{"KR","kath. Religion"},{"Ku","Kunst"},{"Li","Literatur"},{"Mu", "Musik"},{"Pa","Pädagogik"},{"Ph", "Physik"},{"PK","Politik"},{"PL","Philosophie"},{"PP","Praktische Philosophie"},{"Sp","Sport"},{"Sw","Sozialwissenschaften"},{"I","Italienisch"},
-            {"D","Deutsch"},{"S","Spanisch"},{"F","Französisch"},{"M","Mathe"},{"N", "Niederländisch"},{"L","Latein"}};
+            {"ERG D", "Ergänzung Deutsch"}, {"ERG E", "Ergänzung Englisch"}, {"ERG M", "Ergänzung Mathe"},
+            {"BI", "Bio"}, {"CH", "Chemie"}, {"Ek", "Erdkunde"}, {"ER", "ev. Religion"}, {"Ge", "Geschichte"}, {"If", "Informatik"}, {"KR", "kath. Religion"},
+            {"Ku", "Kunst"}, {"Li", "Literatur"}, {"Mu", "Musik"}, {"Pa", "Pädagogik"}, {"Ph", "Physik"}, {"PK", "Politik"}, {"PL", "Philosophie"},
+            {"PP", "Praktische Philosophie"},{"Sp", "Sport"}, {"Sw", "Sozialwissenschaften"},
+            {"I", "Italienisch"},{"D", "Deutsch"}, {"S", "Spanisch"}, {"F", "Französisch"}, {"M", "Mathe"}, {"N", "Niederländisch"}, {"L", "Latein"}, {"E", "Englisch"}};
 
     /**
      * Bereitet das ergebnis von htmlGet auf
@@ -142,7 +146,6 @@ public class VertretungsPlanMethoden {
         itemlist = ItemList;
         try {
             String Stufe = new SpeicherVerwaltung(s).getString("Stufe");
-
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
                 context = fragment;
@@ -152,6 +155,7 @@ public class VertretungsPlanMethoden {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
         }
     }
+
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment, String Stufe) {
         itemlist = ItemList;
         try {
@@ -188,25 +192,25 @@ public class VertretungsPlanMethoden {
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
                     if ((AlleKlassen || meineKurse.contains(lines[row + 7].replaceAll("  ", " ").toUpperCase()) || !share.contains("Stundenliste")) && lines[row + 2].contains(stufe)) {
-                        if (!temp.equals(lines[row ])) {
+                        if (!temp.equals(lines[row])) {
                             ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                             temp = lines[row + 13];
                         }
                         switch (lines[row + 8]) {
                             case "2":
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe).replaceAll("[0-9]", ""), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
                                 break;
                             case "1":
                                 if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe).replaceAll("[0-9]", ""), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
                                 else
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe).replaceAll("[0-9]", ""), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
                                 break;
                             case "0":
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe).replaceAll("[0-9]", ""), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
                                 break;
                             default:
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], 1, stufe).replaceAll("[0-9]", ""), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
                                 break;
                         }
 
@@ -219,11 +223,11 @@ public class VertretungsPlanMethoden {
 
 
     private static boolean nachGestern(String Tag) {
-        try{
+        try {
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-            Date result =  df.parse(Tag);
+            Date result = df.parse(Tag);
             return result.after(yesterday());
-        }catch(Exception e){
+        } catch (Exception e) {
             return true;
         }
     }
@@ -234,50 +238,38 @@ public class VertretungsPlanMethoden {
         return cal.getTime();
     }
 
-    public static String schreibeAus(String Fach, int mode, String Stufe) throws Exception {
+    public static String schreibeAus(String Fach, String Stufe) throws Exception {
         String regex;
-        if(Stufe.equals("EF")||Stufe.equals("Q1") || Stufe.equals("Q2"))
+        if (Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))
             regex = "( )+";
         else
             regex = "(-)+";
-        //Teilt den Kurs in Fach und Kursnummer
+        //Schreibt das Fach aus
+        int row = 0;
         String[] input = Fach.split(regex);
         if (input.length > 1) {
-            if (mode == 1) {
-                for (String[] replacement : replacements) {
-                    input[0] = input[0].replaceAll(replacement[0].toUpperCase(), replacement[1]);
-                    if (input[0].length() > 2)
-                        break;
-                }
-                input[0].replaceAll("[0-9]+", "");
-                return input[0];
-            } else {
-                //Kursnummer
-                return input[1];
-            }
-        }
-        //Falls ein Fehler eintritt
-        if(Stufe.equals("EF")||Stufe.equals("Q1") || Stufe.equals("Q2")){
-
-            if (mode == 1) {
-                return Fach;
-            } else {
-                return "";
-            }
-        }
-        int row = 0;
-        if (mode == 1) {
             for (String[] replacement : replacements) {
-                Fach = Fach.replaceAll(replacement[0].toUpperCase(), replacement[1]);
-                if (Fach.length()>2 && row >1)
+                input[0] = input[0].toUpperCase().replaceAll(replacement[0].toUpperCase(), replacement[1]);
+                if (input[0].length() > 2 && row >ANZAHL_LANGEKURSE)
                     break;
                 row++;
             }
-
-            return Fach;
-        } else {
-            return "";
+            input[0] = input[0].replaceAll("[0-9]+", "");
+            return input[0];
         }
+
+        //Falls ein Fehler eintritt
+        if (Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) {
+            return Fach;
+        }
+        for (String[] replacement : replacements) {
+            Fach = Fach.replaceAll(replacement[0].toUpperCase(), replacement[1]);
+            if (Fach.length() > 2 && row > ANZAHL_LANGEKURSE)
+                break;
+            row++;
+        }
+        Fach = Fach.replaceAll("[0-9]+", "");
+        return Fach;
     }
 
 }
