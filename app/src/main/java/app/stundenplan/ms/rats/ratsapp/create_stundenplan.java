@@ -29,9 +29,12 @@ import java.util.Set;
 public class create_stundenplan extends AppCompatActivity {
 
     public int shownWeek;
+    private boolean Overwrite;
     private List<Memory_Stunde> WocheAStundenListe = new ArrayList<>();
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
     private List<String> Kursliste = new ArrayList<String>();
+    private List<Memory_NotenKlausuren> OldNotenKlausurenListe = new ArrayList<>();
+    private List<Memory_NotenKlausuren> NotenKlausurenListe = new ArrayList<>();
     String Stufe;
     boolean Zweiwöchentlich;
     int MaxStunden;
@@ -64,6 +67,14 @@ public class create_stundenplan extends AppCompatActivity {
 
         Stufe = settings.getString("Stufe", null);
 
+        Overwrite = settings.contains("NotenKlausuren");
+        if(Overwrite){
+            String json;
+            Gson gson = new Gson();
+            json = settings.getString("NotenKlausuren", null);
+            Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+            OldNotenKlausurenListe = gson.fromJson(json , type);
+        }
 
 
         Zweiwöchentlich = settings.getBoolean("zweiWöchentlich", false);
@@ -175,9 +186,11 @@ public class create_stundenplan extends AppCompatActivity {
                 }
 
 
-                // Speichert  ursliste (Liste (Strings)) in Shared Pref. als HashSet
+                // Speichert  Kursliste (Liste (Strings)) in Shared Pref. als HashSet
                 SharedPreferences.Editor editor = settings.edit();
                 Set<String> Kurse  = new HashSet<String>(Kursliste);
+                String json = gson.toJson(NotenKlausurenListe);
+                editor.putString("NotenKlausuren", json);
                 editor.putStringSet("Kursliste", Kurse);
                 editor.apply();
 
@@ -255,14 +268,36 @@ public class create_stundenplan extends AppCompatActivity {
                     }
 
                 } else {
-                    Kursname = WocheAStundenListe.get(i).getKürzel();
+                    Kursname = pStundenListe.get(i).getKürzel();
                 }
 
-                pStundenListe.get(i).setFachkürzel(Kursname);
+
                 if(!(Kursname==null)){
-                if (!Kursliste.contains(Kursname) && !Kursname.equals("")) {
-                    Kursliste.add(Kursname);
-                }}
+                    pStundenListe.get(i).setFachkürzel(Kursname);
+                    if (!Kursliste.contains(Kursname.toUpperCase()) && !Kursname.equals("")) {
+                        Kursliste.add(Kursname.toUpperCase());
+                        if(!Overwrite){
+                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich()));
+                        }else{
+                            int Stelle=-1;
+                            for (int j = 0; j>OldNotenKlausurenListe.size()-1; j++){
+                                if(OldNotenKlausurenListe.get(j).getFach().equals(Fach)){
+                                    Stelle = j;
+                                }
+                            }
+                            if(Stelle==-1){
+                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich()));
+                            }else{
+                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich()));
+                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich1(OldNotenKlausurenListe.get(Stelle).getMuendlich1());
+                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich2(OldNotenKlausurenListe.get(Stelle).getMuendlich2());
+                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setSchriftlich1(OldNotenKlausurenListe.get(Stelle).getSchriftlich1());
+                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setSchriftlich2(OldNotenKlausurenListe.get(Stelle).getSchriftlich2());
+                            }
+                        }
+
+                    }
+                }
             }
 
         }

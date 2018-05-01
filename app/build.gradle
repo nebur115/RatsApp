@@ -36,6 +36,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
     compile 'com.android.support:cardview-v7:27.0.2'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'

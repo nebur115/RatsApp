@@ -11,7 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_height="56dp"
         android:background="@drawable/shadow"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,20 +23,19 @@
             android:id="@+id/grade_woche_button"
             android:layout_width="36dp"
             android:layout_height="40dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:backgroundTint="#FFFFFF"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
             app:layout_constraintEnd_toStartOf="@+id/Woche"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.57"
             app:srcCompat="@drawable/create_stundenpla_week_left" />
 
         <ImageButton
             android:id="@+id/ungrade_woche_button"
             android:layout_width="36dp"
             android:layout_height="40dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:backgroundTint="#FFFFFF"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
@@ -56,21 +55,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.55" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/Speichern"
-            android:layout_width="58dp"
-            android:layout_height="58dp"
-            android:layout_marginBottom="2dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="3dp"
             android:adjustViewBounds="true"
             android:backgroundTint="@android:color/transparent"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"  />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageButton
             android:id="@+id/einstellungen"

@@ -2,6 +2,7 @@ package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class fragment_vertretungsplan extends Fragment {
     private void init() {
         ItemAdapter = new ItemAdapter(getActivity());
         recyclerView.setAdapter(ItemAdapter);
+
         VertretungsPlanMethoden.context = this;
 
         SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
@@ -59,23 +61,38 @@ public class fragment_vertretungsplan extends Fragment {
         ItemAdapter.notifyDataSetChanged();
     }
 
-    public void reload(boolean AlleStunden) {
+    public void reload(final boolean AlleStunden) {
         try {
             while (!VertretungsPlanMethoden.downloadedDaten) {}
-            ItemList.clear();
-            VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
-            ItemAdapter.notifyDataSetChanged();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run(){
+                    ItemAdapter.notifyDataSetChanged();
+                    ItemList.clear();
+                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
+
+                }
+                                },0);
+
 
         }catch(Exception e){
             System.out.println("Debug: Fehler reload");
         }
     }
-    public void reload(boolean AlleStunden, String Stufe) {
+    public void reload(final boolean AlleStunden, final String Stufe) {
+
         try {
             while (!VertretungsPlanMethoden.downloadedDaten) {}
-            ItemList.clear();
-            VertretungsPlanMethoden.VertretungsPlan(ItemList, this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
-            ItemAdapter.notifyDataSetChanged();
+              final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run(){
+                    ItemList.clear();
+                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
+                    ItemAdapter.notifyDataSetChanged();
+                }
+            },0);
 
         }catch(Exception e){
             System.out.println("Debug: Fehler reload");

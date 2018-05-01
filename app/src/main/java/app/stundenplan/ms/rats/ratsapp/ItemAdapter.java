@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static int TYPE_EREIGNIS=1,TYPE_Obtionen=2, TYPE_Datum=3;
     private List<Object> itemFeed = new ArrayList();
@@ -167,6 +166,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         if(settings.contains("Stundenliste")){
                             editText.setVisibility(View.GONE);
                             //Alle Stunden wurden deaktiviert
+
                             try {
                                 VertretungsPlanMethoden.context.reload(false);
                             }catch (Exception e){
