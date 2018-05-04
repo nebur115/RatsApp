@@ -250,7 +250,7 @@ public class VertretungsPlanMethoden {
         if (input.length > 1) {
             for (String[] replacement : replacements) {
                 input[0] = input[0].toUpperCase().replaceAll(replacement[0].toUpperCase(), replacement[1]);
-                if (input[0].length() > 2 && row >ANZAHL_LANGEKURSE)
+                if (input[0].length() > 2 && row > ANZAHL_LANGEKURSE)
                     break;
                 row++;
             }
@@ -272,4 +272,30 @@ public class VertretungsPlanMethoden {
         return Fach;
     }
 
+    private static int kursInfo(SharedPreferences share, String stufe, String kurs) throws Exception {
+        //Variablen
+        String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
+        String[] lines = Inhalt.split("\n");
+        String temp = "";
+        int row = 0;
+        while (row + 12 < lines.length) {
+                if (lines[row + 7].replaceAll("  ", " ").toUpperCase().equals(kurs)) {
+                    switch (lines[row + 8]) {
+                        case "2":
+                            return 1; //Information
+                        case "1":
+                            if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                                return 2; //Klausur
+                            else
+                                return 3; //Raumwechsel
+                        case "0":
+                            return 4; //Entfall
+                        default:
+                            return 5; //Irgendetwas ist damit
+                    }
+            }
+            row += 13;
+        }
+        return 0;
+    }
 }
