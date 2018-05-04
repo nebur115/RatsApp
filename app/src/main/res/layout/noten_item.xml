@@ -1,0 +1,343 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="6dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@android:drawable/arrow_down_float"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+
+        <TextView
+            android:id="@+id/fachText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Fach"
+            android:textColor="#424242"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
+            android:background="#A4A4A4"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/FachTex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Note"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/arrow"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/extender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D8D8D8"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/GesanntNote"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+
+            <Spinner
+                android:id="@+id/Zeugnisnote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="10dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:background="#A4A4A4"
+                android:paddingLeft="11dp"
+                android:paddingRight="11dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/Quartal1SchritflichTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="10dp"
+                android:text="Zeugnis Note:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal1Mündlich"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Quartal1">
+
+                <TextView
+                    android:id="@+id/Quartal1MündlichTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Müdlich:"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/Muendlich1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:layout_editor_absoluteY="10dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal1Schritflich"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Quartal1Mündlich">
+
+                <Spinner
+                    android:id="@+id/Schriftlich1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:layout_editor_absoluteY="10dp" />
+
+                <TextView
+                    android:id="@+id/Quartal1SchritflichTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Klausur:"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal1"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/Quartal1textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="10dp"
+                    android:text="1. Quartal"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal2Mündlich"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Quartal2">
+
+                <Spinner
+                    android:id="@+id/Muendlich2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:layout_editor_absoluteY="10dp" />
+
+                <TextView
+                    android:id="@+id/Quartal1MündlichTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Müdlich:"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal2"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="0dp">
+
+                <TextView
+                    android:id="@+id/Quartal2textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="10dp"
+                    android:text="2. Quartal"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal2Schritflich"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Quartal2Mündlich">
+
+                <Spinner
+                    android:id="@+id/Schriftlich2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:layout_editor_absoluteY="10dp" />
+
+                <TextView
+                    android:id="@+id/Quartal1SchritflichTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Klausur:"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -38,7 +38,7 @@ public class VertretungsPlanMethoden {
             {"ERG D", "Ergänzung Deutsch"}, {"ERG E", "Ergänzung Englisch"}, {"ERG M", "Ergänzung Mathe"},
             {"BI", "Bio"}, {"CH", "Chemie"}, {"Ek", "Erdkunde"}, {"ER", "ev. Religion"}, {"Ge", "Geschichte"}, {"If", "Informatik"}, {"KR", "kath. Religion"},
             {"Ku", "Kunst"}, {"Li", "Literatur"}, {"Mu", "Musik"}, {"Pa", "Pädagogik"}, {"Ph", "Physik"}, {"PK", "Politik"}, {"PL", "Philosophie"},
-            {"PP", "Praktische Philosophie"},{"Sp", "Sport"}, {"Sw", "Sozialwissenschaften"},
+            {"PP", "Praktische Philosophie"},{"Sp", "Sport"}, {"Sw", "Sozialwiss."},
             {"I", "Italienisch"},{"D", "Deutsch"}, {"S", "Spanisch"}, {"F", "Französisch"}, {"M", "Mathe"}, {"N", "Niederländisch"}, {"L", "Latein"}, {"E", "Englisch"}};
 
     /**
@@ -268,7 +268,7 @@ public class VertretungsPlanMethoden {
                 break;
             row++;
         }
-        Fach = Fach.replaceAll("[0-9]+", "");
+
         return Fach;
     }
 

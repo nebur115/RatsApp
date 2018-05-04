@@ -26,7 +26,8 @@
         android:textColor="#585858"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxWidth="180dp"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -106,6 +107,8 @@
         android:layout_alignEnd="@+id/Grund"
 
         android:layout_alignRight="@+id/Grund"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_weight="1"
@@ -113,6 +116,8 @@
         android:text="@string/kurs"
         android:textColor="#585858"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/Stunde"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/Stunde_Fach"
         app:layout_constraintTop_toTopOf="parent" />
 

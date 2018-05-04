@@ -41,11 +41,11 @@ public class create_stundenplan extends AppCompatActivity {
 
     public String[] Fächer = {  "Bio",      "Bio Chemie",   "Chemie",   "Deutsch",  "Englisch", "Erdkunde",
             "ev. Religion",     "Französisch",  "Geschichte","Italienisch","Informatik",
-    "Informatische Grundbildung", "kath. Religion", "Kunst", "Latein", "Literatur", "Mathematik", "MathePhysikInformatik", "Musik", "Niederländisch",
-    "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
+            "Informatische Grundbildung", "kath. Religion", "Kunst", "Latein", "Literatur", "Mathematik", "MathePhysikInformatik", "Musik", "Niederländisch",
+            "Naturw. AG", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
     public String [] Kürzel = { "BI",       "BI/CH",        "Ch",       "D",        "E5",       "EK",
             "ER",               "F","Ge","I","If","IFGR","KR","Ku","L","Li","M","M/PH/INF","MU","N","NW AG","Pa",
-    "Ph","PK","PL","PP","S","Sp","Sw"};
+            "Ph","PK","PL","PP","S","Sp","Sw"};
 
 
 
@@ -179,10 +179,10 @@ public class create_stundenplan extends AppCompatActivity {
                 WerteWocheAus(WocheAStundenListe);
 
                 if(Zweiwöchentlich){
-                        Gson gsona = new Gson();
-                        jsonb = settings.getString("WocheBStundenListe", null);
-                        WocheBStundenListe = gsona.fromJson(jsonb , type);
-                        WerteWocheAus(WocheBStundenListe);
+                    Gson gsona = new Gson();
+                    jsonb = settings.getString("WocheBStundenListe", null);
+                    WocheBStundenListe = gsona.fromJson(jsonb , type);
+                    WerteWocheAus(WocheBStundenListe);
                 }
 
 
@@ -277,7 +277,7 @@ public class create_stundenplan extends AppCompatActivity {
                     if (!Kursliste.contains(Kursname.toUpperCase()) && !Kursname.equals("")) {
                         Kursliste.add(Kursname.toUpperCase());
                         if(!Overwrite){
-                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich()));
+                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0));
                         }else{
                             int Stelle=-1;
                             for (int j = 0; j>OldNotenKlausurenListe.size()-1; j++){
@@ -286,9 +286,9 @@ public class create_stundenplan extends AppCompatActivity {
                                 }
                             }
                             if(Stelle==-1){
-                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich()));
+                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0));
                             }else{
-                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich()));
+                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0));
                                 NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich1(OldNotenKlausurenListe.get(Stelle).getMuendlich1());
                                 NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich2(OldNotenKlausurenListe.get(Stelle).getMuendlich2());
                                 NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setSchriftlich1(OldNotenKlausurenListe.get(Stelle).getSchriftlich1());
