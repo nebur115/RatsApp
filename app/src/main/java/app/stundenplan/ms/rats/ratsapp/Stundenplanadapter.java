@@ -19,11 +19,12 @@ public class Stundenplanadapter  extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private final static int TYPE_STUNDE=1, TYPE_FREISTUNDE=2, TYPE_Splate=3;
 
+
+
     public Stundenplanadapter(Context context, List<Object> pstundenListe){
         this.context = context;
         this.StundenListe = pstundenListe;
     }
-
 
     @Override
     public int getItemViewType(int position) {

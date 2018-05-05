@@ -18,7 +18,7 @@ import java.util.List;
 
 
 public class fragment_noten extends Fragment {
-    private RecyclerView recyclerView;
+    private RecyclerView mrecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<Object> NotenList = new ArrayList<>();
     private noten_adapter adapter;
@@ -39,9 +39,9 @@ public class fragment_noten extends Fragment {
         SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = view.findViewById(R.id.noten_recyclerview);
+        mrecyclerView = view.findViewById(R.id.recyclerview_noten);
 
-
+        mrecyclerView.setLayoutManager(linearLayoutManager);
         String json;
         Gson gson = new Gson();
 
@@ -49,11 +49,12 @@ public class fragment_noten extends Fragment {
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
 
-        recyclerView.setAdapter(adapter);
         adapter = new noten_adapter(getActivity(),NotenList);
 
-        adapter.notifyDataSetChanged();
 
+        mrecyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
 
         return view;
     }
