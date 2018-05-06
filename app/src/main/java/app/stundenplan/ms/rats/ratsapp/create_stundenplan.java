@@ -277,7 +277,7 @@ public class create_stundenplan extends AppCompatActivity {
                     if (!Kursliste.contains(Kursname.toUpperCase()) && !Kursname.equals("")) {
                         Kursliste.add(Kursname.toUpperCase());
                         if(!Overwrite){
-                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0));
+                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0,0));
                         }else{
                             int Stelle=-1;
                             for (int j = 0; j>OldNotenKlausurenListe.size()-1; j++){
@@ -286,9 +286,9 @@ public class create_stundenplan extends AppCompatActivity {
                                 }
                             }
                             if(Stelle==-1){
-                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0));
+                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0,0));
                             }else{
-                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0));
+                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0,0));
                                 NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich1(OldNotenKlausurenListe.get(Stelle).getMuendlich1());
                                 NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich2(OldNotenKlausurenListe.get(Stelle).getMuendlich2());
                                 NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setSchriftlich1(OldNotenKlausurenListe.get(Stelle).getSchriftlich1());

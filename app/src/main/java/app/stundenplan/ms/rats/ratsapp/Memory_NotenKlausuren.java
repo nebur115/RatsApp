@@ -10,7 +10,7 @@ public class Memory_NotenKlausuren {
     private int Schriftlich2;
     private int Datum1;
     private int Datum2;
-
+    private  int Zeugnis;
 
     public Memory_NotenKlausuren(){
 
@@ -18,14 +18,23 @@ public class Memory_NotenKlausuren {
 
 
 
-    public Memory_NotenKlausuren(String pFach, String pKursnummer, boolean pSchriftlich, int pDatum1, int pdatum2){
+    public Memory_NotenKlausuren(String pFach, String pKursnummer, boolean pSchriftlich, int pDatum1, int pdatum2, int pZeugnis){
 
         Datum1 = pDatum1;
         Datum2 = pdatum2;
         Fach = pFach;
         Kursnummer = pKursnummer;
         schrifltich = pSchriftlich;
+        Zeugnis = pZeugnis;
 
+    }
+
+    public int getZeugnis() {
+        return Zeugnis;
+    }
+
+    public void setZeugnis(int zeugnis) {
+        Zeugnis = zeugnis;
     }
 
     public void setSchrifltich(boolean schrifltich) {

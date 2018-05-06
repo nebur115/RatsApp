@@ -58,4 +58,9 @@ public class fragment_noten extends Fragment {
 
         return view;
     }
+
+    public void reload(){
+
+    }
+
 }
