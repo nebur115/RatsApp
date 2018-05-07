@@ -49,6 +49,7 @@ public class fragment_noten extends Fragment {
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
 
+        NotenList.add(0,new noten_placeholder());
         adapter = new noten_adapter(getActivity(),NotenList);
 
 

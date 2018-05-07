@@ -1,5 +1,6 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,10 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -361,31 +360,31 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             public void onClick(View view) {
                 if(cExtender.getVisibility()==View.GONE){
                     cExtender.setVisibility(View.VISIBLE);
+                    cExtender.clearAnimation();
                     arrow.clearAnimation();
                     RotateAnimation animrdown = new RotateAnimation(0f, 180f, Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF,0.6f);
                     animrdown.setInterpolator(new LinearInterpolator());
                     animrdown.setDuration(330);
                     animrdown.setFillAfter(true);
                     arrow.setAnimation(animrdown);
-                    everything.setMaxHeight(dpToPx(348));
 
 
-
-                    ScaleAnimation animation = new ScaleAnimation(1f,1f,0f,1f,0f,0f);
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(cExtender, "translationY",  -1000f , 0f);
                     animation.setDuration(330);
-                    animation.setInterpolator(new DecelerateInterpolator());
-                    cExtender.setAnimation(animation);
+                    animation.start();
+
 
 
                 }else{
                     arrow.clearAnimation();
-                    cExtender.setVisibility(View.GONE);
-                    RotateAnimation animrup = new RotateAnimation(180f, 360f, Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF,0.6f);
+                    cExtender.clearAnimation();
+                    RotateAnimation animrup = new RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF,0.6f);
                     animrup.setInterpolator(new LinearInterpolator());
                     animrup.setDuration(330);
                     animrup.setFillAfter(true);
                     animrup.setRepeatMode(1);
                     arrow.setAnimation(animrup);
+                    cExtender.setVisibility(View.GONE);
 
 
                 }
