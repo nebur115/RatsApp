@@ -49,7 +49,15 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     View viewholder;
     ConstraintLayout everything;
     boolean schrifltich;
-
+    int Zeugnisnote;
+    int Schriftlich2;
+    int Schriftlich1;
+    int Muendlich1;
+    int Muendlich2;
+    boolean alreadyshown;
+    int Datum1;
+    int Datum2;
+    String Fach;
 
     public noten_viewholder(View View) {
         super(View);
@@ -74,16 +82,18 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     }
 
     public void showDetails(final Memory_NotenKlausuren Object){
-        schrifltich = Object.isMuendlichschrifltich();
-        int Muendlich1 = Object.getMuendlich1();
-        int Muendlich2 = Object.getMuendlich2();
-        int Schriftlich1 = Object.getSchriftlich1();
-        int Schriftlich2 = Object.getSchriftlich2();
-        int Zeugnisnote = Object.getZeugnis();
-        final int Datum1 = Object.getDatum1();
-        int Datum2 = Object.getDatum2();
-        final String Fach = Object.getFach();
-
+        if(!alreadyshown) {
+            alreadyshown = true;
+            schrifltich = Object.isMuendlichschrifltich();
+            Muendlich1 = Object.getMuendlich1();
+            Muendlich2 = Object.getMuendlich2();
+            Schriftlich1 = Object.getSchriftlich1();
+            Schriftlich2 = Object.getSchriftlich2();
+            Zeugnisnote = Object.getZeugnis();
+            Datum1 = Object.getDatum1();
+            Datum2 = Object.getDatum2();
+            Fach = Object.getFach();
+        }
 
             if(!(Datum1 ==0)){
                 String Date1 = Integer.toString(Datum1);
@@ -223,7 +233,11 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Save(getAdapterPosition());
                 GesammtNote(NotezuPunkte(tZeugnis.getSelectedItem().toString()),NotezuPunkte(tMuendlich1.getSelectedItem().toString()),NotezuPunkte(tMuendlich2.getSelectedItem().toString()),NotezuPunkte(tSchriftlich1.getSelectedItem().toString()),NotezuPunkte(tSchriftlich2.getSelectedItem().toString()));
-
+                Zeugnisnote = NotezuPunkte(tZeugnis.getSelectedItem().toString());
+                Muendlich1 = NotezuPunkte(tMuendlich1.getSelectedItem().toString());
+                Muendlich2 = NotezuPunkte(tMuendlich2.getSelectedItem().toString());
+                Schriftlich1 = NotezuPunkte(tSchriftlich1.getSelectedItem().toString());
+                Schriftlich2 = NotezuPunkte(tSchriftlich2.getSelectedItem().toString());
             }
 
             @Override
@@ -552,7 +566,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         editor.putString("NotenKlausuren", savejson);
         editor.apply();
 
-
+        vertretungsplan.notenreload();
 
     }
 

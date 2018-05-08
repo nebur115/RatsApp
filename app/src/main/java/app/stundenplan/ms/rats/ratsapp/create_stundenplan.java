@@ -217,7 +217,7 @@ public class create_stundenplan extends AppCompatActivity {
 
     private void WerteWocheAus(List<Memory_Stunde> pStundenListe){
 
-        for(int i=0; i<MaxStunden*5; i++){
+        for(int i=0; i<pStundenListe.size(); i++){
 
             if(!pStundenListe.get(i).isFreistunde()) {
 
@@ -233,7 +233,7 @@ public class create_stundenplan extends AppCompatActivity {
                     String shortFach = Kürzel[Arrays.asList(Fächer).indexOf(Fach)];
 
                     if (!(pStundenListe.get(i).getStartJahr() == 0)) {
-                        Startjahr = Integer.toString((pStundenListe.get(i).getStartJahr())%10);
+                        Startjahr = Integer.toString((pStundenListe.get(i).getStartJahr()) % 10);
                     } else {
                         Startjahr = "";
                     }
@@ -252,7 +252,7 @@ public class create_stundenplan extends AppCompatActivity {
                             case "Zusatzkurs":
                                 Kursname = shortFach.substring(0, 1) + "Z G" + Integer.toString(Kursnummer);
                                 break;
-                            case "Ergänzung" :
+                            case "Ergänzung":
                                 Kursname = "ERG " + shortFach;
                                 break;
                             default:
@@ -271,42 +271,64 @@ public class create_stundenplan extends AppCompatActivity {
                     Kursname = pStundenListe.get(i).getKürzel();
                 }
 
-
-                if(!(Kursname==null)){
+                //Hier nach Fach und Kursart Checken. Sonst nach nichts!!!
+                if (!(Kursname == null)) {
                     pStundenListe.get(i).setFachkürzel(Kursname);
-                    if (!Kursliste.contains(Kursname.toUpperCase()) && !Kursname.equals("")) {
-                        Kursliste.add(Kursname.toUpperCase());
-                        if(!Overwrite){
-                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0,0,1));
-                        }else{
+                }
 
-                            int Stelle=-1;
+                Boolean Existing = false;
+                Boolean Vorhanden = false;
 
-                            for (int j = 0; j<OldNotenKlausurenListe.size()-1; j++){
+                for (int j = 0; j < OldNotenKlausurenListe.size(); j++) {
+                    if (OldNotenKlausurenListe.get(j).getFach().equals(Fach)) {
+                        Existing = true;
+                    }
+                }
 
-                                if(OldNotenKlausurenListe.get(j).getFach().equals(Fach)){
-                                    Stelle = j;
+                    for (int j = 0; j < NotenKlausurenListe.size(); j++){
+                    if (NotenKlausurenListe.get(j).getFach().equals(Fach)){
+                        Vorhanden = true;
+                    }
+                }
 
-                                }
+
+                if (!Kursliste.contains(Kursname.toUpperCase()) && !Kursname.equals("")) {
+                    Kursliste.add(Kursname.toUpperCase());
+                }
+
+
+                if (!Vorhanden) {
+                    if (!Overwrite && !Existing) {
+                        NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach, Kursname, pStundenListe.get(i).isSchriftlich(), 0, 0, 0, 1));
+                    } else {
+
+                        int Stelle = -1;
+
+                        for (int j = 0; j < OldNotenKlausurenListe.size() - 1; j++) {
+
+                            if (OldNotenKlausurenListe.get(j).getFach().equals(Fach)) {
+                                Stelle = j;
+
                             }
-                            if(Stelle==-1){
-                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0,0,1));
-                            }else{
-                                NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach,Kursname,pStundenListe.get(i).isSchriftlich(),0,0,0,1));
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich1(OldNotenKlausurenListe.get(Stelle).getMuendlich1());
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setMuendlich2(OldNotenKlausurenListe.get(Stelle).getMuendlich2());
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setSchriftlich1(OldNotenKlausurenListe.get(Stelle).getSchriftlich1());
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setSchriftlich2(OldNotenKlausurenListe.get(Stelle).getSchriftlich2());
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setDatum1(OldNotenKlausurenListe.get(Stelle).getDatum1());
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setDatum2(OldNotenKlausurenListe.get(Stelle).getDatum2());
-                                NotenKlausurenListe.get(NotenKlausurenListe.size()-1).setZeugnis(OldNotenKlausurenListe.get(Stelle).getZeugnis());
-                            }
+                        }
+                        if (Stelle == -1) {
+                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach, Kursname, pStundenListe.get(i).isSchriftlich(), 0, 0, 0, 1));
+                        } else {
+                            NotenKlausurenListe.add(new Memory_NotenKlausuren(Fach, Kursname, pStundenListe.get(i).isSchriftlich(), 0, 0, 0, 1));
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setMuendlich1(OldNotenKlausurenListe.get(Stelle).getMuendlich1());
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setMuendlich2(OldNotenKlausurenListe.get(Stelle).getMuendlich2());
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setSchriftlich1(OldNotenKlausurenListe.get(Stelle).getSchriftlich1());
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setSchriftlich2(OldNotenKlausurenListe.get(Stelle).getSchriftlich2());
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setDatum1(OldNotenKlausurenListe.get(Stelle).getDatum1());
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setDatum2(OldNotenKlausurenListe.get(Stelle).getDatum2());
+                            NotenKlausurenListe.get(NotenKlausurenListe.size() - 1).setZeugnis(OldNotenKlausurenListe.get(Stelle).getZeugnis());
+
                         }
 
                     }
+
                 }
             }
-
         }
     }
 

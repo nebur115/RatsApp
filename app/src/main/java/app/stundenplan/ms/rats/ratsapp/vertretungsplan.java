@@ -27,7 +27,7 @@ public class vertretungsplan extends AppCompatActivity {
     public boolean website_created = false;
     public boolean vertretungsplan_created = false;
     public boolean stundenplan_created = false;
-
+    static fragment_noten notenfragment;
  
     
     FrameLayout SimpleFrameLayout;
@@ -101,7 +101,7 @@ public class vertretungsplan extends AppCompatActivity {
 
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
-        final Fragment notenfragment = new fragment_noten();
+        notenfragment = new fragment_noten();
         final Fragment kalenderfragment = new fragment_kalender();
         final Fragment websitefragment = new fragment_website();
         final Fragment stundenplanfragment;
@@ -344,6 +344,10 @@ public class vertretungsplan extends AppCompatActivity {
     public static void zeigeLaden(){
         progressBar2.setVisibility(View.GONE);
 
+    }
+
+    public static void notenreload(){
+        notenfragment.newnumbers();
     }
 
     public static void versteckeLaden(){

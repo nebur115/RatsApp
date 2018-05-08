@@ -63,14 +63,14 @@ public class fragment_noten extends Fragment {
 
         mrecyclerView.setAdapter(adapter);
 
-        reload();
+        newnumbers();
 
         adapter.notifyDataSetChanged();
 
         return view;
     }
 
-    public void reload(){
+    public void newnumbers(){
         SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
         String json;
         Gson gson = new Gson();
@@ -85,7 +85,7 @@ public class fragment_noten extends Fragment {
         int summeBeste = 0;
         double SchnittPunkte;
 
-        for(int i=0; i<NotenList.size()-2;i++){
+        for(int i=0; i<SchnittNotenList.size();i++){
             int Wertung = SchnittNotenList.get(i).getWertung();
             int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(),SchnittNotenList.get(i).getZeugnis(),SchnittNotenList.get(i).getMuendlich1(),SchnittNotenList.get(i).getMuendlich2(),SchnittNotenList.get(i).getSchriftlich1(),SchnittNotenList.get(i).getSchriftlich2());
             int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(),SchnittNotenList.get(i).getZeugnis(),SchnittNotenList.get(i).getMuendlich1(),SchnittNotenList.get(i).getMuendlich2(),SchnittNotenList.get(i).getSchriftlich1(),SchnittNotenList.get(i).getSchriftlich2());
@@ -93,45 +93,53 @@ public class fragment_noten extends Fragment {
 
 
             anzahlAll++;
-            summeBeste = summeBeste+ Beste/3;
-                summeSchlechteste = summeSchlechteste+ Schlechteste;
+            summeBeste = summeBeste+ Beste;
+            summeSchlechteste = summeSchlechteste+ Schlechteste;
 
             if(!(Note ==0)) {
                 anzahlNoten = anzahlNoten + Wertung;
-                summeNoten = summeNoten + Note;
+                summeNoten = summeNoten + (Note*Wertung);
             }
 
         }
 
-        if(Double.toString(PunktezuNote(summeNoten/anzahlNoten)).length()>=4) {
-            tSchnitt.setText(Double.toString(PunktezuNote(summeNoten / anzahlNoten)).substring(0, 4).replace(".", ","));
-        }else {
-            tSchnitt.setText(Double.toString(PunktezuNote(summeNoten / anzahlNoten)).replace(".", ","));
+        if(!(anzahlNoten==0)) {
+            String FinalSchnitt;
+            String FinalBestmoeglich;
+            String FinalSchlechtmoeglich;
 
+
+                FinalSchnitt = Double.toString(PunktezuNote(summeNoten , anzahlNoten))+"000";
+
+
+                FinalBestmoeglich = Double.toString(PunktezuNote(summeBeste , anzahlAll))+"000";
+
+
+                FinalSchlechtmoeglich = Double.toString(PunktezuNote(summeSchlechteste , anzahlAll))+"000";
+
+                tSchnitt.setText(FinalSchnitt.substring(0,4));
+
+                tBestmoeglich.setText(FinalBestmoeglich.substring(0,4));
+
+                tSchlechtmoeglich.setText(FinalSchlechtmoeglich.substring(0,4));
+
+        }else{
+            tSchlechtmoeglich.setText("6");
+            tBestmoeglich.setText("0,66");
+            tSchnitt.setText("N/A");
         }
-
-        if(Double.toString(PunktezuNote(summeBeste/anzahlAll)).substring(0,4).length()>=4){
-            tBestmoeglich.setText(Double.toString(PunktezuNote(summeBeste/anzahlAll)).substring(0,4).replace(".",","));
-        }else {
-            tBestmoeglich.setText(Double.toString(PunktezuNote(summeBeste/anzahlAll)).replace(".",","));
-        }
-
-        if(Double.toString(PunktezuNote(summeSchlechteste/anzahlAll)).length()>=4) {
-            tSchlechtmoeglich.setText(Double.toString(PunktezuNote(summeSchlechteste / anzahlAll)).substring(0, 4).replace(".", ","));
-        }else {
-            tSchlechtmoeglich.setText(Double.toString(PunktezuNote(summeSchlechteste / anzahlAll)).replace(".", ","));
-        }
-
     }
 
-    private double PunktezuNote(double Punkte){
-        if(!(Punkte==0)){
-            return ((17-Punkte)/3);
+    private double PunktezuNote(int summe, int anzahl){
+        if(!(summe==0)){
+            return (double) ((17.00-((double) summe/ (double) anzahl))/3.00);
         }else{
             return 6;
         }
 
     }
+
+
 
     private int GesammtNote(boolean pschirftlich, int pZeugnisNote, int pMuendlich1, int pMuendlich2, int pSchriftlich1, int pSchriftlich2) {
 
@@ -233,7 +241,7 @@ public class fragment_noten extends Fragment {
 
 
         }else{
-            return (0);
+            return (15);
         }
 
     }
