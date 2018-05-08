@@ -102,6 +102,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Datum datum=(Datum)itemFeed.get(position);
                 ((DatumViewHolder)holder).showDatumDetails(datum);
                 break;
+
         }
     }
 

@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -49,6 +48,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     Context context;
     View viewholder;
     ConstraintLayout everything;
+    boolean schrifltich;
 
 
     public noten_viewholder(View View) {
@@ -74,7 +74,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     }
 
     public void showDetails(final Memory_NotenKlausuren Object){
-        boolean schrifltich = Object.isMuendlichschrifltich();
+        schrifltich = Object.isMuendlichschrifltich();
         int Muendlich1 = Object.getMuendlich1();
         int Muendlich2 = Object.getMuendlich2();
         int Schriftlich1 = Object.getSchriftlich1();
@@ -168,6 +168,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         if(!schrifltich) {
             cSchriftlich1.setVisibility(View.GONE);
             cSchrifltich2.setVisibility(View.GONE);
+        }else{
+            cSchriftlich1.setVisibility(View.VISIBLE);
+            cSchrifltich2.setVisibility(View.VISIBLE);
         }
 
         GesammtNote(Zeugnisnote,Muendlich1,Muendlich2,Schriftlich1,Schriftlich2);
@@ -368,6 +371,14 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                     animrdown.setFillAfter(true);
                     arrow.setAnimation(animrdown);
 
+                    if(!schrifltich) {
+                        cSchriftlich1.setVisibility(View.GONE);
+                        cSchrifltich2.setVisibility(View.GONE);
+                    }else{
+                        cSchriftlich1.setVisibility(View.VISIBLE);
+                        cSchrifltich2.setVisibility(View.VISIBLE);
+                    }
+
 
                     ObjectAnimator animation = ObjectAnimator.ofFloat(cExtender, "translationY",  -1000f , 0f);
                     animation.setDuration(330);
@@ -387,16 +398,22 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                     cExtender.setVisibility(View.GONE);
 
 
+                    if(!schrifltich) {
+                        cSchriftlich1.setVisibility(View.GONE);
+                        cSchrifltich2.setVisibility(View.GONE);
+                    }else{
+                        cSchriftlich1.setVisibility(View.VISIBLE);
+                        cSchrifltich2.setVisibility(View.VISIBLE);
+                    }
+
+
                 }
             }
         });
 
     }
 
-    private int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
+
 
     private List<String> Standart(){
         List<String> Temp = new ArrayList<>();
@@ -465,7 +482,8 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         }
     }
 
-    private void Save(int pos){
+    private void Save(int ppos){
+        int pos = ppos  -1;
         int saveMuendlich1 = 0 ;
         int saveMuendlich2 = 0;
         int saveSchriftlich1 = 0;
@@ -507,6 +525,12 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             saveDate2= Integer.parseInt(tDate2.getText().toString().replace(".",""));
         }
 
+        if(!schrifltich){
+            saveSchriftlich1 = 0;
+            saveSchriftlich2 = 0;
+        }
+
+
         SharedPreferences setting = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
         List<Memory_NotenKlausuren> NotenList = new ArrayList<>();
         String json;
@@ -527,6 +551,8 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         String savejson = gson.toJson(NotenList);
         editor.putString("NotenKlausuren", savejson);
         editor.apply();
+
+
 
     }
 
@@ -605,9 +631,11 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                 Muendlich = Muendlich/MuendlichEingetragen;
             }
 
-            if(!(SchriftlichEingetragen==0)){
+            if(!(SchriftlichEingetragen==0) && (!schrifltich)){
                 Schriftlich = Schriftlich/SchriftlichEingetragen;
             }
+
+
 
             if(!(SchriftlichEingetragen==0)){
                 alleeingetragen++;
