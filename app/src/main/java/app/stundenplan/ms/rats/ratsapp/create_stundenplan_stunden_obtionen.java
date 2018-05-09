@@ -565,7 +565,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                                 (!(fach.equals("")))
                         )
 
-
                 {
 
                     if(((!(!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch"))))) || ((!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))&& (Fach.getText().toString().equals("Bio Chemie") || (Fach.getText().toString().equals("ev. Religion"))|| (Fach.getText().toString().equals("Französisch"))|| (Fach.getText().toString().equals("kath. Religion"))|| (Fach.getText().toString().equals("Latein")) ||(Fach.getText().toString().equals("Mathe Physik Informatik"))|| (Fach.getText().toString().equals("Philosophie"))|| (Fach.getText().toString().equals("Praktische Philosophie")) || (Fach.getText().toString().equals("Spanisch")))) && !(eKursnummer.getText().toString().equals(""))))

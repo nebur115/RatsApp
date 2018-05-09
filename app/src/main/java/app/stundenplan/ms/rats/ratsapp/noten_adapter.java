@@ -17,6 +17,12 @@ public class noten_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.liste = Liste;
     }
 
+    public void setliste(List<Object> pListe){
+        liste= pListe;
+    }
+
+
+
     @Override
     public int getItemViewType(int position){
         if(liste.get(position) instanceof Memory_NotenKlausuren){

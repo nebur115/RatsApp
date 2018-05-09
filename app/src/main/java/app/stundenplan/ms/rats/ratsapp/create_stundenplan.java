@@ -175,7 +175,7 @@ public class create_stundenplan extends AppCompatActivity {
 
                 jsona = settings.getString("Stundenliste", null);
                 Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
-                WocheAStundenListe = gson.fromJson(jsona , type);
+                WocheBStundenListe = gson.fromJson(jsona , type);
                 WerteWocheAus(WocheAStundenListe);
 
                 if(Zweiwöchentlich){

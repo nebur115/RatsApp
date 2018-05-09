@@ -27,6 +27,8 @@ public class fragment_noten extends Fragment {
     TextView tBestmoeglich;
     TextView tSchnitt;
     TextView tSchlechtmoeglich;
+    Boolean shown = false;
+
 
     public fragment_noten() {
 
@@ -45,38 +47,38 @@ public class fragment_noten extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerView = view.findViewById(R.id.recyclerview_noten);
 
-        tBestmoeglich = view.findViewById(R.id.bestmoeglich);
-        tSchnitt = view.findViewById(R.id.schnitt);
-        tSchlechtmoeglich = view.findViewById(R.id.schelchtmoeglich);
-
-        mrecyclerView.setLayoutManager(linearLayoutManager);
         String json;
         Gson gson = new Gson();
 
         json = setting.getString("NotenKlausuren", null);
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
-
         NotenList.add(0,new noten_placeholder());
+
+        tBestmoeglich = view.findViewById(R.id.bestmoeglich);
+        tSchnitt = view.findViewById(R.id.schnitt);
+        tSchlechtmoeglich = view.findViewById(R.id.schelchtmoeglich);
+        mrecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new noten_adapter(getActivity(),NotenList);
-
-
         mrecyclerView.setAdapter(adapter);
-
-        newnumbers();
+        AktualisiereZahlen();
 
         adapter.notifyDataSetChanged();
+
+        shown = true;
 
         return view;
     }
 
-    public void newnumbers(){
+    public void AktualisiereZahlen(){
+
         SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
-        String json;
+        String json = setting.getString("NotenKlausuren", null);
         Gson gson = new Gson();
-        json = setting.getString("NotenKlausuren", null);
-        Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
-        SchnittNotenList = gson.fromJson(json , type);
+        Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {
+        }.getType();
+        SchnittNotenList = gson.fromJson(json, type);
+
 
         int anzahlNoten = 0;
         int anzahlAll = 0;
@@ -85,48 +87,68 @@ public class fragment_noten extends Fragment {
         int summeBeste = 0;
         double SchnittPunkte;
 
-        for(int i=0; i<SchnittNotenList.size();i++){
+        for (int i = 0; i < SchnittNotenList.size(); i++) {
             int Wertung = SchnittNotenList.get(i).getWertung();
-            int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(),SchnittNotenList.get(i).getZeugnis(),SchnittNotenList.get(i).getMuendlich1(),SchnittNotenList.get(i).getMuendlich2(),SchnittNotenList.get(i).getSchriftlich1(),SchnittNotenList.get(i).getSchriftlich2());
-            int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(),SchnittNotenList.get(i).getZeugnis(),SchnittNotenList.get(i).getMuendlich1(),SchnittNotenList.get(i).getMuendlich2(),SchnittNotenList.get(i).getSchriftlich1(),SchnittNotenList.get(i).getSchriftlich2());
-            int Schlechteste =  SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(),SchnittNotenList.get(i).getZeugnis(),SchnittNotenList.get(i).getMuendlich1(),SchnittNotenList.get(i).getMuendlich2(),SchnittNotenList.get(i).getSchriftlich1(),SchnittNotenList.get(i).getSchriftlich2());
+            int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+            int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+            int Schlechteste = SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
 
 
             anzahlAll++;
-            summeBeste = summeBeste+ Beste;
-            summeSchlechteste = summeSchlechteste+ Schlechteste;
+            summeBeste = summeBeste + Beste;
+            summeSchlechteste = summeSchlechteste + Schlechteste;
 
-            if(!(Note ==0)) {
+            if (!(Note == 0)) {
                 anzahlNoten = anzahlNoten + Wertung;
-                summeNoten = summeNoten + (Note*Wertung);
+                summeNoten = summeNoten + (Note * Wertung);
             }
 
         }
 
-        if(!(anzahlNoten==0)) {
+        if (!(anzahlNoten == 0)) {
             String FinalSchnitt;
             String FinalBestmoeglich;
             String FinalSchlechtmoeglich;
 
 
-                FinalSchnitt = Double.toString(PunktezuNote(summeNoten , anzahlNoten))+"000";
+            FinalSchnitt = Double.toString(PunktezuNote(summeNoten, anzahlNoten)) + "000";
 
 
-                FinalBestmoeglich = Double.toString(PunktezuNote(summeBeste , anzahlAll))+"000";
+            FinalBestmoeglich = Double.toString(PunktezuNote(summeBeste, anzahlAll)) + "000";
 
 
-                FinalSchlechtmoeglich = Double.toString(PunktezuNote(summeSchlechteste , anzahlAll))+"000";
+            FinalSchlechtmoeglich = Double.toString(PunktezuNote(summeSchlechteste, anzahlAll)) + "000";
 
-                tSchnitt.setText(FinalSchnitt.substring(0,4));
+            tSchnitt.setText(FinalSchnitt.substring(0, 4));
 
-                tBestmoeglich.setText(FinalBestmoeglich.substring(0,4));
+            tBestmoeglich.setText(FinalBestmoeglich.substring(0, 4));
 
-                tSchlechtmoeglich.setText(FinalSchlechtmoeglich.substring(0,4));
+            tSchlechtmoeglich.setText(FinalSchlechtmoeglich.substring(0, 4));
 
-        }else{
+        } else {
             tSchlechtmoeglich.setText("6");
             tBestmoeglich.setText("0,66");
             tSchnitt.setText("N/A");
+        }
+    }
+
+
+    public void newnumbers() {
+        if (shown) {
+            SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+            String json;
+            Gson gson = new Gson();
+
+            json = setting.getString("NotenKlausuren", null);
+            Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+            NotenList = gson.fromJson(json , type);
+            NotenList.add(0,new noten_placeholder());
+
+
+            SchnittNotenList = gson.fromJson(json, type);
+
+            AktualisiereZahlen();
+
         }
     }
 

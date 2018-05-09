@@ -58,6 +58,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     int Datum1;
     int Datum2;
     String Fach;
+    boolean Shown;
 
     public noten_viewholder(View View) {
         super(View);
@@ -82,7 +83,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     }
 
     public void showDetails(final Memory_NotenKlausuren Object){
-        if(!alreadyshown) {
+
             alreadyshown = true;
             schrifltich = Object.isMuendlichschrifltich();
             Muendlich1 = Object.getMuendlich1();
@@ -93,7 +94,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             Datum1 = Object.getDatum1();
             Datum2 = Object.getDatum2();
             Fach = Object.getFach();
-        }
+
 
             if(!(Datum1 ==0)){
                 String Date1 = Integer.toString(Datum1);
@@ -190,7 +191,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         tMuendlich1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Save(getAdapterPosition());
+                if(!(Muendlich1==NotezuPunkte(tMuendlich1.getSelectedItem().toString()))){
+                    Save(getAdapterPosition()-1);
+                }
                 GesammtNote(NotezuPunkte(tZeugnis.getSelectedItem().toString()),NotezuPunkte(tMuendlich1.getSelectedItem().toString()),NotezuPunkte(tMuendlich2.getSelectedItem().toString()),NotezuPunkte(tSchriftlich1.getSelectedItem().toString()),NotezuPunkte(tSchriftlich2.getSelectedItem().toString()));
             }
 
@@ -203,7 +206,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         tMuendlich2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Save(getAdapterPosition());
+                if(!(Muendlich2==NotezuPunkte(tMuendlich2.getSelectedItem().toString()))) {
+                    Save(getAdapterPosition() - 1);
+                }
                 GesammtNote(NotezuPunkte(tZeugnis.getSelectedItem().toString()),NotezuPunkte(tMuendlich1.getSelectedItem().toString()),NotezuPunkte(tMuendlich2.getSelectedItem().toString()),NotezuPunkte(tSchriftlich1.getSelectedItem().toString()),NotezuPunkte(tSchriftlich2.getSelectedItem().toString()));
 
             }
@@ -217,7 +222,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         tSchriftlich1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Save(getAdapterPosition());
+                if(!(Schriftlich2==NotezuPunkte(tSchriftlich1.getSelectedItem().toString()))){
+                    Save(getAdapterPosition()-1);
+                }
                 GesammtNote(NotezuPunkte(tZeugnis.getSelectedItem().toString()),NotezuPunkte(tMuendlich1.getSelectedItem().toString()),NotezuPunkte(tMuendlich2.getSelectedItem().toString()),NotezuPunkte(tSchriftlich1.getSelectedItem().toString()),NotezuPunkte(tSchriftlich2.getSelectedItem().toString()));
 
             }
@@ -231,13 +238,28 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         tSchriftlich2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Save(getAdapterPosition());
+                if(!(Schriftlich2==NotezuPunkte(tSchriftlich2.getSelectedItem().toString()))){
+                    Save(getAdapterPosition()-1);
+                }
+
                 GesammtNote(NotezuPunkte(tZeugnis.getSelectedItem().toString()),NotezuPunkte(tMuendlich1.getSelectedItem().toString()),NotezuPunkte(tMuendlich2.getSelectedItem().toString()),NotezuPunkte(tSchriftlich1.getSelectedItem().toString()),NotezuPunkte(tSchriftlich2.getSelectedItem().toString()));
-                Zeugnisnote = NotezuPunkte(tZeugnis.getSelectedItem().toString());
-                Muendlich1 = NotezuPunkte(tMuendlich1.getSelectedItem().toString());
-                Muendlich2 = NotezuPunkte(tMuendlich2.getSelectedItem().toString());
-                Schriftlich1 = NotezuPunkte(tSchriftlich1.getSelectedItem().toString());
-                Schriftlich2 = NotezuPunkte(tSchriftlich2.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        tZeugnis.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!(Zeugnisnote==NotezuPunkte(tZeugnis.getSelectedItem().toString()))){
+                Save(getAdapterPosition()-1);
+                }
+
+                GesammtNote(NotezuPunkte(tZeugnis.getSelectedItem().toString()),NotezuPunkte(tMuendlich1.getSelectedItem().toString()),NotezuPunkte(tMuendlich2.getSelectedItem().toString()),NotezuPunkte(tSchriftlich1.getSelectedItem().toString()),NotezuPunkte(tSchriftlich2.getSelectedItem().toString()));
+
             }
 
             @Override
@@ -277,7 +299,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        Save(getAdapterPosition());
+                        Save(getAdapterPosition()-1);
                     }
                 });
 
@@ -314,7 +336,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        Save(getAdapterPosition());
+                        Save(getAdapterPosition()-1);
                     }
                 });
 
@@ -376,7 +398,10 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View view) {
                 if(cExtender.getVisibility()==View.GONE){
+                    Shown = true;
+
                     cExtender.setVisibility(View.VISIBLE);
+
                     cExtender.clearAnimation();
                     arrow.clearAnimation();
                     RotateAnimation animrdown = new RotateAnimation(0f, 180f, Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF,0.6f);
@@ -399,6 +424,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                     animation.start();
 
 
+                    Shown = false;
 
                 }else{
                     arrow.clearAnimation();
@@ -496,8 +522,11 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         }
     }
 
-    private void Save(int ppos){
-        int pos = ppos  -1;
+    private void Save(int pos){
+        if(!Shown){
+        if(pos<0){
+            pos = 0;
+        }
         int saveMuendlich1 = 0 ;
         int saveMuendlich2 = 0;
         int saveSchriftlich1 = 0;
@@ -568,6 +597,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
 
         vertretungsplan.notenreload();
 
+    }
     }
 
     private int NotezuPunkte(String pNote){
@@ -645,10 +675,15 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                 Muendlich = Muendlich/MuendlichEingetragen;
             }
 
-            if(!(SchriftlichEingetragen==0) && (!schrifltich)){
+            if(!(SchriftlichEingetragen==0) && (schrifltich)){
                 Schriftlich = Schriftlich/SchriftlichEingetragen;
+            }else {
+                Schriftlich = 0;
             }
 
+            if(!schrifltich && !(SchriftlichEingetragen==0)){
+                SchriftlichEingetragen=0;
+            }
 
 
             if(!(SchriftlichEingetragen==0)){
@@ -658,7 +693,10 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             if(!(MuendlichEingetragen==0)){
                 alleeingetragen++;
             }
-            tGesammt.setText(PunktezuNote((int) (((Muendlich+Schriftlich)/alleeingetragen)+1)));
+
+            String Gesammt = (PunktezuNote((int) (((Muendlich+Schriftlich)/alleeingetragen)+1)));
+
+            tGesammt.setText(Gesammt);
 
         }else{
             tGesammt.setText("");

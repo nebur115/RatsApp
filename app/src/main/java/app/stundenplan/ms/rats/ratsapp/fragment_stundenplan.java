@@ -160,7 +160,7 @@ public class fragment_stundenplan extends Fragment {
 
 
 
-            if (Week % 2 == 0 || !settings.getBoolean("zweiWöchentlich", true)) {
+            if (Week % 2 == 1 || !settings.getBoolean("zweiWöchentlich", true)) {
 
                 json = settings.getString("Stundenliste", null);
 
