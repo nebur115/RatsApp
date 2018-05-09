@@ -27,7 +27,7 @@ public class vertretungsplan extends AppCompatActivity {
     public boolean website_created = false;
     public boolean vertretungsplan_created = false;
     public boolean stundenplan_created = false;
-    static fragment_noten notenfragment;
+    static fragment_noten childnotenfragment;
  
     
     FrameLayout SimpleFrameLayout;
@@ -101,22 +101,23 @@ public class vertretungsplan extends AppCompatActivity {
 
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
-        notenfragment = new fragment_noten();
+        childnotenfragment = new fragment_noten();
         final Fragment kalenderfragment = new fragment_kalender();
         final Fragment websitefragment = new fragment_website();
         final Fragment stundenplanfragment;
-
+        final Fragment notenfragment;
 
 
 
             SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp",0);
             if (settings3.contains("Stundenliste")) {
                 stundenplanfragment = new fragment_parent_stundenplan();
+                notenfragment = childnotenfragment;
 
             }
             else{
                 stundenplanfragment = new fragment_no_existing_stundenplan();
-
+                notenfragment = new fragment_no_existing_stundenplan();
 
             }
 
@@ -347,7 +348,7 @@ public class vertretungsplan extends AppCompatActivity {
     }
 
     public static void notenreload(){
-        notenfragment.newnumbers();
+        childnotenfragment.newnumbers();
     }
 
     public static void versteckeLaden(){
