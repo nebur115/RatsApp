@@ -195,8 +195,8 @@ public class fragment_stundenplan extends Fragment {
             for(int i = 0; i<MaxStunden*5; i++) {
 
 
-                Boolean Today;
-                String Wochentag;
+                Boolean Today = false;
+                String Wochentag = null;
                 switch (i % 5) {
                     case 0:
                         Wochentag = "Montag";
@@ -223,11 +223,7 @@ public class fragment_stundenplan extends Fragment {
                         Datum = DateFriday;
                         Today = day==6 && Week ==0;
                         break;
-                    default:
-                        Wochentag = "Montag";
-                        Datum = DateMonday;
-                        Today = false;
-                        break;
+                    
                 }
 
 
@@ -265,64 +261,61 @@ public class fragment_stundenplan extends Fragment {
                 if(Today){
                     switch(Stunde){
                         case 0:
-                            aktiveStunde = time>=745 && (time<=830 || (time<=920 && DoppelStunde));
+                            aktiveStunde = time>=745 && (time<=830 || (time<920 && DoppelStunde));
 
                             break;
                         case 1:
-                            aktiveStunde = time>=835 && (time<=920 || (time<=1025 && DoppelStunde));
+                            aktiveStunde = time>=835 && (time<=920 || (time<1025 && DoppelStunde));
 
                             break;
                         case 2:
-                            aktiveStunde = time>=940 && (time<=1025 || (time<=1115 && DoppelStunde));
+                            aktiveStunde = time>=940 && (time<=1025 || (time<1115 && DoppelStunde));
 
                             break;
                         case 3:
-                            aktiveStunde = time>=1030 && (time<=1115 || (time<=1215 && DoppelStunde));
+                            aktiveStunde = time>=1030 && (time<=1115 || (time<1215 && DoppelStunde));
 
                             break;
                         case 4:
-                            aktiveStunde = time>=1130 && (time<=1215 || (time<=1300 && DoppelStunde));
+                            aktiveStunde = time>=1130 && (time<=1215 || (time<1300 && DoppelStunde));
 
                             break;
                         case 5:
-                            aktiveStunde = time>=1215 && (time<=1300 || (time<=1345 && DoppelStunde));
+                            aktiveStunde = time>=1215 && (time<=1300 || (time<1345 && DoppelStunde));
 
                             break;
                         case 6:
-                            aktiveStunde = time>=1315 && (time<=1400 || (time<=1445 && DoppelStunde));
+                            aktiveStunde = time>=1315 && (time<=1400 || (time<1445 && DoppelStunde));
 
                             break;
                         case 7:
-                            aktiveStunde = time>=1400 && (time<=1445 || (time<=1530 && DoppelStunde));
+                            aktiveStunde = time>=1400 && (time<=1445 || (time<1530 && DoppelStunde));
 
                             break;
                         case 8:
-                            aktiveStunde = time>=1445 && (time<=1530 || (time<=1615 && DoppelStunde));
+                            aktiveStunde = time>=1445 && (time<=1530 || (time<1615 && DoppelStunde));
 
                             break;
+
                         case 9:
-                            aktiveStunde = time>=1445 && (time<=1530 || (time<=1615 && DoppelStunde));
+                            aktiveStunde = time>=1530 && (time<=1615 || (time<1700 && DoppelStunde));
 
                             break;
                         case 10:
-                            aktiveStunde = time>=1530 && (time<=1615 || (time<=1700 && DoppelStunde));
-
+                            aktiveStunde = time>=1615 && (time<=1700 || (time<1745 && DoppelStunde));
 
                             break;
                         case 11:
-                            aktiveStunde = time>=1615 && (time<=1700 || (time<=1745 && DoppelStunde));
-
+                            aktiveStunde = time>=1700 && (time<=1745 || (time<1830 && DoppelStunde));
                             break;
                         case 12:
-                            aktiveStunde = time>=1700 && (time<=1745 || (time<=1830 && DoppelStunde));
-
+                            aktiveStunde = time>=1745 && (time<=1830 || (time<1915 && DoppelStunde));
                             break;
                         case 13:
-                            aktiveStunde = time>=1745 && (time<=1830 || (time<=1915 && DoppelStunde));
+                            aktiveStunde = time>=1830 && (time<=1915 || (time<2000 && DoppelStunde));
+                            break;
                         default:
-
                             aktiveStunde = false;
-
                             break;
                     }}
 
@@ -372,7 +365,6 @@ public class fragment_stundenplan extends Fragment {
                 //Bei Raum / Lehrerwechsel Wert anpassen
                 //Es können mehrere Werte gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung allerdings nicht).
                 //Wenn Mündlich, Klausur und "Restgruppe entfällt", dann Frei.
-
 
 
 

@@ -79,24 +79,34 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         arrow = View.findViewById(R.id.arrow);
         everything = View.findViewById(R.id.everything);
         viewholder = View;
-
     }
 
-    public void showDetails(final Memory_NotenKlausuren Object){
-
-            alreadyshown = true;
-            schrifltich = Object.isMuendlichschrifltich();
-            Muendlich1 = Object.getMuendlich1();
-            Muendlich2 = Object.getMuendlich2();
-            Schriftlich1 = Object.getSchriftlich1();
-            Schriftlich2 = Object.getSchriftlich2();
-            Zeugnisnote = Object.getZeugnis();
-            Datum1 = Object.getDatum1();
-            Datum2 = Object.getDatum2();
-            Fach = Object.getFach();
+    public void showDetails(Memory_NotenKlausuren Object){
 
 
-            if(!(Datum1 ==0)){
+        SharedPreferences setting = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
+        List<Memory_NotenKlausuren> NotenList = new ArrayList<>();
+        String json;
+        Gson gson = new Gson();
+        json = setting.getString("NotenKlausuren", null);
+        Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+        NotenList = gson.fromJson(json , type);
+
+        Object = NotenList.get(getAdapterPosition()-1);
+
+        schrifltich = Object.isMuendlichschrifltich();
+        Muendlich1 = Object.getMuendlich1();
+        Muendlich2 = Object.getMuendlich2();
+        Schriftlich1 = Object.getSchriftlich1();
+        Schriftlich2 = Object.getSchriftlich2();
+        Zeugnisnote = Object.getZeugnis();
+        Datum1 = Object.getDatum1();
+        Datum2 = Object.getDatum2();
+        Fach = Object.getFach();
+        alreadyshown = true;
+
+
+        if(!(Datum1 ==0)){
                 String Date1 = Integer.toString(Datum1);
                 if(Datum1<10000000){
                     Date1 = "0" + Integer.toString(Datum1);

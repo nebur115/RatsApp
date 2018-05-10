@@ -156,11 +156,8 @@ public class vertretungsplan extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-
-
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-
 
                 switch (AktiveTap) {
                     case "Stundenplan":
@@ -186,11 +183,7 @@ public class vertretungsplan extends AppCompatActivity {
                         break;
                 }
 
-
-
-
                 switch (tab.getPosition()) {
-
                     case 0:
                         ft.show(stundenplanfragment);
                         AktiveTap = "Stundenplan";
@@ -264,6 +257,7 @@ public class vertretungsplan extends AppCompatActivity {
 
                 if (AktiveTap == "Stundenplan"){
                     StundenplanTab.setIcon(R.drawable.stundenplanacctive);
+                    childstundenplanfragment.reload();
                 }
                 else if(AktiveTap == "Vertretungsplan") {
                     VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
@@ -281,9 +275,6 @@ public class vertretungsplan extends AppCompatActivity {
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
 
-
-
-
             }
 
             @Override
@@ -296,12 +287,6 @@ public class vertretungsplan extends AppCompatActivity {
 
             }
 
-
-
-
-
-
-
         });
 
 
@@ -309,6 +294,11 @@ public class vertretungsplan extends AppCompatActivity {
             TabLayout.Tab tab = tablayout.getTabAt(1);
             tab.select();
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 
@@ -320,10 +310,7 @@ public class vertretungsplan extends AppCompatActivity {
     }
 
 
-    public void onBackPressed()
-    {
 
-    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
