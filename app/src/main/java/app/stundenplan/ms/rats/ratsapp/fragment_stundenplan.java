@@ -46,8 +46,8 @@ public class fragment_stundenplan extends Fragment {
         Week = pWeek;
     }
 
-
-
+    Stundenplanadapter mystundenplanadapter;
+    RecyclerView stundenplan_recyclerView;
     private List<Object> StundenListe = new ArrayList<>();
 
 
@@ -58,11 +58,9 @@ public class fragment_stundenplan extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-
-
         View view = inflater.inflate(R.layout.stundenplan_fragment, container, Boolean.parseBoolean(null));
 
-        final RecyclerView stundenplan_recyclerView;
+
 
         stundenplan_recyclerView = view.findViewById(R.id.recyclerview_stundenplan);
 
@@ -71,6 +69,18 @@ public class fragment_stundenplan extends Fragment {
 
         stundenplan_recyclerView.setLayoutManager(mystaggeredGridLayoutManager);
         stundenplan_recyclerView.setNestedScrollingEnabled(false);
+
+        mystundenplanadapter = new Stundenplanadapter(getActivity(), StundenListe);
+
+        stundenplan_recyclerView.setAdapter(mystundenplanadapter);
+
+        init();
+
+        return view;
+    }
+
+    private void init(){
+
         int menuHeight = 60 + 50 + 36;
 
 
@@ -171,7 +181,7 @@ public class fragment_stundenplan extends Fragment {
 
             }
 
-            
+
 
 
             Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
@@ -377,11 +387,15 @@ public class fragment_stundenplan extends Fragment {
 
 
         }
-        Stundenplanadapter mystundenplanadapter = new Stundenplanadapter(getActivity(), StundenListe);
-
-        stundenplan_recyclerView.setAdapter(mystundenplanadapter);
-
-        return view;
     }
 
+    public void reload(){
+
+
+        init();
+
+        mystundenplanadapter.notifyDataSetChanged();
+
+
+    }
 }

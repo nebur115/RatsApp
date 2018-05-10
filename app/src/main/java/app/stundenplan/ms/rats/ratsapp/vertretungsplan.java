@@ -28,8 +28,9 @@ public class vertretungsplan extends AppCompatActivity {
     public boolean vertretungsplan_created = false;
     public boolean stundenplan_created = false;
     static fragment_noten childnotenfragment;
- 
-    
+
+    fragment_parent_stundenplan childstundenplanfragment;
+    Fragment stundenplanfragment;
     FrameLayout SimpleFrameLayout;
     TabLayout tablayout;
     TextView Title;
@@ -38,6 +39,7 @@ public class vertretungsplan extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
 
 
@@ -51,16 +53,10 @@ public class vertretungsplan extends AppCompatActivity {
 
 
         if(!(Stufe.equals("EXISTINGSTUNDE"))){
-
             if(Stufe.charAt(0) != '0' && !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
                 Stufe = "0"+ Stufe; }
-
-
             progressBar2 = findViewById(R.id.progressBar2);
-
-
             try{
-
                 SharedPreferences settings1 = getSharedPreferences("RatsVertretungsPlanApp",0);
                 if (!settings1.contains("Stufe")) {
                     if (!settings1.edit().putString("Stufe", Stufe).commit())
@@ -75,7 +71,6 @@ public class vertretungsplan extends AppCompatActivity {
 
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
-
 
 
 
@@ -104,14 +99,14 @@ public class vertretungsplan extends AppCompatActivity {
         childnotenfragment = new fragment_noten();
         final Fragment kalenderfragment = new fragment_kalender();
         final Fragment websitefragment = new fragment_website();
-        final Fragment stundenplanfragment;
+        childstundenplanfragment = new fragment_parent_stundenplan();
         final Fragment notenfragment;
 
 
 
             SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp",0);
             if (settings3.contains("Stundenliste")) {
-                stundenplanfragment = new fragment_parent_stundenplan();
+                stundenplanfragment = childstundenplanfragment;
                 notenfragment = childnotenfragment;
 
             }
@@ -123,10 +118,11 @@ public class vertretungsplan extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.simpleframelayout, stundenplanfragment);
+        ft.add(R.id.simpleframelayout, stundenplanfragment, "stundenplan");
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
+
 
 
 
@@ -353,6 +349,19 @@ public class vertretungsplan extends AppCompatActivity {
 
     public static void versteckeLaden(){
         progressBar2.setVisibility(View.GONE);
+    }
+
+
+
+    protected void onResume() {
+
+
+        childstundenplanfragment.reload();
+
+        super.onResume();
+
+
+
     }
 }
 

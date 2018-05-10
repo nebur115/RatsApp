@@ -17,11 +17,12 @@ import java.util.List;
 
 public class fragment_parent_stundenplan extends Fragment {
 
-    List <Fragment> Fragmentlayouts = new ArrayList<Fragment>();
+    List <fragment_stundenplan> Fragmentlayouts = new ArrayList<fragment_stundenplan>();
     int currentpage = 0;
     OnSwipeTouchListener onSwipeTouchListener;
     int lastCreatetPage = 2;
     boolean intranstion = false;
+    boolean loaded = false;
 
 
     public fragment_parent_stundenplan(){
@@ -52,6 +53,8 @@ public class fragment_parent_stundenplan extends Fragment {
         ft.commit();
         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
 
+
+        loaded = true;
 
         onSwipeTouchListener = new OnSwipeTouchListener(getContext()) {
             public void onSwipeTop() {
@@ -147,6 +150,12 @@ public class fragment_parent_stundenplan extends Fragment {
         view.setOnTouchListener(onSwipeTouchListener);
 
         return view;
+    }
+
+    public void reload() {
+        if (loaded) {
+            Fragmentlayouts.get(0).reload();
+        }
     }
 
 }
