@@ -81,6 +81,8 @@ public class fragment_stundenplan extends Fragment {
 
     private void init(){
 
+
+
         int menuHeight = 60 + 50 + 36;
 
 
@@ -191,6 +193,7 @@ public class fragment_stundenplan extends Fragment {
 
 
             for(int i = 0; i<MaxStunden*5; i++) {
+
 
                 Boolean Today;
                 String Wochentag;
@@ -390,12 +393,12 @@ public class fragment_stundenplan extends Fragment {
     }
 
     public void reload(){
-
-
+        StundenListe.clear();
+        isCreated = false;
         init();
-
+        mystundenplanadapter = new Stundenplanadapter(getActivity(), StundenListe);
+        stundenplan_recyclerView.setAdapter(mystundenplanadapter);
         mystundenplanadapter.notifyDataSetChanged();
-
 
     }
 }
