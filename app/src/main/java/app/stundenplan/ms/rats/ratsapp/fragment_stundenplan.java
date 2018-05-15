@@ -137,6 +137,9 @@ public class fragment_stundenplan extends Fragment {
 
         DateMonday = dateFormat.format(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
+
+        int WeekofYear =  calendar.get(Calendar.WEEK_OF_YEAR);
+
         DateTuesday = dateFormat.format(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
         DateWednesday = dateFormat.format(calendar.getTime());
@@ -144,6 +147,8 @@ public class fragment_stundenplan extends Fragment {
         DateThurstday = dateFormat.format(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
         DateFriday = dateFormat.format(calendar.getTime());
+
+
 
 
 
@@ -172,7 +177,8 @@ public class fragment_stundenplan extends Fragment {
 
 
 
-            if (Week % 2 == 1 || !settings.getBoolean("zweiWöchentlich", true)) {
+
+            if (WeekofYear % 2 == 0 || !settings.getBoolean("zweiWöchentlich", false)) {
 
                 json = settings.getString("Stundenliste", null);
 

@@ -175,7 +175,7 @@ public class create_stundenplan extends AppCompatActivity {
 
                 jsona = settings.getString("Stundenliste", null);
                 Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
-                WocheBStundenListe = gson.fromJson(jsona , type);
+                WocheAStundenListe = gson.fromJson(jsona , type);
                 WerteWocheAus(WocheAStundenListe);
 
                 if(Zweiwöchentlich){
@@ -190,7 +190,13 @@ public class create_stundenplan extends AppCompatActivity {
                 SharedPreferences.Editor editor = settings.edit();
                 Set<String> Kurse  = new HashSet<String>(Kursliste);
                 String json = gson.toJson(NotenKlausurenListe);
-                editor.putString("NotenKlausuren", json);
+
+
+
+                if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))){
+                    editor.putString("NotenKlausuren", json);
+                }
+
                 editor.putStringSet("Kursliste", Kurse);
                 editor.apply();
 
@@ -211,8 +217,6 @@ public class create_stundenplan extends AppCompatActivity {
     public void onBackPressed() {
 
     }
-
-
 
 
     private void WerteWocheAus(List<Memory_Stunde> pStundenListe){
@@ -304,7 +308,7 @@ public class create_stundenplan extends AppCompatActivity {
 
                         int Stelle = -1;
 
-                        for (int j = 0; j < OldNotenKlausurenListe.size() - 1; j++) {
+                        for (int j = 0; j < OldNotenKlausurenListe.size(); j++) {
 
                             if (OldNotenKlausurenListe.get(j).getFach().equals(Fach)) {
                                 Stelle = j;

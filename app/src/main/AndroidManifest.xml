@@ -35,6 +35,13 @@
         android:screenOrientation="portrait"/>
 
 
+
+
+        <activity
+            android:name=".QPhase_create"
+            android:label="QPhase_create"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
     <activity
         android:name=".create_stundenplan"
         android:label="Create_Stundenplan"

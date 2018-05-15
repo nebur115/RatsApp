@@ -27,7 +27,7 @@ public class noten_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position){
         if(liste.get(position) instanceof Memory_NotenKlausuren){
             return TYPE_NORMAL;
-        }else if(liste.get(position) instanceof noten_placeholder){
+        }else if(liste.get(position) instanceof noten_placeholder) {
             return TYPE_PLACEHOLDER;
         }
         return -1;
@@ -58,7 +58,6 @@ public class noten_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 rvh=null;
                 break;
         }
-
         return rvh;
     }
 

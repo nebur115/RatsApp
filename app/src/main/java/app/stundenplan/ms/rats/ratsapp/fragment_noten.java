@@ -1,7 +1,9 @@
 package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -28,7 +31,12 @@ public class fragment_noten extends Fragment {
     TextView tSchnitt;
     TextView tSchlechtmoeglich;
     Boolean shown = false;
-
+    String Stufe;
+    ConstraintLayout Stufenwahl;
+    ConstraintLayout Q11;
+    ConstraintLayout Q12;
+    ConstraintLayout Q21;
+    ConstraintLayout Q22;
 
     public fragment_noten() {
 
@@ -41,9 +49,11 @@ public class fragment_noten extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.noten_fragment,container,false);
+        Stufenwahl = view.findViewById(R.id.Stufenwahl);
 
         SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
+        Stufe = setting.getString("Stufe","");
         linearLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerView = view.findViewById(R.id.recyclerview_noten);
 
@@ -54,6 +64,90 @@ public class fragment_noten extends Fragment {
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
         NotenList.add(0,new noten_placeholder());
+
+        Q11 = view.findViewById(R.id.cQ11);
+        Q12 = view.findViewById(R.id.cQ12);
+        Q21 = view.findViewById(R.id.cQ21);
+        Q22 = view.findViewById(R.id.cQ22);
+
+        if(Stufe.equals("Q1") || Stufe.equals("Q2")){
+            Stufenwahl.setVisibility(View.VISIBLE);
+        }else{
+            Stufenwahl.setVisibility(View.GONE);
+        }
+
+        Calendar calendar = Calendar.getInstance();
+
+        int month = calendar.get(Calendar.MONTH);
+
+
+        if(Stufe.equals("Q1")){
+            if(month>2 && month<7){
+                Q12.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+            }else{
+                Q11.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }else{
+            if(month>2 && month<7){
+                Q21.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+            }else{
+                Q22.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+        }}
+
+        Q11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Q11.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
+
+        Q12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Q12.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
+
+
+        Q21.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Q21.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
+
+
+        Q22.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Q22.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
+
 
         tBestmoeglich = view.findViewById(R.id.bestmoeglich);
         tSchnitt = view.findViewById(R.id.schnitt);
@@ -143,7 +237,7 @@ public class fragment_noten extends Fragment {
             Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
             NotenList = gson.fromJson(json , type);
             NotenList.add(0,new noten_placeholder());
-
+         
 
             SchnittNotenList = gson.fromJson(json, type);
 

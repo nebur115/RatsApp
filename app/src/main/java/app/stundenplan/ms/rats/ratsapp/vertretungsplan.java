@@ -102,18 +102,29 @@ public class vertretungsplan extends AppCompatActivity {
         childstundenplanfragment = new fragment_parent_stundenplan();
         final Fragment notenfragment;
 
+        SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp", 0);
+            if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))) {
+                if (settings3.contains("Stundenliste")) {
+                    stundenplanfragment = childstundenplanfragment;
+                    notenfragment = childnotenfragment;
+                } else {
+                    stundenplanfragment = new fragment_no_existing_stundenplan();
+                    notenfragment = new fragment_no_existing_stundenplan();
 
+                }
+            }else{
+                if (settings3.contains("Stundenliste")) {
+                    stundenplanfragment = childstundenplanfragment;
 
-            SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp",0);
-            if (settings3.contains("Stundenliste")) {
-                stundenplanfragment = childstundenplanfragment;
-                notenfragment = childnotenfragment;
+                } else {
+                    stundenplanfragment = new fragment_no_existing_stundenplan();
+                }
 
-            }
-            else{
-                stundenplanfragment = new fragment_no_existing_stundenplan();
-                notenfragment = new fragment_no_existing_stundenplan();
-
+                if(settings3.contains("NotenKlausuren")){
+                    notenfragment = childnotenfragment;
+                }else{
+                    notenfragment = new fragment_no_existing_QPhase();
+                }
             }
 
         FragmentManager fm = getSupportFragmentManager();

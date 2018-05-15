@@ -24,7 +24,6 @@ public class loading extends AppCompatActivity {
         setContentView(R.layout.loading);
 
 
-
         Intent intent = getIntent();
         final String Stufe = intent.getExtras().getString("Stufe");
 
@@ -50,11 +49,6 @@ public class loading extends AppCompatActivity {
                     public void onGlobalLayout() {
 
                         final int SPLASH_DISPLAY_LENGTH = 10;
-
-
-
-
-
 
                         new Handler().postDelayed(new Runnable(){
                             @Override
