@@ -72,7 +72,7 @@ public class vertretungsplan extends AppCompatActivity {
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
 
-
+        Stufe = settings.getString("Stufe", "");
 
         final TabLayout.Tab StundenplanTab= tablayout.newTab();
         StundenplanTab.setIcon(R.drawable.stundenplanacctive);
@@ -96,16 +96,17 @@ public class vertretungsplan extends AppCompatActivity {
 
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
-        childnotenfragment = new fragment_noten();
         final Fragment kalenderfragment = new fragment_kalender();
         final Fragment websitefragment = new fragment_website();
-        childstundenplanfragment = new fragment_parent_stundenplan();
+
         final Fragment notenfragment;
 
         SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp", 0);
             if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))) {
                 if (settings3.contains("Stundenliste")) {
+                    childstundenplanfragment = new fragment_parent_stundenplan();
                     stundenplanfragment = childstundenplanfragment;
+                    childnotenfragment = new fragment_noten();
                     notenfragment = childnotenfragment;
                 } else {
                     stundenplanfragment = new fragment_no_existing_stundenplan();
@@ -114,6 +115,7 @@ public class vertretungsplan extends AppCompatActivity {
                 }
             }else{
                 if (settings3.contains("Stundenliste")) {
+                    childstundenplanfragment = new fragment_parent_stundenplan();
                     stundenplanfragment = childstundenplanfragment;
 
                 } else {
@@ -121,6 +123,7 @@ public class vertretungsplan extends AppCompatActivity {
                 }
 
                 if(settings3.contains("NotenKlausuren")){
+                    childnotenfragment = new fragment_noten();
                     notenfragment = childnotenfragment;
                 }else{
                     notenfragment = new fragment_no_existing_QPhase();
@@ -268,7 +271,8 @@ public class vertretungsplan extends AppCompatActivity {
 
                 if (AktiveTap == "Stundenplan"){
                     StundenplanTab.setIcon(R.drawable.stundenplanacctive);
-                    childstundenplanfragment.reload();
+                    if(!(childstundenplanfragment==null)){
+                    childstundenplanfragment.reload();}
                 }
                 else if(AktiveTap == "Vertretungsplan") {
                     VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
@@ -342,7 +346,9 @@ public class vertretungsplan extends AppCompatActivity {
     }
 
     public static void notenreload(){
-        childnotenfragment.newnumbers();
+        if(!(childnotenfragment==null)) {
+            childnotenfragment.newnumbers();
+        }
     }
 
     public static void versteckeLaden(){
@@ -353,8 +359,9 @@ public class vertretungsplan extends AppCompatActivity {
 
     protected void onResume() {
 
-
-        childstundenplanfragment.reload();
+        if(!(childstundenplanfragment==null)) {
+            childstundenplanfragment.reload();
+        }
 
         super.onResume();
 

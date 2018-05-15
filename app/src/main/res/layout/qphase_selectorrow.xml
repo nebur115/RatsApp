@@ -22,7 +22,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
+        android:id="@+id/Fach"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -102,7 +102,7 @@
         app:layout_constraintTop_toBottomOf="@+id/border">
 
         <TextView
-            android:id="@+id/textView27"
+            android:id="@+id/Q11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -124,7 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/border">
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/Q12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -147,7 +147,7 @@
         app:layout_constraintTop_toBottomOf="@+id/border">
 
         <TextView
-            android:id="@+id/textView29"
+            android:id="@+id/Q21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -169,7 +169,7 @@
         app:layout_constraintTop_toBottomOf="@+id/border">
 
         <TextView
-            android:id="@+id/textView30"
+            android:id="@+id/Q22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
