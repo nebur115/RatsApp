@@ -8,6 +8,7 @@ import com.squareup.okhttp.Request;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -191,7 +192,7 @@ public class VertretungsPlanMethoden {
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if ((AlleKlassen || meineKurse.contains(lines[row + 7].replaceAll("  ", " ").toUpperCase()) || !share.contains("Stundenliste")) && lines[row + 2].contains(stufe)) {
+                    if ((AlleKlassen || meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) || !share.contains("Stundenliste")) && lines[row + 2].contains(stufe)) {
                         if (!temp.equals(lines[row])) {
                             ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                             temp = lines[row + 13];
@@ -272,30 +273,25 @@ public class VertretungsPlanMethoden {
         return Fach;
     }
 
-    private static int kursInfo(SharedPreferences share, String stufe, String kurs) throws Exception {
+    public static VertretungsStunde kursInfo(SharedPreferences share, String kurs, String Datum) throws Exception {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
+        String stufe = new SpeicherVerwaltung(share).getString("Stufe");
         String[] lines = Inhalt.split("\n");
-        String temp = "";
         int row = 0;
+        int st = 1;
         while (row + 12 < lines.length) {
-                if (lines[row + 7].replaceAll("  ", " ").toUpperCase().equals(kurs)) {
-                    switch (lines[row + 8]) {
-                        case "2":
-                            return 1; //Information
-                        case "1":
-                            if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                                return 2; //Klausur
-                            else
-                                return 3; //Raumwechsel
-                        case "0":
-                            return 4; //Entfall
-                        default:
-                            return 5; //Irgendetwas ist damit
-                    }
+            if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
+
+                if (lines[row + 2].equals(stufe)){
+                    //if (lines[row + 13].equals(Datum)) {
+                    return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
+                }
+                //}
             }
             row += 13;
         }
-        return 0;
+        return null;
     }
 }
+
