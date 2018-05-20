@@ -12,6 +12,17 @@ public class Memory_NotenKlausuren {
     private int Datum2;
     private  int Zeugnis;
     private int Wertung;
+    private String Kursart;
+    Boolean findetStatt = true;
+
+    public void setKursart(String kursart) {
+        Kursart = kursart;
+    }
+
+    public String getKursart() {
+
+        return Kursart;
+    }
 
     public Memory_NotenKlausuren(){
 
@@ -29,6 +40,14 @@ public class Memory_NotenKlausuren {
         schrifltich = pSchriftlich;
         Zeugnis = pZeugnis;
 
+    }
+
+    public Boolean getFindetStatt() {
+        return findetStatt;
+    }
+
+    public void setFindetStatt(Boolean findetStatt) {
+        this.findetStatt = findetStatt;
     }
 
     public void setWertung(int wertung) {

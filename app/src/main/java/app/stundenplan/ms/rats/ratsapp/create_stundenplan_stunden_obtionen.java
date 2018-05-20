@@ -528,6 +528,8 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
         ImageButton save = findViewById(R.id.save);
         save.setImageResource(R.drawable.tick);
+
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -547,7 +549,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 Schriftlich = false;
 
 
-                if(Bewertung == "Schriftlich" || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
+                if(Bewertung.equals("Schriftlich") || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
                     Schriftlich=true;
                 }
 
@@ -634,12 +636,10 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         Fach.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override

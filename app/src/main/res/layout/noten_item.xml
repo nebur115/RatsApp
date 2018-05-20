@@ -4,7 +4,8 @@
     android:id="@+id/everything"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:visibility="visible">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/extender"
@@ -361,6 +362,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="Note"
+            android:textColor="#545151"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/arrow"

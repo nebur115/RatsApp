@@ -122,7 +122,7 @@ public class vertretungsplan extends AppCompatActivity {
                     stundenplanfragment = new fragment_no_existing_stundenplan();
                 }
 
-                if(settings3.contains("NotenKlausuren")){
+                if(settings3.contains("NotenKlausurenQ11")){
                     childnotenfragment = new fragment_noten();
                     notenfragment = childnotenfragment;
                 }else{

@@ -29,7 +29,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="Deutsch"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/constraintLayout5"
@@ -93,6 +92,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cQ11"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#C5C5C5"
@@ -116,6 +116,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cQ12"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,6 +139,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cQ21"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#C5C5C5"
@@ -161,6 +163,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cQ22"
         android:layout_width="60dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

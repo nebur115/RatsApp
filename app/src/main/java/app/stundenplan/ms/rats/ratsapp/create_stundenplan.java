@@ -33,6 +33,7 @@ public class create_stundenplan extends AppCompatActivity {
     private List<Memory_Stunde> WocheAStundenListe = new ArrayList<>();
     private List<Memory_Stunde> WocheBStundenListe = new ArrayList<>();
     private List<String> Kursliste = new ArrayList<String>();
+    private List<String> FachListe = new ArrayList<String>();
     private List<Memory_NotenKlausuren> OldNotenKlausurenListe = new ArrayList<>();
     private List<Memory_NotenKlausuren> NotenKlausurenListe = new ArrayList<>();
     String Stufe;
@@ -189,6 +190,7 @@ public class create_stundenplan extends AppCompatActivity {
                 // Speichert  Kursliste (Liste (Strings)) in Shared Pref. als HashSet
                 SharedPreferences.Editor editor = settings.edit();
                 Set<String> Kurse  = new HashSet<String>(Kursliste);
+                Set<String> Faecher  = new HashSet<String>(FachListe);
                 String json = gson.toJson(NotenKlausurenListe);
 
 
@@ -197,6 +199,7 @@ public class create_stundenplan extends AppCompatActivity {
                     editor.putString("NotenKlausuren", json);
                 }
 
+                editor.putStringSet("Faecher", Faecher);
                 editor.putStringSet("Kursliste", Kurse);
                 editor.apply();
 
@@ -298,6 +301,7 @@ public class create_stundenplan extends AppCompatActivity {
 
                 if (!Kursliste.contains(Kursname.toUpperCase()) && !Kursname.equals("")) {
                     Kursliste.add(Kursname.toUpperCase());
+                    FachListe.add(Fach);
                 }
 
 

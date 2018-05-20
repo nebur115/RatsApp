@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +60,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     int Datum2;
     String Fach;
     boolean Shown;
+    String Stufe;
 
     public noten_viewholder(View View) {
         super(View);
@@ -86,9 +88,39 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
 
         SharedPreferences setting = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
         List<Memory_NotenKlausuren> NotenList = new ArrayList<>();
-        String json;
+        String json = "";
         Gson gson = new Gson();
-        json = setting.getString("NotenKlausuren", null);
+         Stufe = setting.getString("Stufe","");
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+
+
+        if(Stufe.equals("Q1") || Stufe.equals("Q2")){
+            String SelectedStufe = setting.getString("ShownHalbjahr", null);
+
+            if(SelectedStufe.equals("Q11")){
+                json = setting.getString("NotenKlausurenQ11", null);
+            }
+
+            if(SelectedStufe.equals("Q12")){
+                json = setting.getString("NotenKlausurenQ12", null);
+            }
+
+            if(SelectedStufe.equals("Q21")){
+                json = setting.getString("NotenKlausurenQ21", null);
+            }
+
+            if(SelectedStufe.equals("Q22")){
+                json = setting.getString("NotenKlausurenQ22", null);
+            }
+
+
+        }else{
+
+            json = setting.getString("NotenKlausuren", null);
+        }
+
+
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
 
@@ -117,9 +149,13 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                 tDate1.setText(Day + "." + Month + "." + Year);
                }else{
                 tDate1.setText("01.01.2000");
-            }
+        }
 
 
+        if(!Object.getFindetStatt()) {
+            viewholder.setVisibility(View.GONE);
+            viewholder.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        }
 
 
         if(!(Datum2 ==0)){
@@ -489,7 +525,6 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         return Temp;
     }
 
-
     private String PunktezuNote(int pPunkte){
         switch (pPunkte){
             case 1:
@@ -586,9 +621,39 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
 
         SharedPreferences setting = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
         List<Memory_NotenKlausuren> NotenList = new ArrayList<>();
-        String json;
+        String json = "";
         Gson gson = new Gson();
-        json = setting.getString("NotenKlausuren", null);
+        String SharedPref = "";
+
+        if(Stufe.equals("Q1") || Stufe.equals("Q2")){
+            String SelectedStufe = setting.getString("ShownHalbjahr", null);
+
+            if(SelectedStufe.equals("Q11")){
+                json = setting.getString("NotenKlausurenQ11", null);
+                SharedPref = "NotenKlausurenQ11";
+            }
+
+            if(SelectedStufe.equals("Q12")){
+                 json = setting.getString("NotenKlausurenQ12", null);
+                SharedPref = "NotenKlausurenQ12";
+            }
+
+             if(SelectedStufe.equals("Q21")){
+                json = setting.getString("NotenKlausurenQ21", null);
+                 SharedPref = "NotenKlausurenQ21";
+             }
+
+             if(SelectedStufe.equals("Q22")){
+                json = setting.getString("NotenKlausurenQ22", null);
+                 SharedPref = "NotenKlausurenQ22";
+            }
+
+
+        }else{
+            json = setting.getString("NotenKlausuren", null);
+            SharedPref = "NotenKlausuren";
+        }
+
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
 
@@ -602,7 +667,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
 
         SharedPreferences.Editor editor = setting.edit();
         String savejson = gson.toJson(NotenList);
-        editor.putString("NotenKlausuren", savejson);
+        editor.putString(SharedPref, savejson);
         editor.apply();
 
         vertretungsplan.notenreload();
@@ -712,6 +777,15 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             tGesammt.setText("");
         }
 
+        String textTGesammt = tGesammt.getText().toString();
+
+        if(tGesammt.getText().toString().equals("5+ ") || tGesammt.getText().toString().equals("5  ") || tGesammt.getText().toString().equals("5-") || tGesammt.getText().toString().equals("6  ")){
+            tGesammt.setTextColor(Color.parseColor("#D40101"));
+            tGesammt.setTypeface(Typeface.DEFAULT_BOLD);
+        }else{
+            tGesammt.setTextColor(Color.parseColor("#545151"));
+            tGesammt.setTypeface(Typeface.DEFAULT);
+        }
     }
 
 }

@@ -37,10 +37,14 @@ public class fragment_noten extends Fragment {
     ConstraintLayout Q12;
     ConstraintLayout Q21;
     ConstraintLayout Q22;
+    SharedPreferences setting;
+    Type type;
+    String StufeHalbjahr;
 
     public fragment_noten() {
-
     }
+
+
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -51,19 +55,24 @@ public class fragment_noten extends Fragment {
         View view = inflater.inflate(R.layout.noten_fragment,container,false);
         Stufenwahl = view.findViewById(R.id.Stufenwahl);
 
-        SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+        setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         Stufe = setting.getString("Stufe","");
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return true;
+            }
+        };
         mrecyclerView = view.findViewById(R.id.recyclerview_noten);
 
         String json;
         Gson gson = new Gson();
 
-        json = setting.getString("NotenKlausuren", null);
-        Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
-        NotenList = gson.fromJson(json , type);
-        NotenList.add(0,new noten_placeholder());
+
+
+        type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+
 
         Q11 = view.findViewById(R.id.cQ11);
         Q12 = view.findViewById(R.id.cQ12);
@@ -71,10 +80,8 @@ public class fragment_noten extends Fragment {
         Q22 = view.findViewById(R.id.cQ22);
 
         if(Stufe.equals("Q1") || Stufe.equals("Q2")){
-            Stufenwahl.setVisibility(View.VISIBLE);
-        }else{
-            Stufenwahl.setVisibility(View.GONE);
-        }
+
+        Stufenwahl.setVisibility(View.VISIBLE);
 
         Calendar calendar = Calendar.getInstance();
 
@@ -83,71 +90,70 @@ public class fragment_noten extends Fragment {
 
         if(Stufe.equals("Q1")){
             if(month>2 && month<7){
+                StufeHalbjahr = "Q12";
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
                 Q12.setBackgroundColor(Color.parseColor("#D8D8D8"));
                 Q11.setBackgroundColor(Color.TRANSPARENT);
                 Q21.setBackgroundColor(Color.TRANSPARENT);
                 Q22.setBackgroundColor(Color.TRANSPARENT);
+                json = setting.getString("NotenKlausurenQ11", null);
+                NotenList = gson.fromJson(json , type);
+                NotenList.add(0,new noten_placeholder());
+
             }else{
+                StufeHalbjahr = "Q11";
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
                 Q11.setBackgroundColor(Color.parseColor("#D8D8D8"));
                 Q12.setBackgroundColor(Color.TRANSPARENT);
                 Q21.setBackgroundColor(Color.TRANSPARENT);
                 Q22.setBackgroundColor(Color.TRANSPARENT);
+                json = setting.getString("NotenKlausurenQ12", null);
+                NotenList = gson.fromJson(json , type);
+                NotenList.add(0,new noten_placeholder());
+
             }
         }else{
             if(month>2 && month<7){
-                Q21.setBackgroundColor(Color.parseColor("#D8D8D8"));
-                Q11.setBackgroundColor(Color.TRANSPARENT);
-                Q12.setBackgroundColor(Color.TRANSPARENT);
-                Q22.setBackgroundColor(Color.TRANSPARENT);
-            }else{
+                StufeHalbjahr = "Q22";
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
                 Q22.setBackgroundColor(Color.parseColor("#D8D8D8"));
                 Q11.setBackgroundColor(Color.TRANSPARENT);
                 Q12.setBackgroundColor(Color.TRANSPARENT);
                 Q21.setBackgroundColor(Color.TRANSPARENT);
+                json = setting.getString("NotenKlausurenQ21", null);
+                NotenList = gson.fromJson(json , type);
+                NotenList.add(0,new noten_placeholder());
+
+            }else{
+                StufeHalbjahr = "Q21";
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
+                Q21.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+                json = setting.getString("NotenKlausurenQ22", null);
+                NotenList = gson.fromJson(json , type);
+                NotenList.add(0,new noten_placeholder());
+
         }}
 
-        Q11.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Q11.setBackgroundColor(Color.parseColor("#D8D8D8"));
-                Q12.setBackgroundColor(Color.TRANSPARENT);
-                Q21.setBackgroundColor(Color.TRANSPARENT);
-                Q22.setBackgroundColor(Color.TRANSPARENT);
-            }
-        });
-
-        Q12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Q12.setBackgroundColor(Color.parseColor("#D8D8D8"));
-                Q11.setBackgroundColor(Color.TRANSPARENT);
-                Q21.setBackgroundColor(Color.TRANSPARENT);
-                Q22.setBackgroundColor(Color.TRANSPARENT);
-            }
-        });
 
 
-        Q21.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Q21.setBackgroundColor(Color.parseColor("#D8D8D8"));
-                Q11.setBackgroundColor(Color.TRANSPARENT);
-                Q12.setBackgroundColor(Color.TRANSPARENT);
-                Q22.setBackgroundColor(Color.TRANSPARENT);
-            }
-        });
-
-
-        Q22.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Q22.setBackgroundColor(Color.parseColor("#D8D8D8"));
-                Q11.setBackgroundColor(Color.TRANSPARENT);
-                Q12.setBackgroundColor(Color.TRANSPARENT);
-                Q21.setBackgroundColor(Color.TRANSPARENT);
-            }
-        });
-
+        }else{
+            Stufenwahl.setVisibility(View.GONE);
+            json = setting.getString("NotenKlausuren", null);
+            NotenList = gson.fromJson(json , type);
+            NotenList.add(0,new noten_placeholder());
+            StufeHalbjahr = "---";
+        }
 
         tBestmoeglich = view.findViewById(R.id.bestmoeglich);
         tSchnitt = view.findViewById(R.id.schnitt);
@@ -156,8 +162,109 @@ public class fragment_noten extends Fragment {
         adapter = new noten_adapter(getActivity(),NotenList);
         mrecyclerView.setAdapter(adapter);
         AktualisiereZahlen();
-
         adapter.notifyDataSetChanged();
+
+
+
+        Q11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Object> NotenList11 = new ArrayList<>();
+                Q11.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+                Gson gson = new Gson();
+                setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+                String json11 = setting.getString("NotenKlausurenQ11", null);
+                NotenList11 = gson.fromJson(json11 , type);
+                NotenList11.add(0,new noten_placeholder());
+                adapter = new noten_adapter(getActivity(),NotenList11);
+                mrecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                StufeHalbjahr = "Q11";
+
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
+            }
+        });
+
+        Q12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Object> NotenList12 = new ArrayList<>();
+                Q12.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+                Gson gson = new Gson();
+                setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+                String json12 = setting.getString("NotenKlausurenQ12", null);
+                NotenList12 = gson.fromJson(json12 , type);
+                NotenList12.add(0,new noten_placeholder());
+                adapter = new noten_adapter(getActivity(),NotenList12);
+                mrecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                StufeHalbjahr = "Q12";
+
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
+            }
+        });
+
+
+        Q21.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Object> NotenList21 = new ArrayList<>();
+                Q21.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q22.setBackgroundColor(Color.TRANSPARENT);
+                Gson gson = new Gson();
+                String json21 = setting.getString("NotenKlausurenQ21", null);
+                NotenList21 = gson.fromJson(json21 , type);
+                NotenList21.add(0,new noten_placeholder());
+                NotenList21.add(new noten_placeholder());
+                adapter = new noten_adapter(getActivity(),NotenList21);
+                mrecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                StufeHalbjahr = "Q21";
+
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
+            }
+        });
+
+
+        Q22.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Object> NotenList22 = new ArrayList<>();
+                Q22.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                Q11.setBackgroundColor(Color.TRANSPARENT);
+                Q12.setBackgroundColor(Color.TRANSPARENT);
+                Q21.setBackgroundColor(Color.TRANSPARENT);
+                Gson gson = new Gson();
+                setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+                String json22 = setting.getString("NotenKlausurenQ22", null);
+                NotenList22 = gson.fromJson(json22 , type);
+                NotenList22.add(0,new noten_placeholder());
+                adapter = new noten_adapter(getActivity(),NotenList22);
+                mrecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                StufeHalbjahr = "Q22";
+
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putString("ShownHalbjahr", StufeHalbjahr);
+                editor.apply();
+            }
+        });
+
+
 
         shown = true;
 
@@ -166,14 +273,6 @@ public class fragment_noten extends Fragment {
 
     public void AktualisiereZahlen(){
 
-        SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
-        String json = setting.getString("NotenKlausuren", null);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {
-        }.getType();
-        SchnittNotenList = gson.fromJson(json, type);
-
-
         int anzahlNoten = 0;
         int anzahlAll = 0;
         int summeNoten = 0;
@@ -181,42 +280,150 @@ public class fragment_noten extends Fragment {
         int summeBeste = 0;
         double SchnittPunkte;
 
-        for (int i = 0; i < SchnittNotenList.size(); i++) {
-            int Wertung = SchnittNotenList.get(i).getWertung();
-            int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-            int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-            int Schlechteste = SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+        SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
 
-            anzahlAll++;
-            summeBeste = summeBeste + Beste;
-            summeSchlechteste = summeSchlechteste + Schlechteste;
+        if(!(setting.getString("Stufe",null).equals("Q1") || setting.getString("Stufe",null).equals("Q2"))) {
 
-            if (!(Note == 0)) {
-                anzahlNoten = anzahlNoten + Wertung;
-                summeNoten = summeNoten + (Note * Wertung);
+
+            String json = setting.getString("NotenKlausuren", null);
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+            SchnittNotenList = gson.fromJson(json, type);
+
+
+            for (int i = 0; i < SchnittNotenList.size(); i++) {
+                int Wertung = SchnittNotenList.get(i).getWertung();
+                int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+                int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+                int Schlechteste = SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+
+                anzahlAll += Wertung;
+                summeBeste = summeBeste + Beste * Wertung;
+                summeSchlechteste = summeSchlechteste + Schlechteste * Wertung;
+
+
+                if (!(Note == 0)) {
+                    anzahlNoten = anzahlNoten + Wertung;
+                    summeNoten = summeNoten + ((Note-1) * Wertung);
+                }
+            }
+
+
+        }else{
+
+            List<Memory_NotenKlausuren> NotenListQ11;
+            List<Memory_NotenKlausuren> NotenListQ12;
+            List<Memory_NotenKlausuren> NotenListQ21;
+            List<Memory_NotenKlausuren> NotenListQ22;
+
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {
+            }.getType();
+
+            String jsonQ11 = setting.getString("NotenKlausurenQ11", null);
+            String jsonQ12 = setting.getString("NotenKlausurenQ12", null);
+            String jsonQ21 = setting.getString("NotenKlausurenQ21", null);
+            String jsonQ22 = setting.getString("NotenKlausurenQ21", null);
+
+            NotenListQ11 = gson.fromJson(jsonQ11, type);
+            NotenListQ12 = gson.fromJson(jsonQ12, type);
+            NotenListQ21 = gson.fromJson(jsonQ21, type);
+            NotenListQ22 = gson.fromJson(jsonQ22, type);
+
+            SchnittNotenList.addAll(NotenListQ11);
+            SchnittNotenList.addAll(NotenListQ12);
+            SchnittNotenList.addAll(NotenListQ21);
+            SchnittNotenList.addAll(NotenListQ22);
+
+            for (int i = 0; i < SchnittNotenList.size(); i++) {
+                int Wertung = SchnittNotenList.get(i).getWertung();
+                int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+                int Schlechteste = SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
+                anzahlAll += Wertung;
+                summeBeste = summeBeste + Beste * Wertung;
+                summeSchlechteste = summeSchlechteste + Schlechteste * Wertung;
+
+            }
+
+
+
+            for (int i = 0; i < NotenListQ11.size(); i++) {
+                int Halbjahre = 0;
+                int Wertung = 1;
+                int AnzahlEingetragen=0;
+                int NoteQ11;
+                int NoteQ12;
+                int NoteQ21;
+                int NoteQ22;
+                int SummePunkte = 0;
+
+                if((NotenListQ11.get(i).getFindetStatt())){
+                    Halbjahre++;
+                    Wertung = NotenListQ11.get(i).getWertung();
+                    NoteQ11 = GesammtNote(NotenListQ11.get(i).isMuendlichschrifltich(), NotenListQ11.get(i).getZeugnis(), NotenListQ11.get(i).getMuendlich1(), NotenListQ11.get(i).getMuendlich2(), NotenListQ11.get(i).getSchriftlich1(), NotenListQ11.get(i).getSchriftlich2());
+                    if(!(NoteQ11==0)){
+                        AnzahlEingetragen++;
+                        SummePunkte += NoteQ11-1;
+                    }
+
+                }
+
+
+                if((NotenListQ12.get(i).getFindetStatt())){
+                    Halbjahre++;
+                    Wertung = NotenListQ12.get(i).getWertung();
+                    NoteQ12 = GesammtNote(NotenListQ12.get(i).isMuendlichschrifltich(), NotenListQ12.get(i).getZeugnis(), NotenListQ12.get(i).getMuendlich1(), NotenListQ12.get(i).getMuendlich2(), NotenListQ12.get(i).getSchriftlich1(), NotenListQ12.get(i).getSchriftlich2());
+                    if(!(NoteQ12==0)){
+                        AnzahlEingetragen++;
+                        SummePunkte += NoteQ12-1;
+                    }
+                }
+
+
+                if((NotenListQ21.get(i).getFindetStatt())){
+                    Halbjahre++;
+                    Wertung = NotenListQ21.get(i).getWertung();
+                    NoteQ21 = GesammtNote(NotenListQ21.get(i).isMuendlichschrifltich(), NotenListQ21.get(i).getZeugnis(), NotenListQ21.get(i).getMuendlich1(), NotenListQ21.get(i).getMuendlich2(), NotenListQ21.get(i).getSchriftlich1(), NotenListQ21.get(i).getSchriftlich2());
+                    if(!(NoteQ21==0)){
+                        AnzahlEingetragen++;
+                        SummePunkte += NoteQ21-1;
+                    }
+                }
+
+
+                if((NotenListQ21.get(i).getFindetStatt())){
+                    Halbjahre++;
+                    Wertung = NotenListQ22.get(i).getWertung();
+                    NoteQ22 = GesammtNote(NotenListQ22.get(i).isMuendlichschrifltich(), NotenListQ22.get(i).getZeugnis(), NotenListQ22.get(i).getMuendlich1(), NotenListQ22.get(i).getMuendlich2(), NotenListQ22.get(i).getSchriftlich1(), NotenListQ22.get(i).getSchriftlich2());
+                    if(!(NoteQ22==0)){
+                        AnzahlEingetragen++;
+                        SummePunkte += NoteQ22-1;
+                    }
+                }
+
+                if(!(AnzahlEingetragen==0)) {
+                    anzahlNoten = anzahlNoten + (Wertung*Halbjahre);
+                    summeNoten += SummePunkte + (SummePunkte / AnzahlEingetragen * (Halbjahre - AnzahlEingetragen)) * Wertung;
+                }
+
+
             }
 
         }
+
 
         if (!(anzahlNoten == 0)) {
             String FinalSchnitt;
             String FinalBestmoeglich;
             String FinalSchlechtmoeglich;
 
-
             FinalSchnitt = Double.toString(PunktezuNote(summeNoten, anzahlNoten)) + "000";
-
-
             FinalBestmoeglich = Double.toString(PunktezuNote(summeBeste, anzahlAll)) + "000";
-
-
             FinalSchlechtmoeglich = Double.toString(PunktezuNote(summeSchlechteste, anzahlAll)) + "000";
 
             tSchnitt.setText(FinalSchnitt.substring(0, 4));
-
             tBestmoeglich.setText(FinalBestmoeglich.substring(0, 4));
-
             tSchlechtmoeglich.setText(FinalSchlechtmoeglich.substring(0, 4));
 
         } else {
@@ -233,12 +440,30 @@ public class fragment_noten extends Fragment {
             String json;
             Gson gson = new Gson();
 
-            json = setting.getString("NotenKlausuren", null);
+            switch (StufeHalbjahr){
+                case "---":
+                    json = setting.getString("NotenKlausuren", null);
+                    break;
+                case "Q11":
+                    json = setting.getString("NotenKlausurenQ11", null);
+                    break;
+                case "Q12":
+                    json = setting.getString("NotenKlausurenQ12", null);
+                    break;
+                case "Q21":
+                    json = setting.getString("NotenKlausurenQ21", null);
+                    break;
+                case "Q22":
+                    json = setting.getString("NotenKlausurenQ22", null);
+                    break;
+                default:
+                    json = setting.getString("NotenKlausuren", null);
+                    break;
+
+            }
             Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
             NotenList = gson.fromJson(json , type);
             NotenList.add(0,new noten_placeholder());
-         
-
             SchnittNotenList = gson.fromJson(json, type);
 
             AktualisiereZahlen();
@@ -305,7 +530,7 @@ public class fragment_noten extends Fragment {
             if(!(MuendlichEingetragen==0)){
                 alleeingetragen++;
             }
-            return((int) (((Muendlich+Schriftlich)/alleeingetragen)));
+            return((int) (((Muendlich+Schriftlich)/alleeingetragen))+1);
 
         }else{
             return (0);
