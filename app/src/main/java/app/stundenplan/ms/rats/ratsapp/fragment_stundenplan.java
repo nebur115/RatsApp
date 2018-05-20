@@ -32,11 +32,11 @@ public class fragment_stundenplan extends Fragment {
     boolean isCreated = false;
     private List<Boolean> lastShowStunde = new ArrayList<>();
     private List<Boolean> lastDoppelStunde = new ArrayList<>();
-    Boolean Raumwechsel;
-    Boolean Lehrerwechsel;
-    Boolean Entfällt;
-    Boolean Klausur;
-    Boolean Veranstalltung;
+    Boolean Raumwechsel = false;
+    Boolean Lehrerwechsel = false;
+    Boolean Entfällt =false;
+    Boolean Klausur=false;
+    Boolean Veranstalltung=false;
     String Kurs;
     String Datum;
     Boolean Schriftlich;
@@ -353,19 +353,37 @@ public class fragment_stundenplan extends Fragment {
 
                 }
 
-
-                Raumwechsel = false;
-                Lehrerwechsel = false;
-                Entfällt = false;
-                Klausur = false;
-                Veranstalltung= false;
-                //string Raum
-                //string Lehrer
-
-
+                //Kurs wird nicht richtig initialisiert
                 Kurs = MemoryStundenListe.get(i).getKürzel();
                 Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
-                //int Datum
+
+                try {
+                    VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
+                    switch(s.type){
+                        case 2: Klausur = true;
+                        if(!Raum.equals(s.raum))
+                            Raumwechsel = true;
+                        Raum = s.raum;
+                        break;
+                        case 1: Lehrerwechsel = true;
+                        Lehrer = s.lehrer;
+                        if(!Raum.equals(s.raum)){
+                            Raumwechsel = true;
+                            Raum = s.raum;
+                        }
+                        break;
+                        case 3: Raumwechsel = true;
+                        Raum = s.raum;
+                        break;
+                        case 4: Entfällt = true;
+                        break;
+                        case 5: Veranstalltung= true;
+                        break;
+                    }
+                    System.out.println("Funktioniert");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
                 //Bei Raum / Lehrerwechsel Wert anpassen
