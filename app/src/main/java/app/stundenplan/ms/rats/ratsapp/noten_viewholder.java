@@ -38,12 +38,12 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     TextView tFach;
     TextView tGesammt;
     ConstraintLayout cExtender;
-    ConstraintLayout cSchriftlich1;
-    ConstraintLayout cSchrifltich2;
+    ConstraintLayout cSchriftlich;
     ImageView arrow;
     ConstraintLayout Main;
     TextView tDate1;
     TextView tDate2;
+    ConstraintLayout Klausur3;
     private DatePickerDialog.OnDateSetListener mDate1Listener;
     private DatePickerDialog.OnDateSetListener mDate2Listener;
     Context context;
@@ -68,8 +68,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         cExtender = View.findViewById(R.id.extender);
         tFach = View.findViewById(R.id.fachText);
         Main = View.findViewById(R.id.main);
-        cSchriftlich1 = View.findViewById(R.id.Quartal1Schritflich);
-        cSchrifltich2 = View.findViewById(R.id.Quartal2Schritflich);
+        cSchriftlich = View.findViewById(R.id.cSchriftlich);
         tGesammt = View.findViewById(R.id.GesammtText);
         tSchriftlich1 = View.findViewById(R.id.Schriftlich1);
         tSchriftlich2 = View.findViewById(R.id.Schriftlich2);
@@ -81,6 +80,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         arrow = View.findViewById(R.id.arrow);
         everything = View.findViewById(R.id.everything);
         viewholder = View;
+        Klausur3 = View.findViewById(R.id.Klausur3);
     }
 
     public void showDetails(Memory_NotenKlausuren Object){
@@ -96,6 +96,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
 
 
         if(Stufe.equals("Q1") || Stufe.equals("Q2")){
+
             String SelectedStufe = setting.getString("ShownHalbjahr", null);
 
             if(SelectedStufe.equals("Q11")){
@@ -120,9 +121,14 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
             json = setting.getString("NotenKlausuren", null);
         }
 
+        if(Stufe.equals("Q1") || Stufe.equals("Q2") || Stufe.equals("EF")){
+            Klausur3.setVisibility(View.GONE);
+        }
+
 
         Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
         NotenList = gson.fromJson(json , type);
+
 
         Object = NotenList.get(getAdapterPosition()-1);
 
@@ -223,11 +229,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         tFach.setText(Fach);
 
         if(!schrifltich) {
-            cSchriftlich1.setVisibility(View.GONE);
-            cSchrifltich2.setVisibility(View.GONE);
+            cSchriftlich.setVisibility(View.GONE);
         }else{
-            cSchriftlich1.setVisibility(View.VISIBLE);
-            cSchrifltich2.setVisibility(View.VISIBLE);
+            cSchriftlich.setVisibility(View.VISIBLE);
         }
 
         GesammtNote(Zeugnisnote,Muendlich1,Muendlich2,Schriftlich1,Schriftlich2);
@@ -457,11 +461,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                     arrow.setAnimation(animrdown);
 
                     if(!schrifltich) {
-                        cSchriftlich1.setVisibility(View.GONE);
-                        cSchrifltich2.setVisibility(View.GONE);
+                        cSchriftlich.setVisibility(View.GONE);
                     }else{
-                        cSchriftlich1.setVisibility(View.VISIBLE);
-                        cSchrifltich2.setVisibility(View.VISIBLE);
+                        cSchriftlich.setVisibility(View.VISIBLE);
                     }
 
 
@@ -483,15 +485,11 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                     arrow.setAnimation(animrup);
                     cExtender.setVisibility(View.GONE);
 
-
                     if(!schrifltich) {
-                        cSchriftlich1.setVisibility(View.GONE);
-                        cSchrifltich2.setVisibility(View.GONE);
+                        cSchriftlich.setVisibility(View.GONE);
                     }else{
-                        cSchriftlich1.setVisibility(View.VISIBLE);
-                        cSchrifltich2.setVisibility(View.VISIBLE);
+                        cSchriftlich.setVisibility(View.VISIBLE);
                     }
-
 
                 }
             }

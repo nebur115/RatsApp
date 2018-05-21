@@ -21,10 +21,11 @@
             android:id="@+id/GesanntNote"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+            app:layout_constraintTop_toBottomOf="@+id/cSchriftlich">
 
             <Spinner
                 android:id="@+id/Zeugnisnote"
@@ -80,6 +81,41 @@
             app:layout_constraintTop_toBottomOf="@+id/main">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal2Mündlich"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Quartal1Mündlich">
+
+                <Spinner
+                    android:id="@+id/Muendlich2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/Quartal1MündlichTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Quartal 2:"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/Quartal1Mündlich"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
@@ -95,7 +131,7 @@
                     android:layout_marginLeft="28dp"
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="10dp"
-                    android:text="Müdlich:"
+                    android:text="Quartal 1:"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -109,56 +145,6 @@
                     android:layout_marginRight="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/Quartal1Schritflich"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Quartal1Mündlich">
-
-                <TextView
-                    android:id="@+id/klasur1Date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="01.01.2000"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/Schriftlich1"
-                    app:layout_constraintHorizontal_bias="0.3"
-                    app:layout_constraintStart_toEndOf="@+id/Quartal1SchritflichTextView"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Spinner
-                    android:id="@+id/Schriftlich1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/Quartal1SchritflichTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginStart="28dp"
-                    android:text="Klausur:"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
@@ -180,7 +166,7 @@
                     android:layout_marginLeft="22dp"
                     android:layout_marginStart="22dp"
                     android:layout_marginTop="10dp"
-                    android:text="1. Quartal"
+                    android:text="Mündlich:"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -191,7 +177,7 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout8"
+            android:id="@+id/cSchriftlich"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -200,16 +186,84 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/Quartal2Mündlich"
+                android:id="@+id/Klausur3"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Quartal2">
+                app:layout_constraintTop_toBottomOf="@+id/Quartal2Schritflich">
+
+
+                <TextView
+                    android:id="@+id/klasur2Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="48dp"
+                    android:text="01.01.2000"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/Schriftlich2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/quartal1SchritflichTextView4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/quartal1SchritflichTextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:text="Klausur 3:"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
-                    android:id="@+id/Muendlich2"
+                    android:id="@+id/Schriftlich2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/Quartal1Schritflich"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Schriftlich">
+
+                <TextView
+                    android:id="@+id/klasur1Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="48dp"
+                    android:text="01.01.2000"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/Schriftlich1"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/Quartal1SchritflichTextView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/Schriftlich1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -219,14 +273,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/Quartal1MündlichTextView"
+                    android:id="@+id/Quartal1SchritflichTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="28dp"
                     android:layout_marginStart="28dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Müdlich:"
+                    android:text="Klausur 1:"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -235,7 +287,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/Quartal2"
+                android:id="@+id/Schriftlich"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -251,7 +303,7 @@
                     android:layout_marginLeft="22dp"
                     android:layout_marginStart="22dp"
                     android:layout_marginTop="10dp"
-                    android:text="2. Quartal"
+                    android:text="Schriftlich:"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -267,23 +319,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Quartal2Mündlich">
+                app:layout_constraintTop_toBottomOf="@+id/Quartal1Schritflich">
 
 
                 <TextView
                     android:id="@+id/klasur2Date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="48dp"
                     android:text="01.01.2000"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/Schriftlich2"
-                    app:layout_constraintHorizontal_bias="0.3"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/quartal1SchritflichTextView4"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -293,7 +345,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="28dp"
                     android:layout_marginStart="28dp"
-                    android:text="Klausur:"
+                    android:text="Klausur 2:"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -337,7 +389,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/border"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginEnd="12dp"

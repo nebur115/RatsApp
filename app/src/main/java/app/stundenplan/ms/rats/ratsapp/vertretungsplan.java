@@ -150,8 +150,7 @@ public class vertretungsplan extends AppCompatActivity {
         settingsbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(vertretungsplan.this, create_stundenplan.class);
-                i.putExtra("Woche", 1);
+                Intent i = new Intent(vertretungsplan.this, Einstellungen.class);
                 startActivity(i);
             }
         });
