@@ -170,20 +170,22 @@ public class create_stundenplan extends AppCompatActivity {
             public void onClick(View view) {
 
                 String jsona;
-                String jsonb;
+                String jsonb = "";
                 Gson gson = new Gson();
 
 
                 jsona = settings.getString("Stundenliste", null);
                 Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
                 WocheAStundenListe = gson.fromJson(jsona , type);
-                WerteWocheAus(WocheAStundenListe);
+                WocheAStundenListe = WerteWocheAus(WocheAStundenListe);
+                jsona = gson.toJson(WocheAStundenListe);
 
                 if(Zweiwöchentlich){
                     Gson gsona = new Gson();
                     jsonb = settings.getString("WocheBStundenListe", null);
                     WocheBStundenListe = gsona.fromJson(jsonb , type);
-                    WerteWocheAus(WocheBStundenListe);
+                    WocheBStundenListe = WerteWocheAus(WocheBStundenListe);
+                    jsonb = gson.toJson(WocheBStundenListe);
                 }
 
 
@@ -193,12 +195,14 @@ public class create_stundenplan extends AppCompatActivity {
                 Set<String> Faecher  = new HashSet<String>(FachListe);
                 String json = gson.toJson(NotenKlausurenListe);
 
-
-
                 if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))){
                     editor.putString("NotenKlausuren", json);
                 }
 
+                editor.putString("Stundenliste", jsona);
+                if(Zweiwöchentlich){
+                    editor.putString("WocheBStundenListe", jsonb);
+                }
                 editor.putStringSet("Faecher", Faecher);
                 editor.putStringSet("Kursliste", Kurse);
                 editor.apply();
@@ -222,7 +226,7 @@ public class create_stundenplan extends AppCompatActivity {
     }
 
 
-    private void WerteWocheAus(List<Memory_Stunde> pStundenListe){
+    private List<Memory_Stunde> WerteWocheAus(List<Memory_Stunde> pStundenListe){
 
         for(int i=0; i<pStundenListe.size(); i++){
 
@@ -268,9 +272,9 @@ public class create_stundenplan extends AppCompatActivity {
                         }
                     } else {
                         if (!(Kursnummer == 0)) {
-                            Kursname = shortFach + Startjahr;
-                        } else {
                             Kursname = shortFach + Startjahr + "-" + Kursnummer;
+                        } else {
+                            Kursname = shortFach + Startjahr;
                         }
                     }
 
@@ -278,10 +282,7 @@ public class create_stundenplan extends AppCompatActivity {
                     Kursname = pStundenListe.get(i).getKürzel();
                 }
 
-                //Hier nach Fach und Kursart Checken. Sonst nach nichts!!!
-                if (!(Kursname == null)) {
-                    pStundenListe.get(i).setFachkürzel(Kursname);
-                }
+                pStundenListe.get(i).setKürzel(Kursname.toUpperCase());
 
                 Boolean Existing = false;
                 Boolean Vorhanden = false;
@@ -338,6 +339,8 @@ public class create_stundenplan extends AppCompatActivity {
                 }
             }
         }
+
+        return pStundenListe;
     }
 
 }
