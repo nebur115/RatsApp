@@ -32,6 +32,7 @@ public class VertretungsPlanMethoden {
     public static fragment_vertretungsplan context = null;
     public static String input = "";
     public static final int ANZAHL_LANGEKURSE = 5;
+    public static boolean offline = false;
     public static String[][] replacements = {
             {"M/PH/IF", "Mathe Physik Informatik"},
             {"BI/CH", "Bio Chemie"},
@@ -77,7 +78,8 @@ public class VertretungsPlanMethoden {
 
             //Teilt den input in die verschiedenen Zeilen auf
             String[] in = input.split("\n");
-
+            if(in.length<2)
+                throw new Exception();
             //Initialisieren von weiteren Variablen
             boolean first = true;
             int row = 0;
@@ -126,13 +128,19 @@ public class VertretungsPlanMethoden {
             request += "?Stand=" + Stand;
         */
 
-        String[] y = htmlGetVertretung(request);
-        if (y.length > 0) {
-            if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
-                s.setString("Stand", y[0]);
-                s.setString("VertretungsPlanInhalt", y[1]);
+        try {
+            String[] y = htmlGetVertretung(request);
+            if (y.length > 0) {
+                if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
+                    s.setString("Stand", y[0]);
+                    s.setString("VertretungsPlanInhalt", y[1]);
+                }
             }
         }
+        catch(Exception e){
+            offline = true;
+        }
+
         downloadedDaten = true;
 
     }
@@ -179,6 +187,11 @@ public class VertretungsPlanMethoden {
      * @throws Exception
      */
     private static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
+        if(offline){
+            ItemList.add(new Ereignis("Du oder wir sind offline", "", "", "", "", R.drawable.entfaellt));
+            return;
+        }
+
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         HashSet<String> meineKurse = (HashSet<String>) share.getStringSet("Kursliste", new HashSet<String>());
