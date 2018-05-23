@@ -314,7 +314,7 @@
                 </android.support.constraint.ConstraintLayout>
 
                 <CheckBox
-                    android:id="@+id/waehrenddesUnterichts"
+                    android:id="@+id/CBwaehrenddesUnterichts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="42dp"

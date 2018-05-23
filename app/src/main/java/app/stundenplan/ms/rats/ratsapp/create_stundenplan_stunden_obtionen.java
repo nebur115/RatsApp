@@ -737,17 +737,13 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             }
         }
 
-
         String fachkürzel;
-
 
         if(Arrays.asList(Fächer).contains(fach)){
             fachkürzel = Kürzel[Arrays.asList(Fächer).indexOf(fach)];
-
         }else{
             fachkürzel = fach.substring(0,2);
         }
-
 
         SharedPreferences.Editor editor = settings.edit();
 
@@ -805,8 +801,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 if(Doppelstunde){
                     MemoryStundenListe.set(pos,  new Memory_Stunde(false, fach, fachkürzel,  Lehrer, Raum, Kursart,Kursnummer, Schriftlich,StartJahr,kursname));
                 }
-
-
             }
             else{
 
@@ -835,7 +829,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
             }
 
-            String jsonA = gson.toJson( MemoryStundenListe);
+            String jsonA = gson.toJson(MemoryStundenListe);
             editor.putString("Stundenliste", jsonA);
             String jsonB = gson.toJson(WocheBStundenListe);
             editor.putString("WocheBStundenListe", jsonB);

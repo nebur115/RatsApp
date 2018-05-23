@@ -34,9 +34,9 @@ public class fragment_stundenplan extends Fragment {
     private List<Boolean> lastDoppelStunde = new ArrayList<>();
     Boolean Raumwechsel = false;
     Boolean Lehrerwechsel = false;
-    Boolean Entfällt =false;
-    Boolean Klausur=false;
-    Boolean Veranstalltung=false;
+    Boolean Entfällt = false;
+    Boolean Klausur = false;
+    Boolean Veranstalltung = false;
     String Kurs;
     String Datum;
     Boolean Schriftlich;
@@ -51,15 +51,14 @@ public class fragment_stundenplan extends Fragment {
     private List<Object> StundenListe = new ArrayList<>();
 
 
-    public  void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.stundenplan_fragment, container, Boolean.parseBoolean(null));
-
 
 
         stundenplan_recyclerView = view.findViewById(R.id.recyclerview_stundenplan);
@@ -79,8 +78,7 @@ public class fragment_stundenplan extends Fragment {
         return view;
     }
 
-    private void init(){
-
+    private void init() {
 
 
         int menuHeight = 60 + 50 + 36;
@@ -133,12 +131,10 @@ public class fragment_stundenplan extends Fragment {
         }
 
 
-
-
         DateMonday = dateFormat.format(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
 
-        int WeekofYear =  calendar.get(Calendar.WEEK_OF_YEAR);
+        int WeekofYear = calendar.get(Calendar.WEEK_OF_YEAR);
 
         DateTuesday = dateFormat.format(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
@@ -147,9 +143,6 @@ public class fragment_stundenplan extends Fragment {
         DateThurstday = dateFormat.format(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
         DateFriday = dateFormat.format(calendar.getTime());
-
-
-
 
 
         SharedPreferences settings = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
@@ -164,18 +157,16 @@ public class fragment_stundenplan extends Fragment {
         int itemWidth = displayMetrics.widthPixels / 5;
         int itemHeight = (int) ((dpHeight * displayMetrics.density) + 0.49);
 
-        if(!isCreated) {
-            StundenListe.add(new Spalte("Montag", DateMonday, itemWidth, day==2 && Week ==0));
-            StundenListe.add(new Spalte("Dienstag", DateTuesday, itemWidth, day==3&& Week ==0));
-            StundenListe.add(new Spalte("Mittwoch", DateWednesday, itemWidth, day==4&& Week ==0));
-            StundenListe.add(new Spalte("Donnerstag", DateThurstday, itemWidth, day == 5&& Week ==0));
-            StundenListe.add(new Spalte("Freitag", DateFriday, itemWidth, day == 6&& Week ==0));
+        if (!isCreated) {
+            StundenListe.add(new Spalte("Montag", DateMonday, itemWidth, day == 2 && Week == 0));
+            StundenListe.add(new Spalte("Dienstag", DateTuesday, itemWidth, day == 3 && Week == 0));
+            StundenListe.add(new Spalte("Mittwoch", DateWednesday, itemWidth, day == 4 && Week == 0));
+            StundenListe.add(new Spalte("Donnerstag", DateThurstday, itemWidth, day == 5 && Week == 0));
+            StundenListe.add(new Spalte("Freitag", DateFriday, itemWidth, day == 6 && Week == 0));
 
             isCreated = true;
             String json;
             Gson gson = new Gson();
-
-
 
 
             if (WeekofYear % 2 == 0 || !settings.getBoolean("zweiWöchentlich", false)) {
@@ -190,15 +181,14 @@ public class fragment_stundenplan extends Fragment {
             }
 
 
+            Type type = new TypeToken<ArrayList<Memory_Stunde>>() {
+            }.getType();
+            MemoryStundenListe = gson.fromJson(json, type);
+
+            int MaxStunden = settings.getInt("MaxStunden", 0);
 
 
-            Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
-            MemoryStundenListe = gson.fromJson(json , type);
-
-            int MaxStunden = settings.getInt("MaxStunden",0);
-
-
-            for(int i = 0; i<MaxStunden*5; i++) {
+            for (int i = 0; i < MaxStunden * 5; i++) {
 
 
                 Boolean Today = false;
@@ -207,33 +197,33 @@ public class fragment_stundenplan extends Fragment {
                     case 0:
                         Wochentag = "Montag";
                         Datum = DateMonday;
-                        Today = day==2 && Week ==0;
+                        Today = day == 2 && Week == 0;
                         break;
                     case 1:
                         Wochentag = "Dienstag";
                         Datum = DateTuesday;
-                        Today = day==3 && Week ==0;
+                        Today = day == 3 && Week == 0;
                         break;
                     case 2:
                         Wochentag = "Mittwoch";
                         Datum = DateWednesday;
-                        Today = day==4 && Week ==0;
+                        Today = day == 4 && Week == 0;
                         break;
                     case 3:
                         Wochentag = "Donnerstag";
                         Datum = DateThurstday;
-                        Today = day==5 && Week ==0;
+                        Today = day == 5 && Week == 0;
                         break;
                     case 4:
                         Wochentag = "Freitag";
                         Datum = DateFriday;
-                        Today = day==6 && Week ==0;
+                        Today = day == 6 && Week == 0;
                         break;
-                    
+
                 }
 
 
-                int Stunde = (i-(i % 5))/5;
+                int Stunde = (i - (i % 5)) / 5;
 
 
                 String Fach = MemoryStundenListe.get(i).getFachkürzel();
@@ -241,11 +231,10 @@ public class fragment_stundenplan extends Fragment {
                 String NächsteStunde;
                 Boolean NächsteFreistunde;
 
-                if(i<MaxStunden*5-5){
-                    NächsteStunde = MemoryStundenListe.get(i+5).getFachkürzel();
-                    NächsteFreistunde = MemoryStundenListe.get(i+5).isFreistunde();
-                }
-                else{
+                if (i < MaxStunden * 5 - 5) {
+                    NächsteStunde = MemoryStundenListe.get(i + 5).getFachkürzel();
+                    NächsteFreistunde = MemoryStundenListe.get(i + 5).isFreistunde();
+                } else {
                     NächsteStunde = "Stundenplanende";
                     NächsteFreistunde = false;
                 }
@@ -261,91 +250,88 @@ public class fragment_stundenplan extends Fragment {
                 int time = Integer.parseInt(mdformat.format(timecalendar.getTime()));
 
 
-
                 Boolean aktiveStunde = false;
 
-                if(Today){
-                    switch(Stunde){
+                if (Today) {
+                    switch (Stunde) {
                         case 0:
-                            aktiveStunde = time>=745 && (time<=830 || (time<920 && DoppelStunde));
+                            aktiveStunde = time >= 745 && (time <= 830 || (time < 920 && DoppelStunde));
 
                             break;
                         case 1:
-                            aktiveStunde = time>=835 && (time<=920 || (time<1025 && DoppelStunde));
+                            aktiveStunde = time >= 835 && (time <= 920 || (time < 1025 && DoppelStunde));
 
                             break;
                         case 2:
-                            aktiveStunde = time>=940 && (time<=1025 || (time<1115 && DoppelStunde));
+                            aktiveStunde = time >= 940 && (time <= 1025 || (time < 1115 && DoppelStunde));
 
                             break;
                         case 3:
-                            aktiveStunde = time>=1030 && (time<=1115 || (time<1215 && DoppelStunde));
+                            aktiveStunde = time >= 1030 && (time <= 1115 || (time < 1215 && DoppelStunde));
 
                             break;
                         case 4:
-                            aktiveStunde = time>=1130 && (time<=1215 || (time<1300 && DoppelStunde));
+                            aktiveStunde = time >= 1130 && (time <= 1215 || (time < 1300 && DoppelStunde));
 
                             break;
                         case 5:
-                            aktiveStunde = time>=1215 && (time<=1300 || (time<1345 && DoppelStunde));
+                            aktiveStunde = time >= 1215 && (time <= 1300 || (time < 1345 && DoppelStunde));
 
                             break;
                         case 6:
-                            aktiveStunde = time>=1315 && (time<=1400 || (time<1445 && DoppelStunde));
+                            aktiveStunde = time >= 1315 && (time <= 1400 || (time < 1445 && DoppelStunde));
 
                             break;
                         case 7:
-                            aktiveStunde = time>=1400 && (time<=1445 || (time<1530 && DoppelStunde));
+                            aktiveStunde = time >= 1400 && (time <= 1445 || (time < 1530 && DoppelStunde));
 
                             break;
                         case 8:
-                            aktiveStunde = time>=1445 && (time<=1530 || (time<1615 && DoppelStunde));
+                            aktiveStunde = time >= 1445 && (time <= 1530 || (time < 1615 && DoppelStunde));
 
                             break;
 
                         case 9:
-                            aktiveStunde = time>=1530 && (time<=1615 || (time<1700 && DoppelStunde));
+                            aktiveStunde = time >= 1530 && (time <= 1615 || (time < 1700 && DoppelStunde));
 
                             break;
                         case 10:
-                            aktiveStunde = time>=1615 && (time<=1700 || (time<1745 && DoppelStunde));
+                            aktiveStunde = time >= 1615 && (time <= 1700 || (time < 1745 && DoppelStunde));
 
                             break;
                         case 11:
-                            aktiveStunde = time>=1700 && (time<=1745 || (time<1830 && DoppelStunde));
+                            aktiveStunde = time >= 1700 && (time <= 1745 || (time < 1830 && DoppelStunde));
                             break;
                         case 12:
-                            aktiveStunde = time>=1745 && (time<=1830 || (time<1915 && DoppelStunde));
+                            aktiveStunde = time >= 1745 && (time <= 1830 || (time < 1915 && DoppelStunde));
                             break;
                         case 13:
-                            aktiveStunde = time>=1830 && (time<=1915 || (time<2000 && DoppelStunde));
+                            aktiveStunde = time >= 1830 && (time <= 1915 || (time < 2000 && DoppelStunde));
                             break;
                         default:
                             aktiveStunde = false;
                             break;
-                    }}
-
-                if(i>=5){
-                    ShowStunde = !lastDoppelStunde.get(i-5);
+                    }
                 }
-                else
-                {
+
+                if (i >= 5) {
+                    ShowStunde = !lastDoppelStunde.get(i - 5);
+                } else {
                     ShowStunde = true;
                 }
 
-                if(i>=5)
-                {
+                if (i >= 5) {
                     if (lastShowStunde.get(i - 5)) {
                         ShowStunde = true;
                     }
                 }
 
-                int Day = i%5;
+                int Day = i % 5;
 
-                if(i<(MaxStunden*5-5)){
+                if (i < (MaxStunden * 5 - 5)) {
                     if (Freistunde) {
-                        for(int j = 0; j<5; j++) {
-                            if(!((MemoryStundenListe.get(i - Day + j).isFreistunde() && MemoryStundenListe.get(i -Day + 5 + j).isFreistunde()) || (!MemoryStundenListe.get(i - Day + j).isFreistunde() && !MemoryStundenListe.get(i -Day + 5 + j).isFreistunde()))){
+                        for (int j = 0; j < 5; j++) {
+                            if (!((MemoryStundenListe.get(i - Day + j).isFreistunde() && MemoryStundenListe.get(i - Day + 5 + j).isFreistunde()) || (!MemoryStundenListe.get(i - Day + j).isFreistunde() && !MemoryStundenListe.get(i - Day + 5 + j).isFreistunde()))) {
                                 DoppelStunde = false;
                             }
                         }
@@ -359,26 +345,31 @@ public class fragment_stundenplan extends Fragment {
 
                 try {
                     VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
-                    switch(s.type){
-                        case 2: Klausur = true;
-                        if(!Raum.equals(s.raum))
-                            Raumwechsel = true;
-                        Raum = s.raum;
-                        break;
-                        case 1: Lehrerwechsel = true;
-                        Lehrer = s.lehrer;
-                        if(!Raum.equals(s.raum)){
+                    switch (s.type) {
+                        case 2:
+                            Klausur = true;
+                            if (!Raum.equals(s.raum))
+                                Raumwechsel = true;
+                            Raum = s.raum;
+                            break;
+                        case 1:
+                            Lehrerwechsel = true;
+                            Lehrer = s.lehrer;
+                            if (!Raum.equals(s.raum)) {
+                                Raumwechsel = true;
+                                Raum = s.raum;
+                            }
+                            break;
+                        case 3:
                             Raumwechsel = true;
                             Raum = s.raum;
-                        }
-                        break;
-                        case 3: Raumwechsel = true;
-                        Raum = s.raum;
-                        break;
-                        case 4: Entfällt = true;
-                        break;
-                        case 5: Veranstalltung= true;
-                        break;
+                            break;
+                        case 4:
+                            Entfällt = true;
+                            break;
+                        case 5:
+                            Veranstalltung = true;
+                            break;
                     }
                     System.out.println("Funktioniert");
                 } catch (Exception e) {
@@ -391,11 +382,9 @@ public class fragment_stundenplan extends Fragment {
                 //Wenn Mündlich, Klausur und "Restgruppe entfällt", dann Frei.
 
 
-
-                if(ShowStunde && !Freistunde){
+                if (ShowStunde && !Freistunde) {
                     StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum, Raumwechsel, Lehrerwechsel, Entfällt, Klausur, Veranstalltung, aktiveStunde));
-                }
-                else if(ShowStunde){
+                } else if (ShowStunde) {
                     StundenListe.add(new Freistunde(Wochentag, DoppelStunde, itemHeight, itemWidth));
                 }
 
@@ -408,7 +397,7 @@ public class fragment_stundenplan extends Fragment {
         }
     }
 
-    public void reload(){
+    public void reload() {
         StundenListe.clear();
         isCreated = false;
         init();
