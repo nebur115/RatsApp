@@ -187,10 +187,6 @@ public class VertretungsPlanMethoden {
      * @throws Exception
      */
     private static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
-        if(offline){
-            ItemList.add(new Ereignis("Du oder wir sind offline", "", "", "", "", R.drawable.entfaellt));
-            return;
-        }
 
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
@@ -202,6 +198,10 @@ public class VertretungsPlanMethoden {
         if (stufe != null) {
             option = new Obtionen(stufe);
             ItemList.add(option);
+            String s ="";
+            if(offline)
+                s = "Du bist offline             ";
+            ItemList.add(new Datum(s+new SpeicherVerwaltung(share).getString("Stand")));
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
