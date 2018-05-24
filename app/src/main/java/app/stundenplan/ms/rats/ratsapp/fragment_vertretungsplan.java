@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class fragment_vertretungsplan extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private List<Object> ItemList = new ArrayList<>();
     private ItemAdapter ItemAdapter;
-
+    TextView textStand;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class fragment_vertretungsplan extends Fragment {
 
         recyclerView = view.findViewById(R.id.Recycler_View);
 
-
+        textStand = view.findViewById(R.id.textDatum);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -72,6 +73,8 @@ public class fragment_vertretungsplan extends Fragment {
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
 
+                    //Das hier aufrufen um Stand richtig anzuzeigen
+                    textStand.setText("24.05.18 13:17");
                 }
                                 },0);
 

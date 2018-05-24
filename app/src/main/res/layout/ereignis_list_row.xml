@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@android:color/background_light"
 
     >
 
@@ -22,12 +22,12 @@
         android:layout_marginTop="12dp"
         android:layout_weight="1"
         android:fontFamily="Roboto Regular"
+        android:maxWidth="180dp"
         android:text="@string/stunde"
         android:textColor="#585858"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:maxWidth="180dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -61,7 +61,7 @@
     <TextView
         android:id="@+id/Grund"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="23dp"
         android:layout_alignBottom="@+id/Zeichen"
         android:layout_marginBottom="14dp"
         android:layout_marginEnd="24dp"
