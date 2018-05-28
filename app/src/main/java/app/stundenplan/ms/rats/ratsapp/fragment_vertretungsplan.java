@@ -26,6 +26,7 @@ public class fragment_vertretungsplan extends Fragment {
     private List<Object> ItemList = new ArrayList<>();
     private ItemAdapter ItemAdapter;
     TextView textStand;
+    SharedPreferences setting;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class fragment_vertretungsplan extends Fragment {
 
         VertretungsPlanMethoden.context = this;
 
-        SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+        setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
         VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, setting.contains("Stundenliste"), this);
 
         ItemAdapter.setitemFeed(ItemList);
@@ -64,40 +65,43 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden) {
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten) {}
+            while (!VertretungsPlanMethoden.downloadedDaten) {
+            }
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
-                public void run(){
+                public void run() {
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
 
-                    //Das hier aufrufen um Stand richtig anzuzeigen
-                    textStand.setText("24.05.18 13:17");
+
                 }
-                                },0);
+            }, 0);
+            textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:",""));
 
-
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Debug: Fehler reload");
         }
     }
+
     public void reload(final boolean AlleStunden, final String Stufe) {
 
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten) {}
-              final Handler handler = new Handler();
+            while (!VertretungsPlanMethoden.downloadedDaten) {
+            }
+            final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
-                public void run(){
+                public void run() {
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
                     ItemAdapter.notifyDataSetChanged();
                 }
-            },0);
+            }, 0);
+            textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:",""));
 
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Debug: Fehler reload");
         }
     }

@@ -63,10 +63,18 @@
         android:id="@+id/textDatum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="24.05.18 12:49"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="3dp"
+        android:shadowColor="#D8D8D8"
+        android:shadowDx="4"
+        android:shadowDy="3"
+        android:shadowRadius="3"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/Recycler_View"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Recycler_View"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

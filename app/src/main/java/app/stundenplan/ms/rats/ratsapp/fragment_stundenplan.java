@@ -186,8 +186,6 @@ public class fragment_stundenplan extends Fragment {
             MemoryStundenListe = gson.fromJson(json, type);
 
             int MaxStunden = settings.getInt("MaxStunden", 0);
-
-
             for (int i = 0; i < MaxStunden * 5; i++) {
 
 
@@ -280,15 +278,14 @@ public class fragment_stundenplan extends Fragment {
                             break;
                         case 6:
                             aktiveStunde = time >= 1315 && (time <= 1400 || (time < 1445 && DoppelStunde));
-
                             break;
+
                         case 7:
                             aktiveStunde = time >= 1400 && (time <= 1445 || (time < 1530 && DoppelStunde));
-
                             break;
+
                         case 8:
                             aktiveStunde = time >= 1445 && (time <= 1530 || (time < 1615 && DoppelStunde));
-
                             break;
 
                         case 9:
@@ -343,44 +340,46 @@ public class fragment_stundenplan extends Fragment {
                 Kurs = MemoryStundenListe.get(i).getKürzel();
                 Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
 
-                try {
-                    VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
-                    switch (s.type) {
-                        case 2:
-                            Klausur = true;
-                            if (!Raum.equals(s.raum))
-                                Raumwechsel = true;
-                            Raum = s.raum;
-                            break;
-                        case 1:
-                            Lehrerwechsel = true;
-                            Lehrer = s.lehrer;
-                            if (!Raum.equals(s.raum)) {
+
+                if(settings.contains("VertretungsplanInStundenplanAnzeigen")) {
+                    try {
+                        VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
+                        switch (s.type) {
+                            case 2:
+                                Klausur = true;
+                                if (!Raum.equals(s.raum))
+                                    Raumwechsel = true;
+                                Raum = s.raum;
+                                break;
+                            case 1:
+                                Lehrerwechsel = true;
+                                Lehrer = s.lehrer;
+                                if (!Raum.equals(s.raum)) {
+                                    Raumwechsel = true;
+                                    Raum = s.raum;
+                                }
+                                break;
+                            case 3:
                                 Raumwechsel = true;
                                 Raum = s.raum;
-                            }
-                            break;
-                        case 3:
-                            Raumwechsel = true;
-                            Raum = s.raum;
-                            break;
-                        case 4:
-                            Entfällt = true;
-                            break;
-                        case 5:
-                            Veranstalltung = true;
-                            break;
+                                break;
+                            case 4:
+                                Entfällt = true;
+                                break;
+                            case 5:
+                                Veranstalltung = true;
+                                break;
+                        }
+                        System.out.println("Funktioniert");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    System.out.println("Funktioniert");
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
 
                 //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
                 //Bei Raum / Lehrerwechsel Wert anpassen
                 //Es können mehrere Werte gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung allerdings nicht).
                 //Wenn Mündlich, Klausur und "Restgruppe entfällt", dann Frei.
-
 
                 if (ShowStunde && !Freistunde) {
                     StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum, Raumwechsel, Lehrerwechsel, Entfällt, Klausur, Veranstalltung, aktiveStunde));

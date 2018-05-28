@@ -12,8 +12,10 @@
         android:layout_marginTop="52dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -159,7 +161,7 @@
                 </android.support.constraint.ConstraintLayout>
 
                 <Switch
-                    android:id="@+id/VertretungsplanAnzeigen"
+                    android:id="@+id/Vertretungsplananzeigen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"

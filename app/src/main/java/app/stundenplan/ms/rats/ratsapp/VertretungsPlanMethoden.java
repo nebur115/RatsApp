@@ -200,7 +200,6 @@ public class VertretungsPlanMethoden {
             ItemList.add(option);
             String s ="";
             if(offline)
-            ItemList.add(new Datum(new SpeicherVerwaltung(share).getString("Stand")));
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
