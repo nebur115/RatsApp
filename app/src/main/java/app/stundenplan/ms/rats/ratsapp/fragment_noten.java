@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ public class fragment_noten extends Fragment {
     private noten_adapter adapter;
     TextView tBestmoeglich;
     TextView tSchnitt;
-    TextView tSchlechtmoeglich;
+    TextView tNote;
     Boolean shown = false;
     String Stufe;
     ConstraintLayout Stufenwahl;
@@ -40,6 +41,13 @@ public class fragment_noten extends Fragment {
     SharedPreferences setting;
     Type type;
     String StufeHalbjahr;
+    double Rounded = 0.0;
+    ImageView Arrow;
+    ConstraintLayout PunkteBruch;
+    double MaxPunkte;
+    double Punkte;
+    TextView MoeglichePunkte;
+    TextView EreichtePunkte;
 
     public fragment_noten() {
     }
@@ -69,15 +77,16 @@ public class fragment_noten extends Fragment {
         String json;
         Gson gson = new Gson();
 
-
-
         type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
-
 
         Q11 = view.findViewById(R.id.cQ11);
         Q12 = view.findViewById(R.id.cQ12);
         Q21 = view.findViewById(R.id.cQ21);
         Q22 = view.findViewById(R.id.cQ22);
+        PunkteBruch = view.findViewById(R.id.PunkteBruch);
+        Arrow = view.findViewById(R.id.tendenz);
+        MoeglichePunkte = view.findViewById(R.id.MoeglichePunkt);
+        EreichtePunkte = view.findViewById(R.id.EreichtePunkte);
 
         if(Stufe.equals("Q1") || Stufe.equals("Q2")){
 
@@ -86,7 +95,6 @@ public class fragment_noten extends Fragment {
         Calendar calendar = Calendar.getInstance();
 
         int month = calendar.get(Calendar.MONTH);
-
 
         if(Stufe.equals("Q1")){
             if(month>2 && month<7){
@@ -98,6 +106,7 @@ public class fragment_noten extends Fragment {
                 Q11.setBackgroundColor(Color.TRANSPARENT);
                 Q21.setBackgroundColor(Color.TRANSPARENT);
                 Q22.setBackgroundColor(Color.TRANSPARENT);
+
                 json = setting.getString("NotenKlausurenQ11", null);
                 NotenList = gson.fromJson(json , type);
                 NotenList.add(0,new noten_placeholder());
@@ -155,9 +164,8 @@ public class fragment_noten extends Fragment {
             StufeHalbjahr = "---";
         }
 
-        tBestmoeglich = view.findViewById(R.id.bestmoeglich);
         tSchnitt = view.findViewById(R.id.schnitt);
-        tSchlechtmoeglich = view.findViewById(R.id.schelchtmoeglich);
+        tNote = view.findViewById(R.id.schelchtmoeglich);
         mrecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new noten_adapter(getActivity(),NotenList);
         mrecyclerView.setAdapter(adapter);
@@ -268,22 +276,26 @@ public class fragment_noten extends Fragment {
 
         shown = true;
 
+
         return view;
+
+
+
     }
 
     public void AktualisiereZahlen(){
 
+        Rounded = 0.0;
         int anzahlNoten = 0;
         int anzahlAll = 0;
         int summeNoten = 0;
-        int summeSchlechteste = 0;
-        int summeBeste = 0;
-        double SchnittPunkte;
+        MaxPunkte = 0;
+        Punkte = 0;
 
         SharedPreferences setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
 
-        if(!(setting.getString("Stufe",null).equals("Q1") || setting.getString("Stufe",null).equals("Q2"))) {
+        if(!(setting.getString("Stufe",null).toUpperCase().equals("Q1") || setting.getString("Stufe",null).toUpperCase().equals("Q2"))) {
 
 
             String json = setting.getString("NotenKlausuren", null);
@@ -291,17 +303,10 @@ public class fragment_noten extends Fragment {
             Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
             SchnittNotenList = gson.fromJson(json, type);
 
-
             for (int i = 0; i < SchnittNotenList.size(); i++) {
                 int Wertung = SchnittNotenList.get(i).getWertung();
-                int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-                int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-                int Schlechteste = SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-
+                int Note = GesammtNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2(), SchnittNotenList.get(i).getSchriftlich3());
                 anzahlAll += Wertung;
-                summeBeste = summeBeste + Beste * Wertung;
-                summeSchlechteste = summeSchlechteste + Schlechteste * Wertung;
-
 
                 if (!(Note == 0)) {
                     anzahlNoten = anzahlNoten + Wertung;
@@ -311,6 +316,8 @@ public class fragment_noten extends Fragment {
 
 
         }else{
+
+
 
             List<Memory_NotenKlausuren> NotenListQ11;
             List<Memory_NotenKlausuren> NotenListQ12;
@@ -324,7 +331,7 @@ public class fragment_noten extends Fragment {
             String jsonQ11 = setting.getString("NotenKlausurenQ11", null);
             String jsonQ12 = setting.getString("NotenKlausurenQ12", null);
             String jsonQ21 = setting.getString("NotenKlausurenQ21", null);
-            String jsonQ22 = setting.getString("NotenKlausurenQ21", null);
+            String jsonQ22 = setting.getString("NotenKlausurenQ22", null);
 
             NotenListQ11 = gson.fromJson(jsonQ11, type);
             NotenListQ12 = gson.fromJson(jsonQ12, type);
@@ -337,12 +344,11 @@ public class fragment_noten extends Fragment {
             SchnittNotenList.addAll(NotenListQ22);
 
             for (int i = 0; i < SchnittNotenList.size(); i++) {
-                int Wertung = SchnittNotenList.get(i).getWertung();
-                int Beste = BestNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-                int Schlechteste = SchlechtsteNote(SchnittNotenList.get(i).isMuendlichschrifltich(), SchnittNotenList.get(i).getZeugnis(), SchnittNotenList.get(i).getMuendlich1(), SchnittNotenList.get(i).getMuendlich2(), SchnittNotenList.get(i).getSchriftlich1(), SchnittNotenList.get(i).getSchriftlich2());
-                anzahlAll += Wertung;
-                summeBeste = summeBeste + Beste * Wertung;
-                summeSchlechteste = summeSchlechteste + Schlechteste * Wertung;
+                if(SchnittNotenList.get(i).getFindetStatt()) {
+                    int Wertung = SchnittNotenList.get(i).getWertung();
+                    anzahlAll += Wertung;
+
+                }
 
             }
 
@@ -361,7 +367,7 @@ public class fragment_noten extends Fragment {
                 if((NotenListQ11.get(i).getFindetStatt())){
                     Halbjahre++;
                     Wertung = NotenListQ11.get(i).getWertung();
-                    NoteQ11 = GesammtNote(NotenListQ11.get(i).isMuendlichschrifltich(), NotenListQ11.get(i).getZeugnis(), NotenListQ11.get(i).getMuendlich1(), NotenListQ11.get(i).getMuendlich2(), NotenListQ11.get(i).getSchriftlich1(), NotenListQ11.get(i).getSchriftlich2());
+                    NoteQ11 = GesammtNote(NotenListQ11.get(i).isMuendlichschrifltich(), NotenListQ11.get(i).getZeugnis(), NotenListQ11.get(i).getMuendlich1(), NotenListQ11.get(i).getMuendlich2(), NotenListQ11.get(i).getSchriftlich1(), NotenListQ11.get(i).getSchriftlich2(), NotenListQ11.get(i).getSchriftlich3());
                     if(!(NoteQ11==0)){
                         AnzahlEingetragen++;
                         SummePunkte += NoteQ11-1;
@@ -373,7 +379,7 @@ public class fragment_noten extends Fragment {
                 if((NotenListQ12.get(i).getFindetStatt())){
                     Halbjahre++;
                     Wertung = NotenListQ12.get(i).getWertung();
-                    NoteQ12 = GesammtNote(NotenListQ12.get(i).isMuendlichschrifltich(), NotenListQ12.get(i).getZeugnis(), NotenListQ12.get(i).getMuendlich1(), NotenListQ12.get(i).getMuendlich2(), NotenListQ12.get(i).getSchriftlich1(), NotenListQ12.get(i).getSchriftlich2());
+                    NoteQ12 = GesammtNote(NotenListQ12.get(i).isMuendlichschrifltich(), NotenListQ12.get(i).getZeugnis(), NotenListQ12.get(i).getMuendlich1(), NotenListQ12.get(i).getMuendlich2(), NotenListQ12.get(i).getSchriftlich1(), NotenListQ12.get(i).getSchriftlich2(), NotenListQ12.get(i).getSchriftlich3());
                     if(!(NoteQ12==0)){
                         AnzahlEingetragen++;
                         SummePunkte += NoteQ12-1;
@@ -384,7 +390,7 @@ public class fragment_noten extends Fragment {
                 if((NotenListQ21.get(i).getFindetStatt())){
                     Halbjahre++;
                     Wertung = NotenListQ21.get(i).getWertung();
-                    NoteQ21 = GesammtNote(NotenListQ21.get(i).isMuendlichschrifltich(), NotenListQ21.get(i).getZeugnis(), NotenListQ21.get(i).getMuendlich1(), NotenListQ21.get(i).getMuendlich2(), NotenListQ21.get(i).getSchriftlich1(), NotenListQ21.get(i).getSchriftlich2());
+                    NoteQ21 = GesammtNote(NotenListQ21.get(i).isMuendlichschrifltich(), NotenListQ21.get(i).getZeugnis(), NotenListQ21.get(i).getMuendlich1(), NotenListQ21.get(i).getMuendlich2(), NotenListQ21.get(i).getSchriftlich1(), NotenListQ21.get(i).getSchriftlich2(), NotenListQ21.get(i).getSchriftlich3());
                     if(!(NoteQ21==0)){
                         AnzahlEingetragen++;
                         SummePunkte += NoteQ21-1;
@@ -392,10 +398,10 @@ public class fragment_noten extends Fragment {
                 }
 
 
-                if((NotenListQ21.get(i).getFindetStatt())){
+                if((NotenListQ22.get(i).getFindetStatt())){
                     Halbjahre++;
                     Wertung = NotenListQ22.get(i).getWertung();
-                    NoteQ22 = GesammtNote(NotenListQ22.get(i).isMuendlichschrifltich(), NotenListQ22.get(i).getZeugnis(), NotenListQ22.get(i).getMuendlich1(), NotenListQ22.get(i).getMuendlich2(), NotenListQ22.get(i).getSchriftlich1(), NotenListQ22.get(i).getSchriftlich2());
+                    NoteQ22 = GesammtNote(NotenListQ22.get(i).isMuendlichschrifltich(), NotenListQ22.get(i).getZeugnis(), NotenListQ22.get(i).getMuendlich1(), NotenListQ22.get(i).getMuendlich2(), NotenListQ22.get(i).getSchriftlich1(), NotenListQ22.get(i).getSchriftlich2(), NotenListQ22.get(i).getSchriftlich3());
                     if(!(NoteQ22==0)){
                         AnzahlEingetragen++;
                         SummePunkte += NoteQ22-1;
@@ -412,27 +418,41 @@ public class fragment_noten extends Fragment {
 
         }
 
-
         if (!(anzahlNoten == 0)) {
             String FinalSchnitt;
-            String FinalBestmoeglich;
-            String FinalSchlechtmoeglich;
-
             FinalSchnitt = Double.toString(PunktezuNote(summeNoten, anzahlNoten)) + "000";
-            FinalBestmoeglich = Double.toString(PunktezuNote(summeBeste, anzahlAll)) + "000";
-            FinalSchlechtmoeglich = Double.toString(PunktezuNote(summeSchlechteste, anzahlAll)) + "000";
+            if(Rounded>0) {
+                int ArrowWith = (int) Rounded * 100 / (anzahlNoten + 1) + 50;
+                Arrow.getLayoutParams().width = ArrowWith;
+                Arrow.setImageResource(R.drawable.tend_down);
+
+            }else if(Rounded<0){
+                int ArrowWith = (int) -Rounded * 100 / (anzahlNoten + 1) + 50;
+                Arrow.getLayoutParams().width = ArrowWith;
+                Arrow.setImageResource(R.drawable.tend_up);
+            }else{
+                Arrow.setImageResource(R.drawable.tendnon);
+                Arrow.getLayoutParams().width = 100;
+            }
+
+            if(!(MaxPunkte==0)) {
+                MoeglichePunkte.setText(Double.toString(MaxPunkte) + "Pkte.");
+                EreichtePunkte.setText(Double.toString(Punkte) + "Pkte.");
+            }else{
+                MoeglichePunkte.setText("---- Pkte.");
+                EreichtePunkte.setText("---- Pkte.");
+            }
 
             tSchnitt.setText(FinalSchnitt.substring(0, 4));
-            tBestmoeglich.setText(FinalBestmoeglich.substring(0, 4));
-            tSchlechtmoeglich.setText(FinalSchlechtmoeglich.substring(0, 4));
+            tNote.setText(PunktezuString((double) summeNoten/ (double) anzahlNoten));
 
         } else {
-            tSchlechtmoeglich.setText("6");
-            tBestmoeglich.setText("0,66");
             tSchnitt.setText("N/A");
+            tNote.setText("N/A");
+            Arrow.setImageResource(R.drawable.tendnon);
+            Arrow.getLayoutParams().width = 100;
         }
     }
-
 
     public void newnumbers() {
         if (shown) {
@@ -480,13 +500,30 @@ public class fragment_noten extends Fragment {
 
     }
 
-
-
-    private int GesammtNote(boolean pschirftlich, int pZeugnisNote, int pMuendlich1, int pMuendlich2, int pSchriftlich1, int pSchriftlich2) {
+    private int GesammtNote(boolean pschirftlich, int pZeugnisNote, int pMuendlich1, int pMuendlich2, int pSchriftlich1, int pSchriftlich2, int pSchriftlich3) {
 
         if(!(pZeugnisNote==0)){
-            return(pZeugnisNote);
-        }else if(!(pMuendlich1+pMuendlich2+pSchriftlich1+pSchriftlich2==0)){
+
+            if(setting.getBoolean("+/-Mitrechen", (setting.getBoolean("+/-Mitrechen", setting.getString("Stufe", "").equals("Q1") ||setting.getString("Stufe", "").equals("Q2"))))){
+                Arrow.setVisibility(View.GONE);
+                PunkteBruch.setVisibility(View.VISIBLE);
+                MaxPunkte += 15;
+                Punkte += pZeugnisNote-1;
+                return pZeugnisNote;
+            }else {
+                Arrow.setVisibility(View.VISIBLE);
+                PunkteBruch.setVisibility(View.GONE);
+                if (pZeugnisNote == 1) {
+                    return 1;
+                } else {
+                    double Zwischenzahl = (double) pZeugnisNote / 3 + 0.49;
+                    double ZwischenRounded = (Math.floor(Zwischenzahl)*3) - pZeugnisNote;
+                    Rounded = Rounded + ZwischenRounded;
+                    return (int) Math.floor(Zwischenzahl) * 3;
+                }
+            }
+
+        }else if(!(pMuendlich1+pMuendlich2+pSchriftlich1+pSchriftlich2+pSchriftlich3==0)){
             int MuendlichEingetragen = 0;
             int SchriftlichEingetragen = 0;
             double Muendlich = 0;
@@ -513,15 +550,19 @@ public class fragment_noten extends Fragment {
                 Schriftlich = Schriftlich + pSchriftlich2-1;
             }
 
+            if(!(pSchriftlich3==0)){
+                SchriftlichEingetragen++;
+                Schriftlich = Schriftlich + pSchriftlich3-1;
+            }
+
+
             if(!(MuendlichEingetragen==0)){
                 Muendlich = Muendlich/MuendlichEingetragen;
             }
 
-            if(!(SchriftlichEingetragen==0) && (!pschirftlich)){
+            if(!(SchriftlichEingetragen==0)){
                 Schriftlich = Schriftlich/SchriftlichEingetragen;
             }
-
-
 
             if(!(SchriftlichEingetragen==0)){
                 alleeingetragen++;
@@ -530,111 +571,75 @@ public class fragment_noten extends Fragment {
             if(!(MuendlichEingetragen==0)){
                 alleeingetragen++;
             }
-            return((int) (((Muendlich+Schriftlich)/alleeingetragen))+1);
 
-        }else{
-            return (0);
-        }
-
-    }
-
-    private int BestNote(boolean pschirftlich, int pZeugnisNote, int pMuendlich1, int pMuendlich2, int pSchriftlich1, int pSchriftlich2) {
-
-        if(!(pZeugnisNote==0)){
-            return(pZeugnisNote);
-        }else if(!(pMuendlich1+pMuendlich2+pSchriftlich1+pSchriftlich2==0)){
-
-            int Schrifltich1 = 15;
-            int Schriftlich2 = 15;
-            int Muendlich1 = 15;
-            int Muendlich2 = 15;
-            double Muendlich;
-            double Schriftlich;
-
-
-            if(!(pMuendlich1==0)){
-                Muendlich1 = pMuendlich1-1;
-            }
-
-            if(!(pMuendlich2==0)){
-                Muendlich2 = pMuendlich2-1;
-            }
-
-            if(!(pSchriftlich1==0)){
-                Schrifltich1 = pSchriftlich1-1;
-            }
-
-            if(!(pSchriftlich2==0)){
-                Schriftlich2 = pSchriftlich2-1;
-            }
-
-
-            Muendlich = (Muendlich1+Muendlich2)/2;
-
-            Schriftlich = (Schrifltich1+Schriftlich2)/2;
-
-
-                if(pschirftlich){
-                    return((int) (((Muendlich+Schriftlich)/2)));
-                }else{
-                    return((int) Muendlich);
-                }
-
-
-        }else{
-            return (15);
-        }
-
-    }
-
-    private int SchlechtsteNote(boolean pschirftlich, int pZeugnisNote, int pMuendlich1, int pMuendlich2, int pSchriftlich1, int pSchriftlich2) {
-
-        if(!(pZeugnisNote==0)){
-            return(pZeugnisNote);
-        }else if(!(pMuendlich1+pMuendlich2+pSchriftlich1+pSchriftlich2==0)){
-
-            int Schrifltich1 = 0;
-            int Schriftlich2 = 0;
-            int Muendlich1 = 0;
-            int Muendlich2 = 0;
-            double Muendlich;
-            double Schriftlich;
-
-
-            if(!(pMuendlich1==0)){
-                Muendlich1 = pMuendlich1-1;
-            }
-
-            if(!(pMuendlich2==0)){
-                Muendlich2 = pMuendlich2-1;
-            }
-
-            if(!(pSchriftlich1==0)){
-                Schrifltich1 = pSchriftlich1-1;
-            }
-
-            if(!(pSchriftlich2==0)){
-                Schriftlich2 = pSchriftlich2-1;
-            }
-
-
-            Muendlich = (Muendlich1+Muendlich2)/2;
-
-            Schriftlich = (Schrifltich1+Schriftlich2)/2;
-
-
-            if(pschirftlich){
-                return((int) (((Muendlich+Schriftlich)/2)));
+            if((((Muendlich+Schriftlich)/alleeingetragen))+1==1){
+               return 1;
             }else{
-                return((int) Muendlich);
+                if(setting.getBoolean("+/-Mitrechen", (setting.getBoolean("+/-Mitrechen", setting.getString("Stufe", "").toUpperCase().equals("Q1") ||setting.getString("Stufe", "").toUpperCase().equals("Q2"))))){
+                    Arrow.setVisibility(View.GONE);
+                    PunkteBruch.setVisibility(View.VISIBLE);
+                    MaxPunkte += 15;
+                    Punkte += (Muendlich + Schriftlich) / alleeingetragen ;
+                    return (int) (Muendlich + Schriftlich) / alleeingetragen + 1;
+                }else{
+                    double ZwischenRounded = (Math.floor((((Muendlich + Schriftlich) / alleeingetragen + 1)/3)+0.49)*3) - ((Muendlich + Schriftlich) / alleeingetragen +1);
+                    Rounded = Rounded + ZwischenRounded;
+                    Arrow.setVisibility(View.VISIBLE);
+                    PunkteBruch.setVisibility(View.GONE);
+                    return (int) ( Math.floor((((Muendlich + Schriftlich) / alleeingetragen + 1)/3)+0.49)*3);
+                }
             }
-
-
         }else{
+
+            if(setting.getBoolean("+/-Mitrechen", (setting.getBoolean("+/-Mitrechen", setting.getString("Stufe", "").toUpperCase().equals("Q1") ||setting.getString("Stufe", "").toUpperCase().equals("Q2"))))){
+                Arrow.setVisibility(View.GONE);
+                PunkteBruch.setVisibility(View.VISIBLE);
+            }else{
+                Arrow.setVisibility(View.VISIBLE);
+                PunkteBruch.setVisibility(View.GONE);
+            }
             return (0);
         }
 
     }
 
+    private String PunktezuString(double Punkte){
+      switch ((int) Math.round(Punkte)){
+          case 0:
+              return "6";
+          case 1:
+              return "5-";
+          case 2:
+              return "5";
+          case 3:
+              return "5+";
+          case 4:
+              return "4-";
+          case 5:
+              return "4";
+          case 6:
+              return "4+";
+          case 7:
+              return "3-";
+          case 8:
+              return "3";
+          case 9:
+              return "3+";
+          case 10:
+              return "2-";
+          case 11:
+              return "2";
+          case 12:
+              return "2+";
+          case 13:
+              return "1-";
+          case 14:
+              return "1";
+          case 15:
+              return "1+";
+          default:
+              return "";
+        }
+    }
 
 }

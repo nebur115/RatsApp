@@ -8,8 +8,10 @@ public class Memory_NotenKlausuren {
     private int Muendlich2;
     private int Schriftlich1;
     private int Schriftlich2;
+    private int Schriftlich3;
     private int Datum1;
     private int Datum2;
+    private int Datum3;
     private  int Zeugnis;
     private int Wertung;
     private String Kursart;
@@ -28,7 +30,21 @@ public class Memory_NotenKlausuren {
 
     }
 
+    public int getSchriftlich3() {
+        return Schriftlich3;
+    }
 
+    public int getDatum3() {
+        return Datum3;
+    }
+
+    public void setSchriftlich3(int schriftlich3) {
+        Schriftlich3 = schriftlich3;
+    }
+
+    public void setDatum3(int datum3) {
+        Datum3 = datum3;
+    }
 
     public Memory_NotenKlausuren(String pFach, String pKursnummer, boolean pSchriftlich, int pDatum1, int pdatum2, int pZeugnis, int pWertung){
 

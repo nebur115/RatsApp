@@ -31,6 +31,7 @@ public class Einstellungen extends AppCompatActivity {
     ConstraintLayout cStundenplanLoeschen;
     CheckBox cBInDerSchule;
     CheckBox cBWaehrendDesUnterichts;
+    Switch cPlusMinusSwitch;
     Switch EreignisseallerKurseAnzeigen;
     Switch Vertretungsplananzeigen;
     Switch sHandyStummSchalten;
@@ -52,6 +53,7 @@ public class Einstellungen extends AppCompatActivity {
         cBWaehrendDesUnterichts = findViewById(R.id.CBwaehrenddesUnterichts);
         EreignisseallerKurseAnzeigen = findViewById(R.id.EreignisseallerKurseAnzeigen);
         Vertretungsplananzeigen = findViewById(R.id.Vertretungsplananzeigen);
+        cPlusMinusSwitch = findViewById(R.id.PlusMinusMirechnen);
 
         Reload();
 
@@ -144,6 +146,16 @@ public class Einstellungen extends AppCompatActivity {
             }
         });
 
+        cPlusMinusSwitch.setChecked((settings.getBoolean("+/-Mitrechen", settings.getString("Stufe", "").equals("Q1") ||settings.getString("Stufe", "").equals("Q2") )));
+        cPlusMinusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("+/-Mitrechen", b);
+                editor.apply();
+            }
+        });
+
 
         cBInDerSchule.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -207,6 +219,8 @@ public class Einstellungen extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
 
 
 
