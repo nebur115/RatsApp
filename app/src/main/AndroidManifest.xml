@@ -57,6 +57,12 @@
             android:label="create_stundenplan_stunden_obtionen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Settings"
+            android:label="Settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

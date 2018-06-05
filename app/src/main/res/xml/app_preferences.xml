@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:summary="Stundenplan Einstellungen"
+        android:title="Stundenplan" >
+        <Preference
+            android:key="CreateStundenplan"
+            android:summary=""
+            android:title="Stundenplan erstellen" />
+        <CheckBoxPreference
+            android:key="StundenplanVertretungsplananzeigen"
+            android:summaryOff="Der Vertretungsplan wird nicht im Stundenplan angezeigt"
+            android:summaryOn="Der Vertretungsplan wird im Stundenplan angezeigt"
+            android:title="Vertretungsplan anzeigen" />
+        <CheckBoxPreference
+            android:key="AutomatischStummschalten"
+            android:title="Automatisch Stumm"
+            android:summaryOff="Dein Handy bleibt während des Unterichts auf laut"
+            android:summaryOn="Dein Handy wird während des Unterichts stummgeschaltet"/>
+        <Preference
+            android:key="Wochentausch"
+            android:summary="Tausche Woche A mit Woche B"
+            android:title="Woche A/B tauschen" />
+        <Preference
+            android:key="EditStundenplan"
+            android:summary=""
+            android:title="Stundenplan bearbeiten" />
+        <Preference
+            android:key="LöscheStundenplan"
+            android:summary=""
+            android:title="Stundenplan löschen" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:summary="Vertretungsplan einstellungen"
+        android:title="Vertretungsplan" >
+        <CheckBoxPreference
+            android:key="AlleKurse"
+            android:title="Alle Ereignisse anzeigen"
+            android:summaryOff="Zeigt alle Ereignisse an"
+            android:summaryOn="Zeigt standartmäßig nur Eregnisse eigener Kurse"/>
+        <Preference
+            android:key="Kursebearbeten"
+            android:summary=""
+            android:title="Kurse Bearbeiten" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="Notenrechner Einstellungen"
+        android:title="Notenrechner" >
+        <CheckBoxPreference
+            android:key="Plusminusmitrechnen"
+            android:title="+/- Mitrechnen"
+            android:summaryOff="Es wird auf ganze Noten gerundet"
+            android:summaryOn="Einzelne Notenpunkte werden mitberechnet"/>
+        <Preference
+            android:key="QPlanändern"
+            android:summary="Fächer der Q1 und Q2 bearbeiten"
+            android:title="Q Phase ändern" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="Sonstiges"
+        android:title="Sonstiges" >
+
+        <EditTextPreference
+            android:key="Stufe"
+            android:title="Stufe ändern"
+          />
+
+        <Preference
+            android:key="Alles löschen"
+            android:summary=""
+            android:title="Alles löschen" />
+
+        <Preference
+            android:key="Copyright"
+            android:summary=""
+            android:title="Copyright und Nutzungsbedingungen" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

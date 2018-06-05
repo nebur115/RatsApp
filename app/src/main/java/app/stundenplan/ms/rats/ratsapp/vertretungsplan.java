@@ -150,7 +150,7 @@ public class vertretungsplan extends AppCompatActivity {
         settingsbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(vertretungsplan.this, Einstellungen.class);
+                Intent i = new Intent(vertretungsplan.this, Settings.class);
                 startActivity(i);
             }
         });
