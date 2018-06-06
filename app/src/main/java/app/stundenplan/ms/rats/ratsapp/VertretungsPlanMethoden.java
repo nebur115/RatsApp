@@ -115,9 +115,9 @@ public class VertretungsPlanMethoden {
         //Vereinfachter Zugriff auf die SharedPreference
         s = new SpeicherVerwaltung(share);
         //Holt die beiden Variablen aus der SharedPreference
-        /*try {
+        try {
             request += "?Stand=" + s.getString("Stand");
-        } catch (Exception e) {}*/
+        } catch (Exception e) {}
 
         try {
             String[] y = htmlGetVertretung(request);
