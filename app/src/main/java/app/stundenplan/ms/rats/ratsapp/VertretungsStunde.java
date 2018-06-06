@@ -16,7 +16,6 @@ public class VertretungsStunde {
     public int type = 0;
 
     public VertretungsStunde(String[] in) {
-        System.out.println(in[8]);
         Klasse = in[0];
         lehrer = in[1];
         urspr_lehrer = in[2];

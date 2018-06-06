@@ -287,10 +287,10 @@ public class VertretungsPlanMethoden {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
 
                 if (lines[row + 2].equals(stufe)){
-                    //if (lines[row + 13].equals(Datum)) {
+                    if (lines[row + 13].equals(Datum)) {
                     return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
+                    }
                 }
-                //}
             }
             row += 13;
         }
