@@ -65,8 +65,7 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden) {
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten) {
-            }
+            while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {}
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -74,8 +73,6 @@ public class fragment_vertretungsplan extends Fragment {
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
-
-
                 }
             }, 0);
             textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:",""));
@@ -88,8 +85,7 @@ public class fragment_vertretungsplan extends Fragment {
     public void reload(final boolean AlleStunden, final String Stufe) {
 
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten) {
-            }
+            while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

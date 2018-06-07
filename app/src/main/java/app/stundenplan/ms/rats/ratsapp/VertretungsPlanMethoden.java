@@ -109,24 +109,15 @@ public class VertretungsPlanMethoden {
     public static void downloadDaten(SharedPreferences share) throws Exception {
 
         //Variablen werden Deklariert und zum Teil initialisiert
-        String Stand;
-        String request = "https://rats-ms.de/services/stupla_s/output.php";
+        String request = "https://rats-ms.de/services/scripts/output.php";
         SpeicherVerwaltung s;
 
         //Vereinfachter Zugriff auf die SharedPreference
         s = new SpeicherVerwaltung(share);
         //Holt die beiden Variablen aus der SharedPreference
-        /*
-        Fehler mit dem Server muss nocheinmal mit Oeljeklaus reden
         try {
-            Stand = s.getString("Stand");
-        } catch (Exception e) {
-            Stand = "";
-        }
-
-        if (Stand != null && !Stand.equals(""))
-            request += "?Stand=" + Stand;
-        */
+            request += "?Stand=" + s.getString("Stand");
+        } catch (Exception e) {}
 
         try {
             String[] y = htmlGetVertretung(request);
@@ -194,38 +185,39 @@ public class VertretungsPlanMethoden {
         String[] lines = Inhalt.split("\n");
         String temp = "";
         int row = 0;
-
         if (stufe != null) {
             option = new Obtionen(stufe);
             ItemList.add(option);
             String s ="";
-            if(offline)
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if ((AlleKlassen || meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) || !share.contains("Stundenliste")) && lines[row + 2].contains(stufe)) {
-                        if (!temp.equals(lines[row])) {
-                            ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
-                            temp = lines[row + 13];
-                        }
-                        switch (lines[row + 8]) {
-                            case "2":
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
-                                break;
-                            case "1":
-                                if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
-                                else
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
-                                break;
-                            case "0":
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
-                                break;
-                            default:
-                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
-                                break;
-                        }
+                    if (AlleKlassen || meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) || !share.contains("Stundenliste")) {
+                        if (lines[row + 2].contains(stufe)) {
+                            if (!temp.equals(lines[row])) {
+                                ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
+                                temp = lines[row + 13];
+                            }
 
+                            switch (lines[row + 8]) {
+                                case "2":
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                                    break;
+                                case "1":
+                                    if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                                    else
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                                    break;
+                                case "0":
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+                                    break;
+                                default:
+                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
+                                    break;
+                            }
+
+                        }
                     }
                 }
                 row += 13;
@@ -295,10 +287,10 @@ public class VertretungsPlanMethoden {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
 
                 if (lines[row + 2].equals(stufe)){
-                    //if (lines[row + 13].equals(Datum)) {
+                    if (lines[row + 13].equals(Datum)) {
                     return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
+                    }
                 }
-                //}
             }
             row += 13;
         }
