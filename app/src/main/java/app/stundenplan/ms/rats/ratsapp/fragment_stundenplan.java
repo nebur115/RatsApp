@@ -64,16 +64,19 @@ public class fragment_stundenplan extends Fragment {
         stundenplan_recyclerView = view.findViewById(R.id.recyclerview_stundenplan);
 
 
+        init();
+
         StaggeredGridLayoutManager mystaggeredGridLayoutManager = new StaggeredGridLayoutManager(5, 1);
 
         stundenplan_recyclerView.setLayoutManager(mystaggeredGridLayoutManager);
         stundenplan_recyclerView.setNestedScrollingEnabled(false);
 
+
         mystundenplanadapter = new Stundenplanadapter(getActivity(), StundenListe);
 
         stundenplan_recyclerView.setAdapter(mystundenplanadapter);
 
-        init();
+
 
         return view;
     }
@@ -397,12 +400,12 @@ public class fragment_stundenplan extends Fragment {
     }
 
     public void reload() {
-        StundenListe.clear();
+
         isCreated = false;
+        StundenListe.clear();
         init();
-        mystundenplanadapter = new Stundenplanadapter(getActivity(), StundenListe);
-        stundenplan_recyclerView.setAdapter(mystundenplanadapter);
         mystundenplanadapter.notifyDataSetChanged();
+
 
     }
 }

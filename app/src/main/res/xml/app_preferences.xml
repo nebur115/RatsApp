@@ -2,7 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory
         android:summary="Stundenplan Einstellungen"
-        android:title="Stundenplan" >
+        android:title="Stundenplan"
+
+        >
         <Preference
             android:key="CreateStundenplan"
             android:summary=""
@@ -33,21 +35,19 @@
 
     <PreferenceCategory
         android:summary="Vertretungsplan einstellungen"
-        android:title="Vertretungsplan" >
+        android:title="Vertretungsplan"
+       >
         <CheckBoxPreference
             android:key="AlleKurse"
             android:title="Alle Ereignisse anzeigen"
             android:summaryOff="Zeigt alle Ereignisse an"
             android:summaryOn="Zeigt standartmäßig nur Eregnisse eigener Kurse"/>
-        <Preference
-            android:key="Kursebearbeten"
-            android:summary=""
-            android:title="Kurse Bearbeiten" />
 
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Notenrechner Einstellungen"
-        android:title="Notenrechner" >
+        android:title="Notenrechner"
+      >
         <CheckBoxPreference
             android:key="Plusminusmitrechnen"
             android:title="+/- Mitrechnen"
@@ -60,7 +60,8 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Sonstiges"
-        android:title="Sonstiges" >
+        android:title="Sonstiges"
+      >
 
         <EditTextPreference
             android:key="Stufe"
