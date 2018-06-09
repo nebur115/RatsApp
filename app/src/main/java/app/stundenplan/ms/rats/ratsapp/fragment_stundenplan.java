@@ -343,8 +343,6 @@ public class fragment_stundenplan extends Fragment {
                 Kurs = MemoryStundenListe.get(i).getKürzel();
                 Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
 
-                System.out.println(Kurs);
-                System.out.println(Datum);
                 //if(settings.contains("VertretungsplanInStundenplanAnzeigen")) {
                     try {
                         VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
@@ -369,17 +367,12 @@ public class fragment_stundenplan extends Fragment {
                                 break;
                             case 4:
                                 Entfällt = true;
-                                System.out.println("Hey");
                                 break;
                             case 5:
                                 Veranstalltung = true;
                                 break;
                         }
-                        System.out.println("Funktioniert");
-                    } catch (Exception e) {
-                       //e.printStackTrace();
-                    }
-                System.out.println("------------");
+                    } catch (Exception e) {}
                // }
                 //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
                 //Bei Raum / Lehrerwechsel Wert anpassen
@@ -400,6 +393,8 @@ public class fragment_stundenplan extends Fragment {
                 Raumwechsel = false;
                 Entfällt = false;
                 Veranstalltung = false;
+                Raum = null;
+                Lehrer = null;
             }
 
 
