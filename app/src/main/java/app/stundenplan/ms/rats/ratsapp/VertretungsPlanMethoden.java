@@ -281,20 +281,38 @@ public class VertretungsPlanMethoden {
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         String stufe = new SpeicherVerwaltung(share).getString("Stufe");
         String[] lines = Inhalt.split("\n");
+
+        System.out.println("------");
+
         int row = 0;
         int st = 1;
         while (row + 12 < lines.length) {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
-
+                System.out.println("1");
                 if (lines[row + 2].equals(stufe)){
-                    if (lines[row + 13].equals(Datum)) {
-                    return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
+                    System.out.println("2");
+                    if (isSameDate(lines[row+13], Datum)) {
+                        System.out.println("3");
+                        return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
                     }
                 }
             }
             row += 13;
         }
         return null;
+    }
+
+    public static boolean isSameDate(String datum1, String datum2){
+        try {
+            DateFormat df1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+            DateFormat df2 = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN);
+            Date date1 = df1.parse(datum1);
+            Date date2 = df2.parse(datum2);
+            return !(date1.after(date2)||date1.before(date2));
+        } catch (Exception e) {
+            System.out.println("Fuck");
+            return false;
+        }
     }
 }
 

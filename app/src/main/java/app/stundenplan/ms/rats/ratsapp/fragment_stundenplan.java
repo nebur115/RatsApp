@@ -345,8 +345,7 @@ public class fragment_stundenplan extends Fragment {
 
                 System.out.println(Kurs);
                 System.out.println(Datum);
-                System.out.println(settings.contains("VertretungsplanInStundenplanAnzeigen"));
-                if(settings.contains("VertretungsplanInStundenplanAnzeigen")) {
+                //if(settings.contains("VertretungsplanInStundenplanAnzeigen")) {
                     try {
                         VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
                         switch (s.type) {
@@ -370,7 +369,7 @@ public class fragment_stundenplan extends Fragment {
                                 break;
                             case 4:
                                 Entfällt = true;
-                                Freistunde = true;
+                                System.out.println("Hey");
                                 break;
                             case 5:
                                 Veranstalltung = true;
@@ -378,9 +377,10 @@ public class fragment_stundenplan extends Fragment {
                         }
                         System.out.println("Funktioniert");
                     } catch (Exception e) {
-                        e.printStackTrace();
+                       //e.printStackTrace();
                     }
-                }
+                System.out.println("------------");
+               // }
                 //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
                 //Bei Raum / Lehrerwechsel Wert anpassen
                 //Es können mehrere Werte gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung allerdings nicht).
