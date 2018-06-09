@@ -395,6 +395,11 @@ public class fragment_stundenplan extends Fragment {
                 lastDoppelStunde.add(DoppelStunde);
                 lastShowStunde.add(!ShowStunde);
 
+                Klausur = false;
+                Lehrerwechsel = false;
+                Raumwechsel = false;
+                Entfällt = false;
+                Veranstalltung = false;
             }
 
 

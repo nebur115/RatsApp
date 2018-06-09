@@ -308,7 +308,7 @@ public class VertretungsPlanMethoden {
             DateFormat df2 = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN);
             Date date1 = df1.parse(datum1);
             Date date2 = df2.parse(datum2);
-            return !(date1.after(date2)||date1.before(date2));
+            return (!date1.after(date2)&&!date1.before(date2));
         } catch (Exception e) {
             System.out.println("Fuck");
             return false;
