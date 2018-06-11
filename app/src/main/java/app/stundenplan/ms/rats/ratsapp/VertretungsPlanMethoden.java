@@ -192,7 +192,7 @@ public class VertretungsPlanMethoden {
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if (AlleKlassen || meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) || !share.contains("Stundenliste")) {
+                    if (AlleKlassen || meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) || !share.contains("Stundenliste") || !(share.getBoolean("AlleKurseAnzeigen", share.contains("Kursliste")))) {
                         if (lines[row + 2].contains(stufe)) {
                             if (!temp.equals(lines[row])) {
                                 ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));

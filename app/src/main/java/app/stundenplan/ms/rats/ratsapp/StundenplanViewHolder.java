@@ -59,10 +59,20 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
 
         if(tWochentag == "Dienstag" || tWochentag == "Donnerstag"){
             Stunde.setBackgroundResource(R.drawable.stundenplan_dark);
+            if(Entfällt){
+                Fach.setTextColor(Color.parseColor("#9d9d9d"));
+                Raum.setTextColor(Color.parseColor("#9d9d9d"));
+                Lehrer.setTextColor(Color.parseColor("#9d9d9d"));
+            }
         }
         else
         {
             Stunde.setBackgroundResource(R.drawable.stundenplan_light);
+            if(Entfällt){
+                Fach.setTextColor(Color.parseColor("#cfcfcf"));
+                Raum.setTextColor(Color.parseColor("#cfcfcf"));
+                Lehrer.setTextColor(Color.parseColor("#cfcfcf"));
+            }
         }
 
 
@@ -110,11 +120,6 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
             Lehrer.setTextColor(Color.parseColor("#B13333"));
         }
 
-        if(Entfällt){
-            Fach.setTextColor(Color.parseColor("#C7958C"));
-            Raum.setTextColor(Color.parseColor("#C7958C"));
-            Lehrer.setTextColor(Color.parseColor("#C7958C"));
-        }
 
         if(Veranstalltung){
             Fach.setTextColor(Color.parseColor("#EDAE33"));

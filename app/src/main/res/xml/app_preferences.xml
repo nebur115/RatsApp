@@ -3,30 +3,26 @@
     <PreferenceCategory
         android:summary="Stundenplan Einstellungen"
         android:title="Stundenplan"
-
+        android:key="Stundenplan"
         >
         <Preference
             android:key="CreateStundenplan"
             android:summary=""
             android:title="Stundenplan erstellen" />
+        <Preference
+            android:key="EditStundenplan"
+            android:summary=""
+            android:title="Stundenplan bearbeiten" />
         <CheckBoxPreference
             android:key="StundenplanVertretungsplananzeigen"
             android:summaryOff="Der Vertretungsplan wird nicht im Stundenplan angezeigt"
             android:summaryOn="Der Vertretungsplan wird im Stundenplan angezeigt"
             android:title="Vertretungsplan anzeigen" />
-        <CheckBoxPreference
-            android:key="AutomatischStummschalten"
-            android:title="Automatisch Stumm"
-            android:summaryOff="Dein Handy bleibt während des Unterichts auf laut"
-            android:summaryOn="Dein Handy wird während des Unterichts stummgeschaltet"/>
         <Preference
             android:key="Wochentausch"
             android:summary="Tausche Woche A mit Woche B"
             android:title="Woche A/B tauschen" />
-        <Preference
-            android:key="EditStundenplan"
-            android:summary=""
-            android:title="Stundenplan bearbeiten" />
+
         <Preference
             android:key="LöscheStundenplan"
             android:summary=""
@@ -36,17 +32,19 @@
     <PreferenceCategory
         android:summary="Vertretungsplan einstellungen"
         android:title="Vertretungsplan"
+        android:key="Vertretungsplan"
        >
         <CheckBoxPreference
             android:key="AlleKurse"
-            android:title="Alle Ereignisse anzeigen"
-            android:summaryOff="Zeigt alle Ereignisse an"
-            android:summaryOn="Zeigt standartmäßig nur Eregnisse eigener Kurse"/>
+            android:title="Zeige eigene Ereignisse"
+            android:summaryOff="Zeigt nur Ereignisse eigener Kurse"
+            android:summaryOn="Zeigt alle Ereignisse an"/>
 
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Notenrechner Einstellungen"
         android:title="Notenrechner"
+        android:key="Notenrechner"
       >
         <CheckBoxPreference
             android:key="Plusminusmitrechnen"
@@ -61,6 +59,7 @@
     <PreferenceCategory
         android:summary="Sonstiges"
         android:title="Sonstiges"
+        android:key="Sonstiges"
       >
 
         <EditTextPreference
