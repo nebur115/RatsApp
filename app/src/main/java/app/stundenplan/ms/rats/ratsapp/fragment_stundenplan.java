@@ -350,16 +350,15 @@ public class fragment_stundenplan extends Fragment {
                             case 2:
                                 Klausur = true;
                                 if (!Raum.equals(s.raum))
-                                    Raumwechsel = true;
-                                Raum = s.raum;
+                                    Raum = s.raum;
+                                if(!Schriftlich)
+                                    Entfällt = true;
                                 break;
                             case 1:
                                 Lehrerwechsel = true;
                                 Lehrer = s.lehrer;
-                                if (!Raum.equals(s.raum)) {
-                                    Raumwechsel = true;
+                                if (!Raum.equals(s.raum))
                                     Raum = s.raum;
-                                }
                                 break;
                             case 3:
                                 Raumwechsel = true;

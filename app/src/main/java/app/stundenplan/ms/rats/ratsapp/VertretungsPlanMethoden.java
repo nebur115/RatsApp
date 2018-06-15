@@ -287,7 +287,7 @@ public class VertretungsPlanMethoden {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
                 if (lines[row + 2].equals(stufe)){
                     if (isSameDate(lines[row+13], Datum)) {
-                        return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
+                        return new VertretungsStunde(Arrays.copyOfRange(lines, row + 2, row + 14));
                     }
                 }
             }
