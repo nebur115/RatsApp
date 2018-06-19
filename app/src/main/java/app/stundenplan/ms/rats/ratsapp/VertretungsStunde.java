@@ -28,10 +28,10 @@ public class VertretungsStunde {
         wochennr = in[9];
         wochentag = in[10];
         datum = in[11];
-        if (in[8].contains("Abiturklausur") || in[8].contains("Klausur"))
+        if (in[7].contains("Abiturklausur") || in[7].contains("Klausur"))
             type = 2; //Klausur
         else {
-            switch (in[7]) {
+            switch (in[6]) {
                 case "2":
                     type = 1; //Information
                     break;
