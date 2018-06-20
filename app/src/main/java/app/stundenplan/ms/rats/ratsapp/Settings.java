@@ -260,5 +260,20 @@ public class Settings extends PreferenceActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        Intent i = new Intent(Settings.this, vertretungsplan.class);
+        if(Stufe.getText().equals(settings.getString("Stufe",""))){
+            i.putExtra("Stufe", "EXISTINGSTUNDE");
+        }else{
+            i.putExtra("Stufe", Stufe.getText());
+        }
+
+
+        startActivity(i);
+
+
+    }
 }
 

@@ -36,12 +36,10 @@ public class vertretungsplan extends AppCompatActivity {
     TextView Title;
     public static int Height;
     static boolean stundenplan_active;
+    fragment_website websitefragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
 
         super.onCreate(savedInstanceState);
         SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp",0);
@@ -50,7 +48,6 @@ public class vertretungsplan extends AppCompatActivity {
 
         Intent intent = getIntent();
         String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
-
 
         if(!(Stufe.equals("EXISTINGSTUNDE"))){
             if(Stufe.charAt(0) != '0' && !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
@@ -86,9 +83,6 @@ public class vertretungsplan extends AppCompatActivity {
         NotenTab.setIcon(R.drawable.noteninactive);
         tablayout.addTab(NotenTab);
 
-        final TabLayout.Tab KalenderTab= tablayout.newTab();
-        KalenderTab.setIcon(R.drawable.kalenderinaktive);
-        tablayout.addTab(KalenderTab);
 
         final TabLayout.Tab WebsiteTab= tablayout.newTab();
         WebsiteTab.setIcon(R.drawable.webiteinactive);
@@ -97,7 +91,7 @@ public class vertretungsplan extends AppCompatActivity {
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
         final Fragment kalenderfragment = new fragment_kalender();
-        final Fragment websitefragment = new fragment_website();
+        websitefragment = new fragment_website();
 
         final Fragment notenfragment;
 
@@ -160,7 +154,6 @@ public class vertretungsplan extends AppCompatActivity {
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             public boolean noten_created =false;
-            public boolean kalender_created = false;
             public boolean website_created = false;
             public boolean vertretungsplan_created = false;
 
@@ -185,10 +178,6 @@ public class vertretungsplan extends AppCompatActivity {
                     case "Noten/Arbeiten":
                         NotenTab.setIcon(R.drawable.noteninactive);
                         ft.hide(notenfragment);
-                        break;
-                    case "Kalender":
-                        KalenderTab.setIcon(R.drawable.kalenderinaktive);
-                        ft.hide(kalenderfragment);
                         break;
                     case "Homepage":
                         WebsiteTab.setIcon(R.drawable.webiteinactive);
@@ -235,20 +224,6 @@ public class vertretungsplan extends AppCompatActivity {
 
                     case 3:
 
-                        if(kalender_created){
-                            ft.show(kalenderfragment);
-                        }
-                        else{
-                            ft.add(R.id.simpleframelayout, kalenderfragment);
-                            kalender_created =true;
-                        }
-
-                        AktiveTap = "Kalender";
-                        Title.setText("Kalender");
-
-                        break;
-                    case 4:
-
                         if(website_created){
                             ft.show(websitefragment);
                         }
@@ -283,9 +258,6 @@ public class vertretungsplan extends AppCompatActivity {
                 else if(AktiveTap == "Noten/Arbeiten") {
                     NotenTab.setIcon(R.drawable.notenactive);
                 }
-                else if(AktiveTap == "Kalender") {
-                    KalenderTab.setIcon(R.drawable.kalenderaktive);
-                }
                 else if(AktiveTap == "Homepage") {
                     WebsiteTab.setIcon(R.drawable.webiteactive);
                 }
@@ -317,7 +289,9 @@ public class vertretungsplan extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        if(AktiveTap.equals("Homepage")){
+            websitefragment.back();
+        }
     }
 
     public static boolean isStundenlanactive()  {

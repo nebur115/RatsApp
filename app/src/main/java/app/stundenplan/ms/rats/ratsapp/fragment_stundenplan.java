@@ -27,19 +27,13 @@ import java.util.Locale;
 @SuppressLint("ValidFragment")
 public class fragment_stundenplan extends Fragment {
     public int Height = vertretungsplan.getheight();
-    private List<Memory_Stunde> MemoryStundenListe = new ArrayList<>();
+    List<Memory_Stunde> MemoryStundenListe = new ArrayList<>();
     int Week;
     boolean isCreated = false;
     private List<Boolean> lastShowStunde = new ArrayList<>();
     private List<Boolean> lastDoppelStunde = new ArrayList<>();
-    Boolean Raumwechsel = false;
-    Boolean Lehrerwechsel = false;
-    Boolean Entfällt = false;
-    Boolean Klausur = false;
-    Boolean Veranstalltung = false;
-    String Kurs;
-    String Datum;
-    Boolean Schriftlich;
+
+
 
     @SuppressLint("ValidFragment")
     public fragment_stundenplan(int pWeek) {
@@ -83,10 +77,8 @@ public class fragment_stundenplan extends Fragment {
 
     private void init() {
 
-
         int menuHeight = 60 + 50 + 36;
-
-
+        List<Memory_NotenKlausuren> SchnittNotenList = new ArrayList<>();
         String DateMonday;
         String DateTuesday;
         String DateWednesday;
@@ -150,6 +142,38 @@ public class fragment_stundenplan extends Fragment {
 
         SharedPreferences settings = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
+        if (settings.getString("Stufe", "").equals("Q1") || settings.getString("Stufe", "").equals("Q2")) {
+
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+
+            List<Memory_NotenKlausuren> NotenKlausurenQ11;
+            List<Memory_NotenKlausuren> NotenKlausurenQ12;
+            List<Memory_NotenKlausuren> NotenKlausurenQ21;
+            List<Memory_NotenKlausuren> NotenKlausurenQ22;
+
+            String json11 = settings.getString("NotenKlausurenQ11", null);
+            String json12 = settings.getString("NotenKlausurenQ12", null);
+            String json21 = settings.getString("NotenKlausurenQ21", null);
+            String json22 = settings.getString("NotenKlausurenQ22", null);
+
+            NotenKlausurenQ11 = gson.fromJson(json11, type);
+            NotenKlausurenQ12 = gson.fromJson(json12, type);
+            NotenKlausurenQ21 = gson.fromJson(json21, type);
+            NotenKlausurenQ22 = gson.fromJson(json22, type);
+
+            SchnittNotenList.addAll(NotenKlausurenQ11);
+            SchnittNotenList.addAll(NotenKlausurenQ12);
+            SchnittNotenList.addAll(NotenKlausurenQ21);
+            SchnittNotenList.addAll(NotenKlausurenQ22);
+
+        } else {
+            String json = settings.getString("NotenKlausuren", null);
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
+            SchnittNotenList = gson.fromJson(json, type);
+        }
+
         int StundenAnzahl = settings.getInt("MaxStunden", 11);
         Height = settings.getInt("Height", 0);
 
@@ -188,9 +212,17 @@ public class fragment_stundenplan extends Fragment {
             }.getType();
             MemoryStundenListe = gson.fromJson(json, type);
 
+
             int MaxStunden = settings.getInt("MaxStunden", 0);
             for (int i = 0; i < MaxStunden * 5; i++) {
-
+                Boolean Raumwechsel = false;
+                Boolean Lehrerwechsel = false;
+                Boolean Entfaellt = false;
+                Boolean Klausur = false;
+                Boolean Veranstalltung = false;
+                String Kurs = "";
+                String Datum = "";
+                Boolean Schriftlich;
 
                 Boolean Today = false;
                 String Wochentag = null;
@@ -220,7 +252,23 @@ public class fragment_stundenplan extends Fragment {
                         Datum = DateFriday;
                         Today = day == 6 && Week == 0;
                         break;
+                }
 
+                Klausur = false;
+                for (int j = 0; SchnittNotenList.size() > j; j++) {
+                    if (SchnittNotenList.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())) {
+                        if (Integer.toString(SchnittNotenList.get(j).getDatum1()).replace("2018", "18").equals(Datum.replace(".", ""))) {
+                            Klausur = true;
+                        }
+
+                        if (Integer.toString(SchnittNotenList.get(j).getDatum2()).replace("2018", "18").equals(Datum.replace(".", ""))) {
+                            Klausur = true;
+                        }
+
+                        if (Integer.toString(SchnittNotenList.get(j).getDatum3()).replace("2018", "18").equals(Datum.replace(".", ""))) {
+                            Klausur = true;
+                        }
+                    }
                 }
 
 
@@ -344,14 +392,13 @@ public class fragment_stundenplan extends Fragment {
                 Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
 
 
-                Klausur = false;
                 Lehrerwechsel = false;
                 Raumwechsel = false;
-                Entfällt = false;
+                Entfaellt = false;
                 Veranstalltung = false;
 
 
-                if(settings.getBoolean("VertretungsplanInStundenplanAnzeigen", true)) {
+                if (settings.getBoolean("VertretungsplanInStundenplanAnzeigen", true)) {
                     try {
                         VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
                         switch (s.type) {
@@ -359,8 +406,8 @@ public class fragment_stundenplan extends Fragment {
                                 Klausur = true;
                                 if (!Raum.equals(s.raum))
                                     Raum = s.raum;
-                                if(!Schriftlich)
-                                    Entfällt = true;
+                                if (!Schriftlich)
+                                    Entfaellt = true;
                                 break;
                             case 1:
                                 Lehrerwechsel = true;
@@ -373,22 +420,23 @@ public class fragment_stundenplan extends Fragment {
                                 Raum = s.raum;
                                 break;
                             case 4:
-                                Entfällt = true;
+                                Entfaellt = true;
                                 break;
                             case 5:
                                 Veranstalltung = true;
                                 break;
                         }
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                 }
                 //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
                 //Bei Raum / Lehrerwechsel Wert anpassen
-                //Es können mehrere Werte gleichzeitig Wahr sein (Entfällt, Klausur, und Veranstalltung allerdings nicht).
-                //Wenn Mündlich, Klausur und "Restgruppe entfällt", dann Frei.
+                //Es können mehrere Werte gleichzeitig Wahr sein (Entfaellt, Klausur, und Veranstalltung allerdings nicht).
+                //Wenn Mündlich, Klausur und "Restgruppe Entfaellt", dann Frei.
 
                 if (ShowStunde && !Freistunde) {
-                    StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum, Raumwechsel, Lehrerwechsel, Entfällt, Klausur, Veranstalltung, aktiveStunde));
+                    StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum, Raumwechsel, Lehrerwechsel, Entfaellt, Klausur, Veranstalltung, aktiveStunde));
                 } else if (ShowStunde) {
                     StundenListe.add(new Freistunde(Wochentag, DoppelStunde, itemHeight, itemWidth));
                 }
@@ -402,6 +450,8 @@ public class fragment_stundenplan extends Fragment {
         }
     }
 
+
+
     public void reload() {
 
         isCreated = false;
@@ -411,4 +461,6 @@ public class fragment_stundenplan extends Fragment {
 
 
     }
+
+
 }

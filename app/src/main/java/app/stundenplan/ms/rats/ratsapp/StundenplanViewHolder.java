@@ -18,15 +18,28 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
     public ConstraintLayout Stunde;
 
 
-    public StundenplanViewHolder(View StundenplanView){
+    public StundenplanViewHolder(final View StundenplanView){
         super(StundenplanView);
         Lehrer = StundenplanView.findViewById(R.id.Stunde_Lehrer);
         Fach = StundenplanView.findViewById(R.id.Stunde_Fach);
         Raum = StundenplanView.findViewById(R.id.Stunde_Raum);
         Stunde = (ConstraintLayout) StundenplanView.findViewById(R.id.stunden_holder);
+
+        Stunde.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+            }
+
+        });
+
     }
 
     public void showstundendetails(Stunde pStunde){
+
+
+
         String tLehrer = pStunde.getLehrer();
         String tRaum = pStunde.getRaum();
         String tFach = pStunde.getFach();
@@ -39,12 +52,14 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         boolean pnow = pStunde.isNow();
         boolean Raumwechsel = pStunde.isRaumwechsel();
         boolean Lehrerwechsel = pStunde.isLehrerwechsel();
-        boolean Entfällt = pStunde.isEntfällt();
+        boolean Entfaellt = pStunde.isEntfällt();
         boolean Klausur = pStunde.isKlausur();
         boolean Veranstalltung = pStunde.isVeranstalltung();
 
 
-
+        Lehrer.setTextColor(Color.parseColor("#3C3C3C"));
+        Raum.setTextColor(Color.parseColor("#3C3C3C"));
+        Fach.setTextColor(Color.parseColor("#3C3C3C"));
 
 
         if (tdoppelstunde){
@@ -57,9 +72,23 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         }
 
 
+        if(pnow){
+            Lehrer.setTypeface(Typeface.DEFAULT_BOLD);
+            Raum.setTypeface(Typeface.DEFAULT_BOLD);
+            Lehrer.setTextColor(Color.parseColor("#000000"));
+            Raum.setTextColor(Color.parseColor("#000000"));
+            Fach.setTextColor(Color.parseColor("#000000"));
+        }
+
+
+        if(Klausur){
+            Fach.setTextColor(Color.parseColor("#6D0BAA"));
+        }
+
+
         if(tWochentag == "Dienstag" || tWochentag == "Donnerstag"){
             Stunde.setBackgroundResource(R.drawable.stundenplan_dark);
-            if(Entfällt){
+            if(Entfaellt){
                 Fach.setTextColor(Color.parseColor("#9d9d9d"));
                 Raum.setTextColor(Color.parseColor("#9d9d9d"));
                 Lehrer.setTextColor(Color.parseColor("#9d9d9d"));
@@ -68,7 +97,7 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         else
         {
             Stunde.setBackgroundResource(R.drawable.stundenplan_light);
-            if(Entfällt){
+            if(Entfaellt){
                 Fach.setTextColor(Color.parseColor("#cfcfcf"));
                 Raum.setTextColor(Color.parseColor("#cfcfcf"));
                 Lehrer.setTextColor(Color.parseColor("#cfcfcf"));
@@ -104,14 +133,6 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         Raum.setText(tRaum);
         Fach.setText(tFach);
 
-        if(pnow){
-            Lehrer.setTextColor(Color.parseColor("#000000"));
-            Raum.setTextColor(Color.parseColor("#000000"));
-            Fach.setTextColor(Color.parseColor("#000000"));
-            Lehrer.setTypeface(Typeface.DEFAULT_BOLD);
-            Raum.setTypeface(Typeface.DEFAULT_BOLD);
-        }
-
         if(Raumwechsel){
             Raum.setTextColor(Color.parseColor("#B13333"));
         }
@@ -126,9 +147,8 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        if(Klausur){
-            Fach.setTextColor(Color.parseColor("#6D0BAA"));
-        }
+
+
 
     }
 

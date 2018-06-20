@@ -1,10 +1,13 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +26,9 @@ public class QPhase_create extends AppCompatActivity {
     List<Memory_NotenKlausuren> NotenListQ12 = new ArrayList<>();
     List<Memory_NotenKlausuren> NotenListQ21 = new ArrayList<>();
     List<Memory_NotenKlausuren> NotenListQ22 = new ArrayList<>();
+    ImageView Back;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,15 @@ public class QPhase_create extends AppCompatActivity {
 
         NotenKlausurenListe.add(new QPhase_Overview());
 
+        Back = findViewById(R.id.imageView);
 
+        Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(QPhase_create.this, Settings.class);
+                startActivity(i);
+            }
+        });
 
         if(!setting.contains("NotenKlausurenQ11")){
             if(setting.contains("Faecher")){
@@ -124,5 +138,10 @@ public class QPhase_create extends AppCompatActivity {
         mrecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new QPhase_adapter(getBaseContext(), NotenKlausurenListe);
         mrecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

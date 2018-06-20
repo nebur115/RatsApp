@@ -24,20 +24,17 @@ public class fragment_website extends Fragment {
     }
 
 
-    public  void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-
-
-        View v=inflater.inflate(R.layout.website_fragment, container, false);
+        View v = inflater.inflate(R.layout.website_fragment, container, false);
         bar = v.findViewById(R.id.progressBar);
         blockview = v.findViewById(R.id.blockview);
 
@@ -52,7 +49,6 @@ public class fragment_website extends Fragment {
 
         return v;
     }
-
 
 
     public class myWebclient extends WebViewClient {
@@ -77,7 +73,13 @@ public class fragment_website extends Fragment {
         }
     }
 
+
+    public void back(){
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        }
     }
+}
 
 
 

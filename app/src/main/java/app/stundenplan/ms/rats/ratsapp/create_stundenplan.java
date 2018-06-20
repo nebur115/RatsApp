@@ -173,7 +173,6 @@ public class create_stundenplan extends AppCompatActivity {
                 String jsonb = "";
                 Gson gson = new Gson();
 
-
                 jsona = settings.getString("Stundenliste", null);
                 Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
                 WocheAStundenListe = gson.fromJson(jsona , type);
@@ -208,8 +207,7 @@ public class create_stundenplan extends AppCompatActivity {
                 editor.apply();
 
 
-                Intent i = new Intent(create_stundenplan.this, loading.class);
-                i.putExtra("Stufe", Stufe);
+                Intent i = new Intent(create_stundenplan.this, Settings.class);
                 startActivity(i);
             }
         });
@@ -222,7 +220,8 @@ public class create_stundenplan extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        Intent i = new Intent(create_stundenplan.this, Settings.class);
+        startActivity(i);
     }
 
 
