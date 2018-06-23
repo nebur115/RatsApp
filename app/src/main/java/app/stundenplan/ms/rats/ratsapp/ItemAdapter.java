@@ -1,8 +1,11 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -24,7 +28,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static int TYPE_EREIGNIS=1,TYPE_Obtionen=2, TYPE_Datum=3;
     private List<Object> itemFeed = new ArrayList();
     private Context context;
-
+    private int longClickDuration = 150;
+    private boolean isLongPress = false;
 
 
     public ItemAdapter(Context context){
@@ -119,6 +124,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView grund;
         private TextView lehrer;
         private ImageView zeichen;
+        private ConstraintLayout frame;
+        SharedPreferences settings;
 
         public ereignisViewHolder(View itemView) {
             super(itemView);
@@ -129,15 +136,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             grund = itemView.findViewById(R.id.Grund);
             lehrer = itemView.findViewById(R.id.FachTextView);
             zeichen = itemView.findViewById(R.id.Zeichen);
+            frame= itemView.findViewById(R.id.frame);
+
+            settings = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
+
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         public void showereignisDetails(Ereignis ereignis){
 
-            String Fach = ereignis.getFach();
-            String Kurs = ereignis.getKurs();
-            String Stunde = ereignis.getStunde();
-            String Grund = ereignis.getGrund();
-            String Lehrer = ereignis.getLehrer();
+            final String Fach = ereignis.getFach();
+            final String Kurs = ereignis.getKurs();
+            final String Stunde = ereignis.getStunde();
+            final String Grund = ereignis.getGrund();
+            final String Lehrer = ereignis.getLehrer();
 
             fach.setText(Fach);
             kurs.setText(Kurs);
@@ -145,6 +157,110 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             grund.setText(Grund);
             lehrer.setText(Lehrer);
             zeichen.setImageResource(ereignis.getZeichen());
+
+
+            frame.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                                    TextView tFach;
+                                    TextView tKurs;
+                                    TextView tRaum;
+                                    TextView tLehrer;
+                                    TextView tHinweis;
+                                    final TextView tNichtmeinKurs;
+                                    ConstraintLayout cnichtmeinkurs;
+
+                                    Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                                    vibrator.vibrate(50);
+                                    final AlertDialog.Builder mBuilder = new AlertDialog.Builder(context);
+                                    LayoutInflater inflater = LayoutInflater.from(context);
+                                    View mView = inflater.inflate(R.layout.vertretungsplan_popup, null);
+
+
+                                    tFach = mView.findViewById(R.id.Titel);
+                                    tKurs = mView.findViewById(R.id.Kurs);
+                                    tLehrer = mView.findViewById(R.id.Lehrer);
+                                    tHinweis = mView.findViewById(R.id.Hinweis);
+                                    tNichtmeinKurs = mView.findViewById(R.id.NichtmeinKurs);
+                                    cnichtmeinkurs = mView.findViewById(R.id.nichtmeinkurs);
+
+                                    tFach.setText(Fach);
+                                    tKurs.setText(Fach);
+                                    tKurs.setText(Kurs);
+                                    tLehrer.setText(Lehrer);
+                                    tHinweis.setText(Grund);
+
+
+
+
+
+
+                                    if(settings.contains("Kursliste")) {
+                                        HashSet<String> meineKurse = (HashSet<String>) settings.getStringSet("Kursliste", new HashSet<String>());
+                                        HashSet<String> manuellnichtmeineKurse = (HashSet<String>) settings.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+                                        HashSet<String> manuellmeineKurse = (HashSet<String>) settings.getStringSet("ManuellmeineKurse", new HashSet<String>());
+                                        if (( manuellmeineKurse.contains(Kurs.replace("  ", " ").toUpperCase())||(meineKurse.contains(Kurs.replace("  ", " ").toUpperCase()) && !((manuellnichtmeineKurse.contains(Kurs.replace("  ", " ").toUpperCase())))))) {
+                                            tNichtmeinKurs.setText("Dies ist nicht mein Kurs");
+                                        }else{
+                                            tNichtmeinKurs.setText("Dies ist mein Kurs");
+                                        }
+                                    }else{
+                                        cnichtmeinkurs.setVisibility(View.GONE);
+                                    }
+
+                                    mBuilder.setView(mView);
+                                    final AlertDialog dialog = mBuilder.create();
+
+                                    cnichtmeinkurs.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (tNichtmeinKurs.getText() == "Dies ist nicht mein Kurs") {
+
+                                                SharedPreferences settings1 = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
+                                                HashSet<String> meineKurse = (HashSet<String>) settings1.getStringSet("ManuellmeineKurse", new HashSet<String>());
+                                                HashSet<String> nichtmeineKurse = (HashSet<String>) settings1.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+
+
+                                                nichtmeineKurse.add((Kurs.replace("  ", " ").toUpperCase()));
+                                                meineKurse.remove((Kurs.replace("  ", " ").toUpperCase()));
+
+
+                                                SharedPreferences.Editor editor = settings1.edit();
+                                                editor.putStringSet("ManuellmeineKurse", meineKurse);
+                                                editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
+                                                editor.apply();
+                                                VertretungsPlanMethoden.context.reload(false);
+                                                dialog.dismiss();
+
+
+                                            }else{
+                                                SharedPreferences settings1 = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
+
+
+                                                HashSet<String> meineKurse = (HashSet<String>) settings1.getStringSet("ManuellmeineKurse", new HashSet<String>());
+                                                HashSet<String> nichtmeineKurse = (HashSet<String>) settings1.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+
+                                                nichtmeineKurse.remove((Kurs.replace("  ", " ").toUpperCase()));
+                                                meineKurse.add((Kurs.replace("  ", " ").toUpperCase()));
+
+
+                                                SharedPreferences.Editor editor = settings1.edit();
+                                                editor.putStringSet("ManuellmeineKurse", meineKurse);
+                                                editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
+                                                editor.apply();
+                                                VertretungsPlanMethoden.context.reload(true);
+                                                dialog.dismiss();
+
+                                            }
+                                        }
+                                    });
+                                    dialog.show();
+                                }
+
+            });{
+
+            }
         }
     }
 
@@ -153,12 +269,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private TextView editText;
         private Switch myswitch;
+        SharedPreferences settings;
 
         obtionenViewHolder(View itemView) {
             super(itemView);
+            settings = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
             editText = (EditText) itemView.findViewById(R.id.editText2);
             myswitch = (Switch) itemView.findViewById(R.id.switch1);
-            final SharedPreferences settings = context.getSharedPreferences("RatsVertretungsPlanApp",0);
+            settings = context.getSharedPreferences("RatsVertretungsPlanApp",0);
             itemView.setOnClickListener(this);
             myswitch.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -36,9 +36,9 @@
        >
         <CheckBoxPreference
             android:key="AlleKurse"
-            android:title="Zeige eigene Ereignisse"
-            android:summaryOff="Zeigt nur Ereignisse eigener Kurse"
-            android:summaryOn="Zeigt alle Ereignisse an"/>
+            android:summaryOn="Zeigt nur Ereignisse eigener Kurse"
+            android:summaryOff="Zeigt alle Ereignisse an"
+            android:title="Ereignisse eigener Kurse anzeigen" />
 
     </PreferenceCategory>
     <PreferenceCategory

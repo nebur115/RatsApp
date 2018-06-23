@@ -197,6 +197,12 @@ public class create_stundenplan extends AppCompatActivity {
                 if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))){
                     editor.putString("NotenKlausuren", json);
                 }
+                if(settings.contains("ManuellmeineKurse")){
+                    HashSet<String> meineKurse = new HashSet<String>();
+                    editor.putStringSet("ManuellmeineKurse", meineKurse);
+                    editor.putStringSet("ManuellNichtMeineKurse", meineKurse);
+                }
+
 
                 editor.putString("Stundenliste", jsona);
                 if(Zweiwöchentlich){
@@ -205,6 +211,8 @@ public class create_stundenplan extends AppCompatActivity {
                 editor.putStringSet("Faecher", Faecher);
                 editor.putStringSet("Kursliste", Kurse);
                 editor.apply();
+
+
 
 
                 Intent i = new Intent(create_stundenplan.this, Settings.class);

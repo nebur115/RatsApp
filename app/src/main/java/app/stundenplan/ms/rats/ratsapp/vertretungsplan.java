@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.HashSet;
+
 public class vertretungsplan extends AppCompatActivity {
 
 
@@ -28,6 +30,8 @@ public class vertretungsplan extends AppCompatActivity {
     public boolean vertretungsplan_created = false;
     public boolean stundenplan_created = false;
     static fragment_noten childnotenfragment;
+    static SharedPreferences prefs1;
+    static SharedPreferences prefs2;
 
     fragment_parent_stundenplan childstundenplanfragment;
     Fragment stundenplanfragment;
@@ -45,6 +49,10 @@ public class vertretungsplan extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp",0);
         stundenplan_active = true;
         setContentView(R.layout.activity_vertretungsplan);
+
+        prefs1 = getSharedPreferences("RatsVertretungsPlanApp", 0);
+
+        prefs2 = getSharedPreferences("ManuelleKurse", 0);
 
         Intent intent = getIntent();
         String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
@@ -65,6 +73,8 @@ public class vertretungsplan extends AppCompatActivity {
             settings.getInt("Height", 0);
 
 
+
+        SharedPreferences prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
@@ -343,6 +353,20 @@ public class vertretungsplan extends AppCompatActivity {
         super.onResume();
 
 
+
+    }
+
+    static public void saveSharedPref(){
+        SharedPreferences.Editor editor = prefs1.edit();
+
+        HashSet<String> meineKurse = (HashSet<String>) prefs2.getStringSet("ManuellmeineKurse", new HashSet<String>());
+        HashSet<String> nichtmeineKurse = (HashSet<String>) prefs2.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+
+        editor.putStringSet("ManuellmeineKurse", meineKurse);
+        editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
+
+
+        editor.apply();
 
     }
 }

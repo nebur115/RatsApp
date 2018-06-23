@@ -182,6 +182,10 @@ public class VertretungsPlanMethoden {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         HashSet<String> meineKurse = (HashSet<String>) share.getStringSet("Kursliste", new HashSet<String>());
+        HashSet<String> manuellnichtmeineKurse = (HashSet<String>) share.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+        HashSet<String> manuellmeineKurse = (HashSet<String>) share.getStringSet("ManuellmeineKurse", new HashSet<String>());
+
+
         String[] lines = Inhalt.split("\n");
         String temp = "";
         int row = 0;
@@ -192,7 +196,7 @@ public class VertretungsPlanMethoden {
 
             while (row + 12 < lines.length) {
                 if (nachGestern(lines[row + 13])) {
-                    if (AlleKlassen || meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) || !share.contains("Stundenliste") || !(share.getBoolean("AlleKurseAnzeigen", share.contains("Kursliste")))) {
+                    if (AlleKlassen || ( manuellmeineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase())||(meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) && !((manuellnichtmeineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()))))) || !share.contains("Stundenliste") || !(share.getBoolean("AlleKurseAnzeigen", share.contains("Kursliste")))) {
                         if (lines[row + 2].contains(stufe)) {
                             if (!temp.equals(lines[row])) {
                                 ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));

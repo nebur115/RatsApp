@@ -90,7 +90,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/NichtmeinKurs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Q1.2"

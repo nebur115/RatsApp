@@ -9,6 +9,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewTreeObserver;
 
+import java.util.HashSet;
+
 
 /**
  * Created by User on 27.03.2018.
@@ -23,6 +25,23 @@ public class loading extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String Stufe = intent.getExtras().getString("Stufe");
+
+        SharedPreferences shared1 = getSharedPreferences("ManuelleKurse", 0);
+
+        SharedPreferences shared2 = getSharedPreferences("RatsVertretungsPlanApp",0);
+
+
+
+        HashSet<String> meineKurse = (HashSet<String>) shared1.getStringSet("ManuellmeineKurse", new HashSet<String>());
+        HashSet<String> nichtmeineKurse = (HashSet<String>) shared1.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+
+        SharedPreferences.Editor editor = shared2.edit();
+
+        editor.putStringSet("ManuellmeineKurse", meineKurse);
+        editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
+
+        editor.apply();
+
 
         try {
             Thread download = new HandlerThread("DownloadHandler") {
