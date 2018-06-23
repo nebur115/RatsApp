@@ -36,7 +36,10 @@ public class VertretungsStunde {
                     type = 1; //Information
                     break;
                 case "1":
-                    type = 3; //Raumwechsel
+                    if(lehrer.equals(urspr_lehrer))
+                        type = 3; //Raumwechsel
+                    else
+                        type = 1;
                     break;
                 case "0":
                     type = 4; //Entfall
