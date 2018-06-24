@@ -238,15 +238,15 @@ public class VertretungsPlanMethoden {
                                 ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                                 temp = lines[row + 13];
                             }
-
+                            if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                                ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
+                            else
                             switch (lines[row + 8]) {
                                 case "2":
                                     ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
                                     break;
                                 case "1":
-                                    if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
-                                    else if(lines[row+3].equals(lines[row+4]))
+                                    if(lines[row+3].equals(lines[row+4]))
                                         ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
                                     else
                                         ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.entfaellt));
