@@ -55,7 +55,7 @@ public class VertretungsPlanMethoden {
         //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
 
-        //vertretungsplan.zeigeLaden();
+        vertretungsplan.zeigeLaden();
 
         Ziel = pZiel;
         Thread download = new HandlerThread("DownloadHandler") {
@@ -72,7 +72,7 @@ public class VertretungsPlanMethoden {
         download.start();
         download.join();
 
-        //vertretungsplan.versteckeLaden();
+        vertretungsplan.versteckeLaden();
         //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
 
@@ -106,7 +106,7 @@ public class VertretungsPlanMethoden {
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
-    public static void downloadDaten(SharedPreferences share) throws Exception {
+    public static void downloadDaten(SharedPreferences share, boolean einsparen) throws Exception {
 
         //Variablen werden Deklariert und zum Teil initialisiert
         String request = "https://rats-ms.de/services/scripts/output.php";
@@ -115,9 +115,10 @@ public class VertretungsPlanMethoden {
         //Vereinfachter Zugriff auf die SharedPreference
         s = new SpeicherVerwaltung(share);
         //Holt die beiden Variablen aus der SharedPreference
+        if(einsparen){
         try {
             request += "?Stand=" + s.getString("Stand");
-        } catch (Exception e) {}
+        } catch (Exception e) {}}
 
         try {
             String[] y = htmlGetVertretung(request);
@@ -148,8 +149,26 @@ public class VertretungsPlanMethoden {
             String Stufe = new SpeicherVerwaltung(s).getString("Stufe");
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
-                context = fragment;
-                fragment.reload(false);
+                context = fragment;;
+                final fragment_vertretungsplan frag = context;
+
+                try {
+                    Thread download = new HandlerThread("DownloadHandler") {
+                        @Override
+                        public void run() {
+                            try{
+                                while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
+                                frag.reload(false);
+                            }catch(Exception e){
+
+                            }
+                        }
+                    };
+                    download.start();
+
+                }catch(Exception e){
+
+                }
             }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
@@ -162,7 +181,24 @@ public class VertretungsPlanMethoden {
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
                 context = fragment;
-                fragment.reload(false);
+                final fragment_vertretungsplan frag = context;
+                try {
+                    Thread download = new HandlerThread("DownloadHandler") {
+                        @Override
+                        public void run() {
+                            try{
+                                while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
+                                frag.reload(false);
+                            }catch(Exception e){
+
+                            }
+                        }
+                    };
+                    download.start();
+
+                }catch(Exception e){
+
+                }
             }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));

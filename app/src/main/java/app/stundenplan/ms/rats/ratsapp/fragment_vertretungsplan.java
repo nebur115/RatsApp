@@ -71,7 +71,7 @@ public class fragment_vertretungsplan extends Fragment {
         VertretungsPlanMethoden.context = this;
 
         setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
-        VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, setting.contains("Stundenliste"), this);
+        VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, !setting.contains("Stundenliste"), this);
 
         ItemAdapter.setitemFeed(ItemList);
         ItemAdapter.notifyDataSetChanged();
@@ -79,12 +79,11 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden) {
         try {
-
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {}
+
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
@@ -100,12 +99,11 @@ public class fragment_vertretungsplan extends Fragment {
     public void reload(final boolean AlleStunden, final String Stufe) {
 
         try {
-
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
+
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
                     ItemAdapter.notifyDataSetChanged();
@@ -125,15 +123,17 @@ public class fragment_vertretungsplan extends Fragment {
                 @Override
                 public void run() {
                     try{
-                        VertretungsPlanMethoden.downloadDaten(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
+                        VertretungsPlanMethoden.offline=false;
+                        VertretungsPlanMethoden.downloadedDaten =false;
+                        VertretungsPlanMethoden.downloadDaten(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);
+                        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
+                        reload(false);
                     }catch(Exception e){
 
                     }
                 }
             };
             download.start();
-            download.join();
-            reload(false);
         }catch(Exception e){
 
         }
