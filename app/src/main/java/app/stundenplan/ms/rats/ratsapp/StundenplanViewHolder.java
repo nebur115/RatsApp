@@ -37,9 +37,7 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void showstundendetails(Stunde pStunde){
-
-
-
+        
         String tLehrer = pStunde.getLehrer();
         String tRaum = pStunde.getRaum();
         String tFach = pStunde.getFach();

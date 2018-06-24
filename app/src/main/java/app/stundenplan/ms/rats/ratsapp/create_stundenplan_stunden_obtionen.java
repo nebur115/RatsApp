@@ -274,11 +274,6 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
             }
         }
 
-
-
-
-
-
         hinweis = false;
 
         List<String> MündlichSchriftlich = new ArrayList<String>();

@@ -106,7 +106,7 @@
                     android:inputType="text"
                     android:textAlignment="viewStart"
                     android:textColor="#000000"
-                    android:textSize="20dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.125"
@@ -122,7 +122,7 @@
                     android:text="Fach:"
                     android:textAlignment="textStart"
                     android:textColor="#424242"
-                    android:textSize="24dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="@+id/FachTextView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/FachTextView" />
@@ -153,7 +153,7 @@
                     android:layout_marginStart="16dp"
                     android:text="Nr."
                     android:textColor="#424242"
-                    android:textSize="21dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textViewKursnummer"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -167,7 +167,7 @@
                     android:inputType="number"
                     android:textAlignment="center"
                     android:textColor="#000000"
-                    android:textSize="20dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textViewNr"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -208,7 +208,7 @@
                     android:inputType="number"
                     android:textAlignment="center"
                     android:textColor="#000000"
-                    android:textSize="19sp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView5"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -222,7 +222,7 @@
                     android:text="Stufe "
                     android:textAlignment="textStart"
                     android:textColor="#424242"
-                    android:textSize="21dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/Unterichtbegin"
                     app:layout_constraintTop_toTopOf="parent"
@@ -252,7 +252,7 @@
                     android:text="Unterricht seit"
                     android:textAlignment="textStart"
                     android:textColor="#424242"
-                    android:textSize="21dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -312,7 +312,7 @@
                     android:text="Lehrer (Kürzel):"
                     android:textAlignment="textStart"
                     android:textColor="#424242"
-                    android:textSize="21dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -361,7 +361,7 @@
                     android:inputType="number"
                     android:textAlignment="center"
                     android:textColor="#000000"
-                    android:textSize="19dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/RaumSpinner"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -416,7 +416,7 @@
                     android:layout_marginStart="24dp"
                     android:text="Doppelstunde"
                     android:textColor="#424242"
-                    android:textSize="21dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -450,7 +450,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Wiederholung:"
                     android:textColor="#424242"
-                    android:textSize="21dp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
