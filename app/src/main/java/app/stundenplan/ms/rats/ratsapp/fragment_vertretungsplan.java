@@ -3,6 +3,7 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,11 +79,12 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden) {
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {}
+
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {}
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
@@ -98,11 +100,12 @@ public class fragment_vertretungsplan extends Fragment {
     public void reload(final boolean AlleStunden, final String Stufe) {
 
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
+
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
                     ItemAdapter.notifyDataSetChanged();
@@ -117,7 +120,23 @@ public class fragment_vertretungsplan extends Fragment {
 
     void refreshItems() {
 
-        //Download durchführend, neue Daten anzeigen und anschließend
+        try {
+            Thread download = new HandlerThread("DownloadHandler") {
+                @Override
+                public void run() {
+                    try{
+                        VertretungsPlanMethoden.downloadDaten(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
+                    }catch(Exception e){
+
+                    }
+                }
+            };
+            download.start();
+            download.join();
+            reload(false);
+        }catch(Exception e){
+
+        }
         mSwipeRefreshLayout.setRefreshing(false);
         //druchführend
     }
