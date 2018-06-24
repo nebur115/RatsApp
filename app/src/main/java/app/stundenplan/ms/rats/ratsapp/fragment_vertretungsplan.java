@@ -46,6 +46,7 @@ public class fragment_vertretungsplan extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
+
         init();
         return view;
     }

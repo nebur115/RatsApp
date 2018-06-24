@@ -213,6 +213,8 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
 
 
+
+
         if(MemoryStundenListe.get(pos-5).getFach().equals("Französisch") ||MemoryStundenListe.get(pos-5).getFach().equals("Spanisch") || MemoryStundenListe.get(pos-5).getFach().equals("Italiensich") || MemoryStundenListe.get(pos-5).getFach().equals("Niederländisch")){
             cUnterichtstartEingabe.setVisibility(View.VISIBLE);
             eUnterichtbegin.setText(Integer.toString(MemoryStundenListe.get(pos-5).getStartJahr()));
@@ -237,7 +239,9 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         if (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
             cMündlichSchriftlichAuswahl.setVisibility(View.GONE);
             cKursEingabe.setVisibility(View.GONE);
-
+            if(MemoryStundenListe.get(pos-5).isFreistunde()){
+                eDoppelstunde.setChecked(true);
+            }
 
         }
         else if(!(MemoryStundenListe.get(pos-5).getKursnummer()==0)){

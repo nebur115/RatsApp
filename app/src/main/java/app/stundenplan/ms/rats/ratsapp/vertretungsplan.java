@@ -155,6 +155,7 @@ public class vertretungsplan extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(vertretungsplan.this, Settings.class);
+                i.putExtra("Tab", AktiveTap);
                 startActivity(i);
             }
         });
@@ -294,6 +295,33 @@ public class vertretungsplan extends AppCompatActivity {
             TabLayout.Tab tab = tablayout.getTabAt(1);
             tab.select();
         }
+
+
+        if(intent.getExtras().containsKey("Tab")){
+
+            if(intent.getStringExtra("Tab").equals("Stundenplan")){
+                TabLayout.Tab tab = tablayout.getTabAt(0);
+                tab.select();
+            }
+
+            if(intent.getStringExtra("Tab").equals("Vertretungsplan")){
+                TabLayout.Tab tab = tablayout.getTabAt(1);
+                tab.select();
+            }
+
+            if(intent.getStringExtra("Tab").equals("Noten/Arbeiten")){
+                TabLayout.Tab tab = tablayout.getTabAt(2);
+                tab.select();
+            }
+
+            if(intent.getStringExtra("Tab").equals("Homepage")){
+                TabLayout.Tab tab = tablayout.getTabAt(3);
+                tab.select();
+            }
+
+
+        }
+
 
     }
 

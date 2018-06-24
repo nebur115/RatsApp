@@ -16,6 +16,7 @@ import android.preference.PreferenceCategory;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+
 public class Settings extends PreferenceActivity {
 
     SharedPreferences settings;
@@ -34,18 +35,29 @@ public class Settings extends PreferenceActivity {
     PreferenceCategory Vertretungsplan;
     PreferenceCategory Notenrechner;
     PreferenceCategory Sonstiges;
-
+    String Tab = "";
 
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         addPreferencesFromResource(R.xml.app_preferences);
 
+        
         Stundenplan = (PreferenceCategory) findPreference("Stundenplan");
         Vertretungsplan = (PreferenceCategory) findPreference("Vertretungsplan");
         Notenrechner = (PreferenceCategory) findPreference("Notenrechner");
         Sonstiges = (PreferenceCategory) findPreference("Sonstiges");
 
         settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
+
+        Intent intent = getIntent();
+        if(!(intent.getExtras()==null)){
+            Tab = intent.getExtras().getString("Tab");
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("Tab", Tab);
+            editor.apply();
+        }
+
+
 
         CreateStundenplan = findPreference("CreateStundenplan");
         StundenVertretungsplanAnzeigen = (CheckBoxPreference) findPreference("StundenplanVertretungsplananzeigen");
@@ -86,6 +98,15 @@ public class Settings extends PreferenceActivity {
         if(!(settings.getString("Stufe", "").equals("Q1") ||settings.getString("Stufe", "").equals("Q2"))){
             Notenrechner.removePreference(QPlanaendern);
         }
+
+
+        Copyright.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(Settings.this,"In der Testverion sind die Copyrights noch nicht verfügbar", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
 
         StundenVertretungsplanAnzeigen.setOnPreferenceClickListener(new CheckBoxPreference.OnPreferenceClickListener() {
             @Override
@@ -256,18 +277,19 @@ public class Settings extends PreferenceActivity {
             }
         });
 
-
-
     }
 
     @Override
     public void onBackPressed() {
 
+        Tab = settings.getString("Tab", "");
         Intent i = new Intent(Settings.this, vertretungsplan.class);
         if(Stufe.getText().equals(settings.getString("Stufe",""))){
             i.putExtra("Stufe", "EXISTINGSTUNDE");
+            i.putExtra("Tab", Tab);
         }else{
             i.putExtra("Stufe", Stufe.getText());
+            i.putExtra("Tab", Tab);
         }
 
 
