@@ -246,10 +246,10 @@ public class VertretungsPlanMethoden {
                                     ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
                                     break;
                                 case "1":
-                                    if(lines[row+3].equals(lines[row+4]))
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                                    if(!lines[row+2].equals(lines[row+3]))
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.lehrerwechsel));
                                     else
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.entfaellt));
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
                                     break;
                                 case "0":
                                     ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
