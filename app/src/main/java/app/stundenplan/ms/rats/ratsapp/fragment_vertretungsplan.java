@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class fragment_vertretungsplan extends Fragment {
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     public fragment_vertretungsplan() {
 
@@ -44,6 +45,17 @@ public class fragment_vertretungsplan extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         recyclerView.setLayoutManager(linearLayoutManager);
+
+       mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                refreshItems();
+
+            }
+        });
 
 
 
@@ -102,4 +114,13 @@ public class fragment_vertretungsplan extends Fragment {
             System.out.println("Debug: Fehler reload");
         }
     }
+
+    void refreshItems() {
+
+        //Download durchführend, neue Daten anzeigen und anschließend
+        mSwipeRefreshLayout.setRefreshing(false);
+        //druchführend
+    }
+
+
 }

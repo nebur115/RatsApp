@@ -42,6 +42,7 @@ public class vertretungsplan extends AppCompatActivity {
     static boolean stundenplan_active;
     fragment_website websitefragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -78,6 +79,7 @@ public class vertretungsplan extends AppCompatActivity {
 
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
+
 
         Stufe = settings.getString("Stufe", "");
 
@@ -397,6 +399,8 @@ public class vertretungsplan extends AppCompatActivity {
         editor.apply();
 
     }
+
+
 }
 
 
