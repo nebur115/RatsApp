@@ -3,9 +3,7 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -158,7 +156,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             lehrer.setText(Lehrer);
             zeichen.setImageResource(ereignis.getZeichen());
 
-
+            /*
             frame.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -170,6 +168,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     TextView tHinweis;
                                     final TextView tNichtmeinKurs;
                                     ConstraintLayout cnichtmeinkurs;
+                                    settings = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
 
                                     Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                                     vibrator.vibrate(50);
@@ -191,11 +190,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     tLehrer.setText(Lehrer);
                                     tHinweis.setText(Grund);
 
-
-
-
-
-
                                     if(settings.contains("Kursliste")) {
                                         HashSet<String> meineKurse = (HashSet<String>) settings.getStringSet("Kursliste", new HashSet<String>());
                                         HashSet<String> manuellnichtmeineKurse = (HashSet<String>) settings.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
@@ -212,34 +206,35 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     mBuilder.setView(mView);
                                     final AlertDialog dialog = mBuilder.create();
 
+                                    dialog.show();
+
                                     cnichtmeinkurs.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
                                             if (tNichtmeinKurs.getText() == "Dies ist nicht mein Kurs") {
 
-                                                SharedPreferences settings1 = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
-                                                HashSet<String> meineKurse = (HashSet<String>) settings1.getStringSet("ManuellmeineKurse", new HashSet<String>());
-                                                HashSet<String> nichtmeineKurse = (HashSet<String>) settings1.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
-
-
-                                                nichtmeineKurse.add((Kurs.replace("  ", " ").toUpperCase()));
-                                                meineKurse.remove((Kurs.replace("  ", " ").toUpperCase()));
-
-
-                                                SharedPreferences.Editor editor = settings1.edit();
-                                                editor.putStringSet("ManuellmeineKurse", meineKurse);
-                                                editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
-                                                editor.apply();
-                                                VertretungsPlanMethoden.context.reload(false);
+                                                meinKurs(Kurs);
                                                 dialog.dismiss();
 
 
+
+
+
                                             }else{
+
+
+                                                dialog.dismiss();
                                                 SharedPreferences settings1 = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
+                                                HashSet<String> nichtmeineKurse = new HashSet<String>();
+                                                HashSet<String> meineKurse = new HashSet<String>();
+                                                if(settings1.contains("ManuellmeineKurse")){
+                                                    meineKurse = (HashSet<String>) settings1.getStringSet("ManuellmeineKurse", null);
+                                                }
 
+                                                if(settings1.contains("ManuellNichtMeineKurse")){
+                                                    nichtmeineKurse = (HashSet<String>) settings1.getStringSet("ManuellNichtMeineKurse", null);
+                                                }
 
-                                                HashSet<String> meineKurse = (HashSet<String>) settings1.getStringSet("ManuellmeineKurse", new HashSet<String>());
-                                                HashSet<String> nichtmeineKurse = (HashSet<String>) settings1.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
 
                                                 nichtmeineKurse.remove((Kurs.replace("  ", " ").toUpperCase()));
                                                 meineKurse.add((Kurs.replace("  ", " ").toUpperCase()));
@@ -250,17 +245,36 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                                 editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
                                                 editor.apply();
                                                 VertretungsPlanMethoden.context.reload(true);
-                                                dialog.dismiss();
-
                                             }
                                         }
                                     });
-                                    dialog.show();
+
                                 }
 
             });{
 
             }
+         */
+        }
+
+
+        public void meinKurs(String meinKurs){
+            SharedPreferences settings1 = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
+
+
+            HashSet<String> meineKurse = (HashSet<String>) settings1.getStringSet("ManuellmeineKurse", new HashSet<String>());
+            HashSet<String> nichtmeineKurse = (HashSet<String>) settings1.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
+
+
+            nichtmeineKurse.add((meinKurs.replace("  ", " ").toUpperCase()));
+            meineKurse.remove((meinKurs.replace("  ", " ").toUpperCase()));
+
+
+            SharedPreferences.Editor editor = settings1.edit();
+            editor.putStringSet("ManuellmeineKurse", meineKurse);
+            editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
+            editor.apply();
+            VertretungsPlanMethoden.context.reload(false);
         }
     }
 

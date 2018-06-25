@@ -41,9 +41,6 @@ public class Settings extends PreferenceActivity {
         super.onCreate(bundle);
         addPreferencesFromResource(R.xml.app_preferences);
 
-
-
-
         Stundenplan = (PreferenceCategory) findPreference("Stundenplan");
         Vertretungsplan = (PreferenceCategory) findPreference("Vertretungsplan");
         Notenrechner = (PreferenceCategory) findPreference("Notenrechner");

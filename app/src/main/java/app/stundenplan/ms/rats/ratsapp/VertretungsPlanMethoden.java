@@ -218,6 +218,7 @@ public class VertretungsPlanMethoden {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         HashSet<String> meineKurse = (HashSet<String>) share.getStringSet("Kursliste", new HashSet<String>());
+
         HashSet<String> manuellnichtmeineKurse = (HashSet<String>) share.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
         HashSet<String> manuellmeineKurse = (HashSet<String>) share.getStringSet("ManuellmeineKurse", new HashSet<String>());
 

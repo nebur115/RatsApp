@@ -97,7 +97,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         List<Memory_NotenKlausuren> NotenList = new ArrayList<>();
         String json = "";
         Gson gson = new Gson();
-         Stufe = setting.getString("Stufe","");
+        Stufe = setting.getString("Stufe","");
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH);
 

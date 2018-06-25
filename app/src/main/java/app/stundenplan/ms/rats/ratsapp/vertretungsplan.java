@@ -21,7 +21,7 @@ import java.util.HashSet;
 public class vertretungsplan extends AppCompatActivity {
 
 
-
+    SharedPreferences settings;
     static ProgressBar progressBar2;
     public String AktiveTap;
     public boolean noten_created =false;
@@ -30,9 +30,7 @@ public class vertretungsplan extends AppCompatActivity {
     public boolean vertretungsplan_created = false;
     public boolean stundenplan_created = false;
     static fragment_noten childnotenfragment;
-    static SharedPreferences prefs1;
-    static SharedPreferences prefs2;
-
+    static SharedPreferences prefs;
     fragment_parent_stundenplan childstundenplanfragment;
     Fragment stundenplanfragment;
     FrameLayout SimpleFrameLayout;
@@ -47,13 +45,9 @@ public class vertretungsplan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp",0);
+        settings = getSharedPreferences("RatsVertretungsPlanApp",0);
         stundenplan_active = true;
         setContentView(R.layout.activity_vertretungsplan);
-
-        prefs1 = getSharedPreferences("RatsVertretungsPlanApp", 0);
-
-        prefs2 = getSharedPreferences("ManuelleKurse", 0);
 
         Intent intent = getIntent();
         String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
@@ -75,7 +69,7 @@ public class vertretungsplan extends AppCompatActivity {
 
 
 
-        SharedPreferences prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
+         prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
@@ -174,6 +168,8 @@ public class vertretungsplan extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                ManuellSave();
 
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -386,21 +382,18 @@ public class vertretungsplan extends AppCompatActivity {
 
     }
 
-    static public void saveSharedPref(){
-        SharedPreferences.Editor editor = prefs1.edit();
+    public void ManuellSave(){
+        SharedPreferences prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
+        HashSet<String> nichtmeineKurse = new HashSet<String>();
+        HashSet<String> meineKurse = new HashSet<String>();
+        meineKurse = (HashSet<String>) prefs.getStringSet("ManuellmeineKurse", null);
+        nichtmeineKurse = (HashSet<String>) prefs.getStringSet("ManuellNichtMeineKurse", null);
 
-        HashSet<String> meineKurse = (HashSet<String>) prefs2.getStringSet("ManuellmeineKurse", new HashSet<String>());
-        HashSet<String> nichtmeineKurse = (HashSet<String>) prefs2.getStringSet("ManuellNichtMeineKurse", new HashSet<String>());
-
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet("ManuellmeineKurse", meineKurse);
         editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
-
-
         editor.apply();
-
     }
-
-
 }
 
 
