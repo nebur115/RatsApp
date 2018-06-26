@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,7 +48,7 @@ public class fragment_vertretungsplan extends Fragment {
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-       mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -57,7 +58,6 @@ public class fragment_vertretungsplan extends Fragment {
 
             }
         });
-
 
 
         init();
@@ -86,13 +86,14 @@ public class fragment_vertretungsplan extends Fragment {
 
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
-                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
+                    VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, AlleStunden, null);
                 }
             }, 0);
-            textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:",""));
+            textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:", ""));
 
         } catch (Exception e) {
             System.out.println("Debug: Fehler reload");
+            e.printStackTrace();
         }
     }
 
@@ -105,40 +106,23 @@ public class fragment_vertretungsplan extends Fragment {
                 public void run() {
 
                     ItemList.clear();
-                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
+                    VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, AlleStunden, null, Stufe);
                     ItemAdapter.notifyDataSetChanged();
                 }
             }, 0);
-            textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:",""));
+            textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:", ""));
 
         } catch (Exception e) {
             System.out.println("Debug: Fehler reload");
+            e.printStackTrace();
         }
     }
 
     void refreshItems() {
-
-        try {
-            Thread download = new HandlerThread("DownloadHandler") {
-                @Override
-                public void run() {
-                    try{
-                        VertretungsPlanMethoden.offline=false;
-                        VertretungsPlanMethoden.downloadedDaten =false;
-                        VertretungsPlanMethoden.downloadDaten(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);
-                        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
-                        reload(false);
-                    }catch(Exception e){
-
-                    }
-                }
-            };
-            download.start();
-        }catch(Exception e){
-
-        }
+        try{
+        VertretungsPlanMethoden.downloadDaten(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);}catch (Exception e){}
+        reload(!setting.contains("Stundenliste"));
         mSwipeRefreshLayout.setRefreshing(false);
-        //druchführend
     }
 
 

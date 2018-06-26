@@ -2,6 +2,7 @@ package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
 import android.os.HandlerThread;
+import android.os.Looper;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -15,6 +16,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import static android.os.Looper.*;
+import static android.os.Looper.prepare;
+
 
 /**
  * Created by Marius on 16.03.2018.
@@ -27,7 +31,6 @@ public class VertretungsPlanMethoden {
      */
     public static Obtionen option;
     public static String Ziel;
-    public static List<Object> itemlist;
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
@@ -106,8 +109,7 @@ public class VertretungsPlanMethoden {
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
-    public static void downloadDaten(SharedPreferences share, boolean einsparen) throws Exception {
-
+    public static void downloadDaten(SharedPreferences share, boolean einsparen) throws Exception{
         //Variablen werden Deklariert und zum Teil initialisiert
         String request = "https://rats-ms.de/services/scripts/output.php";
         SpeicherVerwaltung s;
@@ -116,9 +118,10 @@ public class VertretungsPlanMethoden {
         s = new SpeicherVerwaltung(share);
         //Holt die beiden Variablen aus der SharedPreference
         if(einsparen){
-        try {
-            request += "?Stand=" + s.getString("Stand");
-        } catch (Exception e) {}}
+            try {
+                request += "?Stand=" + s.getString("Stand");
+            } catch (Exception e) {}
+        }
 
         try {
             String[] y = htmlGetVertretung(request);
@@ -132,9 +135,7 @@ public class VertretungsPlanMethoden {
         catch(Exception e){
             offline = true;
         }
-
         downloadedDaten = true;
-
     }
 
     /**
@@ -144,61 +145,28 @@ public class VertretungsPlanMethoden {
      * @param s
      */
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
-        itemlist = ItemList;
         try {
             String Stufe = new SpeicherVerwaltung(s).getString("Stufe");
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
-                context = fragment;;
-                final fragment_vertretungsplan frag = context;
-
-                try {
-                    Thread download = new HandlerThread("DownloadHandler") {
-                        @Override
-                        public void run() {
-                            try{
-                                while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
-                                frag.reload(false);
-                            }catch(Exception e){
-
-                            }
-                        }
-                    };
-                    download.start();
-
-                }catch(Exception e){
-
-                }
+                context = fragment;
+                while(!downloadedDaten && !offline){}
+                fragment.reload(false);
             }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
         }
     }
 
-    public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment, String Stufe) {
-        itemlist = ItemList;
+    public static void VertretungsPlan(List<Object> ItemList, final SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment, String Stufe) {
         try {
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
                 context = fragment;
-                final fragment_vertretungsplan frag = context;
                 try {
-                    Thread download = new HandlerThread("DownloadHandler") {
-                        @Override
-                        public void run() {
-                            try{
-                                while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
-                                frag.reload(false);
-                            }catch(Exception e){
-
-                            }
-                        }
-                    };
-                    download.start();
-
-                }catch(Exception e){
-
-                }
+                    while(!downloadedDaten && !offline){}
+                    context.reload(false);
+                }catch(Exception e){e.printStackTrace(); }
             }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
@@ -248,9 +216,9 @@ public class VertretungsPlanMethoden {
                                     break;
                                 case "1":
                                     if(!lines[row+2].equals(lines[row+3]))
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.lehrerwechsel));
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.lehrerwechsel));
                                     else
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.raumwechsel));
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.raumwechsel));
                                     break;
                                 case "0":
                                     ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));

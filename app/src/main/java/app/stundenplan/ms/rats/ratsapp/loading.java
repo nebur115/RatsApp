@@ -31,7 +31,7 @@ public class loading extends AppCompatActivity {
                 @Override
                 public void run() {
                     try{
-                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), true);
+                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), false);
                     }catch(Exception e){
                         System.out.println("Debug: Fehler beim Download in loading.java");
                     }
