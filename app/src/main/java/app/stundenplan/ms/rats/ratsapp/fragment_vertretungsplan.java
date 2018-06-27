@@ -78,12 +78,11 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden) {
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {
-            }
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
@@ -99,12 +98,12 @@ public class fragment_vertretungsplan extends Fragment {
     public void reload(final boolean AlleStunden, final String Stufe) {
 
         try {
-            while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
-            }
+
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {}
                     ItemList.clear();
                     VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
                     ItemAdapter.notifyDataSetChanged();
@@ -123,7 +122,7 @@ public class fragment_vertretungsplan extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        VertretungsPlanMethoden.downloadDaten(setting, false);
+                        VertretungsPlanMethoden.downloadDaten(setting, VertretungsPlanMethoden.offline);
                         ItemList.clear();
                         VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), setting.contains("Stundenliste"), null);
                         ItemAdapter.notifyDataSetChanged();
