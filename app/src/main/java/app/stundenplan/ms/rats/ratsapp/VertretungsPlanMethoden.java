@@ -2,7 +2,6 @@ package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.SharedPreferences;
 import android.os.HandlerThread;
-import android.os.Looper;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -16,9 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-import static android.os.Looper.*;
-import static android.os.Looper.prepare;
-
 
 /**
  * Created by Marius on 16.03.2018.
@@ -31,6 +27,7 @@ public class VertretungsPlanMethoden {
      */
     public static Obtionen option;
     public static String Ziel;
+    public static List<Object> itemlist;
     public static boolean downloadedDaten = false;
     public static fragment_vertretungsplan context = null;
     public static String input = "";
@@ -58,7 +55,7 @@ public class VertretungsPlanMethoden {
         //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
 
-        vertretungsplan.zeigeLaden();
+        //vertretungsplan.zeigeLaden();
 
         Ziel = pZiel;
         Thread download = new HandlerThread("DownloadHandler") {
@@ -75,7 +72,7 @@ public class VertretungsPlanMethoden {
         download.start();
         download.join();
 
-        vertretungsplan.versteckeLaden();
+        //vertretungsplan.versteckeLaden();
         //Wenn es geupdated werden soll
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
 
@@ -109,7 +106,8 @@ public class VertretungsPlanMethoden {
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
-    public static void downloadDaten(SharedPreferences share, boolean einsparen) throws Exception{
+    public static void downloadDaten(SharedPreferences share, boolean einsparen) throws Exception {
+
         //Variablen werden Deklariert und zum Teil initialisiert
         String request = "https://rats-ms.de/services/scripts/output.php";
         SpeicherVerwaltung s;
@@ -117,12 +115,11 @@ public class VertretungsPlanMethoden {
         //Vereinfachter Zugriff auf die SharedPreference
         s = new SpeicherVerwaltung(share);
         //Holt die beiden Variablen aus der SharedPreference
-        if(einsparen){
+        if (einsparen) {
             try {
                 request += "?Stand=" + s.getString("Stand");
             } catch (Exception e) {}
         }
-
         try {
             String[] y = htmlGetVertretung(request);
             if (y.length > 0) {
@@ -135,7 +132,9 @@ public class VertretungsPlanMethoden {
         catch(Exception e){
             offline = true;
         }
+
         downloadedDaten = true;
+
     }
 
     /**
@@ -145,12 +144,12 @@ public class VertretungsPlanMethoden {
      * @param s
      */
     public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment) {
+        itemlist = ItemList;
         try {
             String Stufe = new SpeicherVerwaltung(s).getString("Stufe");
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
                 context = fragment;
-                while(!downloadedDaten && !offline){}
                 fragment.reload(false);
             }
         } catch (Exception e) {
@@ -158,15 +157,13 @@ public class VertretungsPlanMethoden {
         }
     }
 
-    public static void VertretungsPlan(List<Object> ItemList, final SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment, String Stufe) {
+    public static void VertretungsPlan(List<Object> ItemList, SharedPreferences s, boolean AlleKlassen, fragment_vertretungsplan fragment, String Stufe) {
+        itemlist = ItemList;
         try {
             zeigeDaten(ItemList, s, Stufe, AlleKlassen);
             if (fragment != null) {
                 context = fragment;
-                try {
-                    while(!downloadedDaten && !offline){}
-                    context.reload(false);
-                }catch(Exception e){e.printStackTrace(); }
+                fragment.reload(false);
             }
         } catch (Exception e) {
             ItemList.add(new Ereignis(e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), e.getMessage(), R.drawable.entfaellt));
@@ -207,26 +204,26 @@ public class VertretungsPlanMethoden {
                                 ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                                 temp = lines[row + 13];
                             }
-                            if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur"))
+                            if (lines[row + 9].contains("Abiturklausur") || lines[row + 9].contains("Klausur") ||lines[row+9].contains("klausur"))
                                 ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 4], R.drawable.klausur));
                             else
-                            switch (lines[row + 8]) {
-                                case "2":
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
-                                    break;
-                                case "1":
-                                    if(!lines[row+2].equals(lines[row+3]))
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.lehrerwechsel));
-                                    else
-                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.raumwechsel));
-                                    break;
-                                case "0":
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
-                                    break;
-                                default:
-                                    ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
-                                    break;
-                            }
+                                switch (lines[row + 8]) {
+                                    case "2":
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
+                                        break;
+                                    case "1":
+                                        if(!lines[row+2].equals(lines[row+3]))
+                                            ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.lehrerwechsel));
+                                        else
+                                            ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.raumwechsel));
+                                        break;
+                                    case "0":
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.entfaellt));
+                                        break;
+                                    default:
+                                        ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], "", R.drawable.ausrufezeichen));
+                                        break;
+                                }
 
                         }
                     }
@@ -292,30 +289,19 @@ public class VertretungsPlanMethoden {
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         String stufe = new SpeicherVerwaltung(share).getString("Stufe");
         String[] lines = Inhalt.split("\n");
-
         int row = 0;
+        int st = 1;
         while (row + 12 < lines.length) {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
+
                 if (lines[row + 2].equals(stufe)){
-                    if (isSameDate(lines[row+13], Datum)) {
-                        return new VertretungsStunde(Arrays.copyOfRange(lines, row + 2, row + 14));
-                    }
+                    //if (lines[row + 13].equals(Datum)) {
+                    return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
                 }
+                //}
             }
             row += 13;
         }
         return null;
     }
-
-    public static boolean isSameDate(String datum1, String datum2){
-        try {
-            Date date1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).parse(datum1);
-            Date date2 = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN).parse(datum2);
-            return (!date1.after(date2)&&!date1.before(date2));
-        } catch (Exception e) {
-            System.out.println("Fuck");
-            return false;
-        }
-    }
 }
-

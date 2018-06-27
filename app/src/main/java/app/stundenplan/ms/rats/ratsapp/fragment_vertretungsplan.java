@@ -53,7 +53,6 @@ public class fragment_vertretungsplan extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Refresh items
                 refreshItems();
 
             }
@@ -71,7 +70,7 @@ public class fragment_vertretungsplan extends Fragment {
         VertretungsPlanMethoden.context = this;
 
         setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
-        VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, !setting.contains("Stundenliste"), this);
+        VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, setting.contains("Stundenliste"), this);
 
         ItemAdapter.setitemFeed(ItemList);
         ItemAdapter.notifyDataSetChanged();
@@ -79,20 +78,20 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden) {
         try {
+            while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {
+            }
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
                     ItemAdapter.notifyDataSetChanged();
                     ItemList.clear();
-                    VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, AlleStunden, null);
+                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
                 }
             }, 0);
             textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:", ""));
 
         } catch (Exception e) {
-            System.out.println("Debug: Fehler reload");
             e.printStackTrace();
         }
     }
@@ -100,13 +99,14 @@ public class fragment_vertretungsplan extends Fragment {
     public void reload(final boolean AlleStunden, final String Stufe) {
 
         try {
+            while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
+            }
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
                     ItemList.clear();
-                    VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, AlleStunden, null, Stufe);
+                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
                     ItemAdapter.notifyDataSetChanged();
                 }
             }, 0);
@@ -114,16 +114,29 @@ public class fragment_vertretungsplan extends Fragment {
 
         } catch (Exception e) {
             System.out.println("Debug: Fehler reload");
-            e.printStackTrace();
         }
     }
 
     void refreshItems() {
-        try{
-        VertretungsPlanMethoden.downloadDaten(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), false);}catch (Exception e){}
-        reload(!setting.contains("Stundenliste"));
-        mSwipeRefreshLayout.setRefreshing(false);
+        try {
+            new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        VertretungsPlanMethoden.downloadDaten(setting, false);
+                        ItemList.clear();
+                        VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), setting.contains("Stundenliste"), null);
+                        ItemAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.run();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
 }
