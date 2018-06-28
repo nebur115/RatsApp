@@ -122,9 +122,9 @@ public class fragment_vertretungsplan extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        VertretungsPlanMethoden.downloadDaten(setting, VertretungsPlanMethoden.offline);
+                        VertretungsPlanMethoden.downloadDaten(setting, false);
                         ItemList.clear();
-                        VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), setting.contains("Stundenliste"), null);
+                        VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), !setting.contains("Stundenliste"), null);
                         ItemAdapter.notifyDataSetChanged();
                         mSwipeRefreshLayout.setRefreshing(false);
                     } catch (Exception e) {

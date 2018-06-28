@@ -212,7 +212,7 @@ public class VertretungsPlanMethoden {
                                         ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9], lines[row + 4], R.drawable.ausrufezeichen));
                                         break;
                                     case "1":
-                                        if(!lines[row+2].equals(lines[row+3]))
+                                        if(!lines[row+3].contains(lines[row+4]))
                                             ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.lehrerwechsel));
                                         else
                                             ItemList.add(new Ereignis(schreibeAus(lines[row + 7], stufe), lines[row + 7], lines[row + 10], lines[row + 9] + " " + lines[row + 6], lines[row + 3], R.drawable.raumwechsel));
@@ -290,18 +290,28 @@ public class VertretungsPlanMethoden {
         String stufe = new SpeicherVerwaltung(share).getString("Stufe");
         String[] lines = Inhalt.split("\n");
         int row = 0;
-        int st = 1;
         while (row + 12 < lines.length) {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
 
                 if (lines[row + 2].equals(stufe)){
-                    //if (lines[row + 13].equals(Datum)) {
-                    return new VertretungsStunde(Arrays.copyOfRange(lines, row + 1, row + 14));
+                    if (isSameDate(lines[row+13], Datum)) {
+                        return new VertretungsStunde(Arrays.copyOfRange(lines, row + 2, row + 14));
                 }
-                //}
+                }
             }
             row += 13;
         }
         return null;
+    }
+
+    public static boolean isSameDate(String datum1, String datum2){
+        try {
+            Date date1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).parse(datum1);
+            Date date2 = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN).parse(datum2);
+            return (!date1.after(date2)&&!date1.before(date2));
+        } catch (Exception e) {
+            System.out.println("Fuck");
+            return false;
+        }
     }
 }

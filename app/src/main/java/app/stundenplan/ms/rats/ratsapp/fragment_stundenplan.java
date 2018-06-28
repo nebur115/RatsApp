@@ -397,7 +397,6 @@ public class fragment_stundenplan extends Fragment {
                 Entfaellt = false;
                 Veranstalltung = false;
 
-
                 if (settings.getBoolean("VertretungsplanInStundenplanAnzeigen", true)) {
                     try {
                         VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
@@ -426,7 +425,11 @@ public class fragment_stundenplan extends Fragment {
                                 Veranstalltung = true;
                                 break;
                         }
-                    } catch (Exception e) {
+                    }catch (NullPointerException e){
+
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                 }
