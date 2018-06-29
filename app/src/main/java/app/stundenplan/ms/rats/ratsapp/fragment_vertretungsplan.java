@@ -70,7 +70,7 @@ public class fragment_vertretungsplan extends Fragment {
         VertretungsPlanMethoden.context = this;
 
         setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
-        VertretungsPlanMethoden.all = setting.contains("Stundenliste");
+        VertretungsPlanMethoden.all = !setting.contains("Stundenliste");
         VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, setting.contains("Stundenliste"), this);
 
         ItemAdapter.setitemFeed(ItemList);
