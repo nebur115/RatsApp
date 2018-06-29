@@ -127,10 +127,9 @@ public class fragment_vertretungsplan extends Fragment {
                         ItemList.clear();
                         VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all , null);
                         ItemAdapter.notifyDataSetChanged();
-                        mSwipeRefreshLayout.setRefreshing(false);
                     } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             }.run();
 
