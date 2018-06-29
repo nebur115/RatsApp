@@ -62,8 +62,8 @@ public class create_stundenplan extends AppCompatActivity {
 
         final SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
-        final ImageButton ungrade_woche_button = (ImageButton) findViewById(R.id.ungrade_woche_button);
-        final ImageButton grade_woche_button = (ImageButton) findViewById(R.id.grade_woche_button);
+        final ImageButton ungrade_woche_button = findViewById(R.id.ungrade_woche_button);
+        final ImageButton grade_woche_button = findViewById(R.id.grade_woche_button);
         final TextView Woche = findViewById(R.id.Woche);
 
         Stufe = settings.getString("Stufe", null);
@@ -150,10 +150,10 @@ public class create_stundenplan extends AppCompatActivity {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
 
-        ImageButton Speichern = (ImageButton) findViewById(R.id.Speichern);
+        ImageButton Speichern = findViewById(R.id.Speichern);
 
         Speichern.setImageResource(R.drawable.tick);
-        ImageButton Einstellungen = (ImageButton) findViewById(R.id.einstellungen);
+        ImageButton Einstellungen = findViewById(R.id.einstellungen);
 
 
         Einstellungen.setOnClickListener(new View.OnClickListener() {

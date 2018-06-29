@@ -116,12 +116,12 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         textViewKursnummer = findViewById(R.id.textViewKursnummer);
         textViewNr = findViewById(R.id.textViewNr);
         MaxStunden = settings.getInt("MaxStunden",0);
-        KursartenSpinner = (Spinner) findViewById(R.id.kursartspinner);
-        WiederholungsSpinner = (Spinner) findViewById(R.id.wiederholungspinner) ;
-        MündlichSchriftlichSpinner = (Spinner) findViewById(R.id.MüdnlichSchriftlichspinner) ;
-        DatumStunde = (TextView) findViewById(R.id.DatumStunde);
-        sRaumSchule = (Spinner) findViewById(R.id.RaumSpinner);
-        sHalle = (Spinner) findViewById(R.id.HalleSpinner);
+        KursartenSpinner = findViewById(R.id.kursartspinner);
+        WiederholungsSpinner = findViewById(R.id.wiederholungspinner);
+        MündlichSchriftlichSpinner = findViewById(R.id.MüdnlichSchriftlichspinner);
+        DatumStunde = findViewById(R.id.DatumStunde);
+        sRaumSchule = findViewById(R.id.RaumSpinner);
+        sHalle = findViewById(R.id.HalleSpinner);
         cFachEingabe = findViewById(R.id.FachEingabe);
         cKursEingabe = findViewById(R.id.KursEingabe);
         cLehrerEingabe = findViewById(R.id.LehrerEingabe);
@@ -138,7 +138,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         eKursnummer = findViewById(R.id.Kursnummer);
         eUnterichtbegin = findViewById(R.id.Unterichtbegin);
         eRaum = findViewById(R.id.Raum);
-        eDoppelstunde = (CheckBox) findViewById(R.id.Doppelstunde);
+        eDoppelstunde = findViewById(R.id.Doppelstunde);
         eLehrer = findViewById(R.id.Lehrer);
         eSchule = findViewById(R.id.Schule);
         boolean hinweis;
@@ -226,7 +226,7 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, Fächer);
 
-        final AutoCompleteTextView Fach = (AutoCompleteTextView) findViewById(R.id.FachTextView);
+        final AutoCompleteTextView Fach = findViewById(R.id.FachTextView);
 
         Fach.setAdapter(adapter);
         Fach.setThreshold(1);
@@ -545,12 +545,9 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
                 }
 
                 StartJahr = Integer.parseInt("0"+eUnterichtbegin.getText().toString());
-                Schriftlich = false;
 
 
-                if(Bewertung.equals("Schriftlich") || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")))){
-                    Schriftlich=true;
-                }
+                Schriftlich = Bewertung.equals("Schriftlich") || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")));
 
                 if(
                         (
@@ -579,8 +576,8 @@ public class create_stundenplan_stunden_obtionen  extends AppCompatActivity {
 
                             final AlertDialog.Builder mBuilder = new AlertDialog.Builder(create_stundenplan_stunden_obtionen.this);
                             View mView = getLayoutInflater().inflate(R.layout.create_stundenplan_fachnichtbekannt_alert, null);
-                            final EditText Kursname = (EditText) mView.findViewById(R.id.Kursname);
-                            Button Okay = (Button) mView.findViewById(R.id.Button);
+                            final EditText Kursname = mView.findViewById(R.id.Kursname);
+                            Button Okay = mView.findViewById(R.id.Button);
                             mBuilder.setView(mView);
                             final AlertDialog dialog = mBuilder.create();
                             Okay.setOnClickListener(new View.OnClickListener() {
