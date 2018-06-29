@@ -26,6 +26,7 @@ public class VertretungsPlanMethoden {
      * Created by Marius on 13.03.2018.
      */
     public static Obtionen option;
+    public static boolean all;
     public static String Ziel;
     public static List<Object> itemlist;
     public static boolean downloadedDaten = false;

@@ -70,6 +70,7 @@ public class fragment_vertretungsplan extends Fragment {
         VertretungsPlanMethoden.context = this;
 
         setting = this.getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
+        VertretungsPlanMethoden.all = setting.contains("Stundenliste");
         VertretungsPlanMethoden.VertretungsPlan(ItemList, setting, setting.contains("Stundenliste"), this);
 
         ItemAdapter.setitemFeed(ItemList);
@@ -124,7 +125,7 @@ public class fragment_vertretungsplan extends Fragment {
                     try {
                         VertretungsPlanMethoden.downloadDaten(setting, false);
                         ItemList.clear();
-                        VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), !setting.contains("Stundenliste"), null);
+                        VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all , null);
                         ItemAdapter.notifyDataSetChanged();
                         mSwipeRefreshLayout.setRefreshing(false);
                     } catch (Exception e) {

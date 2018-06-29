@@ -302,6 +302,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                             try {
                                 VertretungsPlanMethoden.context.reload(false);
+                                VertretungsPlanMethoden.all = false;
                             }catch (Exception e){
                                 System.out.println(e.getMessage());
                             }
@@ -318,6 +319,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         try {
                             //Alle Stunden wurden aktiviert
                             VertretungsPlanMethoden.context.reload(true);
+                            VertretungsPlanMethoden.all = true;
                         }catch(Exception e){
                             System.out.println(e.getMessage());
                         }
