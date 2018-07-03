@@ -28,6 +28,7 @@ import java.util.Set;
 
 public class create_stundenplan extends AppCompatActivity {
 
+    SharedPreferences settings;
     public int shownWeek;
     private boolean Overwrite;
     private List<Memory_Stunde> WocheAStundenListe = new ArrayList<>();
@@ -60,7 +61,7 @@ public class create_stundenplan extends AppCompatActivity {
         final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
 
-        final SharedPreferences settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
+         settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         final ImageButton ungrade_woche_button = findViewById(R.id.ungrade_woche_button);
         final ImageButton grade_woche_button = findViewById(R.id.grade_woche_button);
@@ -168,55 +169,8 @@ public class create_stundenplan extends AppCompatActivity {
         Speichern.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Save();
 
-                String jsona;
-                String jsonb = "";
-                Gson gson = new Gson();
-
-                jsona = settings.getString("Stundenliste", null);
-                Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
-                WocheAStundenListe = gson.fromJson(jsona , type);
-                WocheAStundenListe = WerteWocheAus(WocheAStundenListe);
-                jsona = gson.toJson(WocheAStundenListe);
-
-                if(Zweiwöchentlich){
-                    Gson gsona = new Gson();
-                    jsonb = settings.getString("WocheBStundenListe", null);
-                    WocheBStundenListe = gsona.fromJson(jsonb , type);
-                    WocheBStundenListe = WerteWocheAus(WocheBStundenListe);
-                    jsonb = gson.toJson(WocheBStundenListe);
-                }
-
-
-                // Speichert  Kursliste (Liste (Strings)) in Shared Pref. als HashSet
-                SharedPreferences.Editor editor = settings.edit();
-                Set<String> Kurse  = new HashSet<String>(Kursliste);
-                Set<String> Faecher  = new HashSet<String>(FachListe);
-                String json = gson.toJson(NotenKlausurenListe);
-
-                if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))){
-                    editor.putString("NotenKlausuren", json);
-                }
-                if(settings.contains("ManuellmeineKurse")){
-                    HashSet<String> meineKurse = new HashSet<String>();
-                    editor.putStringSet("ManuellmeineKurse", meineKurse);
-                    editor.putStringSet("ManuellNichtMeineKurse", meineKurse);
-                }
-
-
-                editor.putString("Stundenliste", jsona);
-                if(Zweiwöchentlich){
-                    editor.putString("WocheBStundenListe", jsonb);
-                }
-                editor.putStringSet("Faecher", Faecher);
-                editor.putStringSet("Kursliste", Kurse);
-                editor.apply();
-
-
-
-
-                Intent i = new Intent(create_stundenplan.this, Settings.class);
-                startActivity(i);
             }
         });
 
@@ -226,10 +180,61 @@ public class create_stundenplan extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
+    public void Save(){
+        String jsona;
+        String jsonb = "";
+        Gson gson = new Gson();
+
+        jsona = settings.getString("Stundenliste", null);
+        Type type = new TypeToken<ArrayList<Memory_Stunde>>() {}.getType();
+        WocheAStundenListe = gson.fromJson(jsona , type);
+        WocheAStundenListe = WerteWocheAus(WocheAStundenListe);
+        jsona = gson.toJson(WocheAStundenListe);
+
+        if(Zweiwöchentlich){
+            Gson gsona = new Gson();
+            jsonb = settings.getString("WocheBStundenListe", null);
+            WocheBStundenListe = gsona.fromJson(jsonb , type);
+            WocheBStundenListe = WerteWocheAus(WocheBStundenListe);
+            jsonb = gson.toJson(WocheBStundenListe);
+        }
+
+
+        // Speichert  Kursliste (Liste (Strings)) in Shared Pref. als HashSet
+        SharedPreferences.Editor editor = settings.edit();
+        Set<String> Kurse  = new HashSet<String>(Kursliste);
+        Set<String> Faecher  = new HashSet<String>(FachListe);
+        String json = gson.toJson(NotenKlausurenListe);
+
+        if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))){
+            editor.putString("NotenKlausuren", json);
+        }
+        if(settings.contains("ManuellmeineKurse")){
+            HashSet<String> meineKurse = new HashSet<String>();
+            editor.putStringSet("ManuellmeineKurse", meineKurse);
+            editor.putStringSet("ManuellNichtMeineKurse", meineKurse);
+        }
+
+
+        editor.putString("Stundenliste", jsona);
+        if(Zweiwöchentlich){
+            editor.putString("WocheBStundenListe", jsonb);
+        }
+        editor.putStringSet("Faecher", Faecher);
+        editor.putStringSet("Kursliste", Kurse);
+        editor.apply();
+
+
+
+
         Intent i = new Intent(create_stundenplan.this, Settings.class);
         startActivity(i);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Save();
     }
 
 
