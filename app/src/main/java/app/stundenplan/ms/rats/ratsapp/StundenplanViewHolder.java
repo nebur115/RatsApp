@@ -23,7 +23,7 @@ public class StundenplanViewHolder extends RecyclerView.ViewHolder {
         Lehrer = StundenplanView.findViewById(R.id.Stunde_Lehrer);
         Fach = StundenplanView.findViewById(R.id.Stunde_Fach);
         Raum = StundenplanView.findViewById(R.id.Stunde_Raum);
-        Stunde = (ConstraintLayout) StundenplanView.findViewById(R.id.stunden_holder);
+        Stunde = StundenplanView.findViewById(R.id.stunden_holder);
 
         Stunde.setOnClickListener(new View.OnClickListener() {
 

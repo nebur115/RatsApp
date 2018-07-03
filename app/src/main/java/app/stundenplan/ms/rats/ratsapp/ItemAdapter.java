@@ -289,7 +289,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             settings = context.getSharedPreferences("RatsVertretungsPlanApp", 0);
             editText = (EditText) itemView.findViewById(R.id.editText2);
-            myswitch = (Switch) itemView.findViewById(R.id.switch1);
+            myswitch = itemView.findViewById(R.id.switch1);
             settings = context.getSharedPreferences("RatsVertretungsPlanApp",0);
             itemView.setOnClickListener(this);
             myswitch.setOnClickListener(new View.OnClickListener() {

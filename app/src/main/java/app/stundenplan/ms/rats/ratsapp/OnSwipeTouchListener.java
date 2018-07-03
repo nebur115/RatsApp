@@ -63,10 +63,10 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
-    public void onSwipeRight() throws InterruptedException {
+    public void onSwipeRight() {
     }
 
-    public void onSwipeLeft() throws InterruptedException {
+    public void onSwipeLeft() {
     }
 
     public void onSwipeTop() {

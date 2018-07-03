@@ -107,7 +107,7 @@ public class VertretungsPlanMethoden {
     /**
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
-    public static void downloadDaten(SharedPreferences share, boolean einsparen) throws Exception {
+    public static void downloadDaten(SharedPreferences share, boolean einsparen) {
 
         //Variablen werden Deklariert und zum Teil initialisiert
         String request = "https://rats-ms.de/services/scripts/output.php";
@@ -251,7 +251,7 @@ public class VertretungsPlanMethoden {
         return cal.getTime();
     }
 
-    public static String schreibeAus(String Fach, String Stufe) throws Exception {
+    public static String schreibeAus(String Fach, String Stufe) {
         String regex;
         if (Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))
             regex = "( )+";

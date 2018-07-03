@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 public class SpeicherVerwaltung {
     private final SharedPreferences sharedPrefs;
 
-    public String getString(String Speicher) throws Exception {
+    public String getString(String Speicher) {
         if (sharedPrefs.contains(Speicher)) {
             return sharedPrefs.getString(Speicher, "DEFAULT");
         } else {

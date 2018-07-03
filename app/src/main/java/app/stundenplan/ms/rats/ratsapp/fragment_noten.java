@@ -493,7 +493,7 @@ public class fragment_noten extends Fragment {
 
     private double PunktezuNote(int summe, int anzahl){
         if(!(summe==0)){
-            return (double) ((17.00-((double) summe/ (double) anzahl))/3.00);
+            return (17.00-((double) summe/ (double) anzahl))/3.00;
         }else{
             return 6;
         }
