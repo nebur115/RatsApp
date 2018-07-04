@@ -133,31 +133,15 @@ public class fragment_vertretungsplan extends Fragment {
 
         void refreshItems(){
         try{
-            /*new Runnable() {
-                @Override
-                public void run() {
-                    VertretungsPlanMethoden.downloadedDaten = false;
-                    VertretungsPlanMethoden.offline = false;
-                    VertretungsPlanMethoden.downloadDaten(setting, false);
-                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
-                    }
-                    ItemList.clear();
-                    VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
-                    ItemAdapter.notifyDataSetChanged();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            }.run();*/
-        new DownloadTask().execute();
-
-
+            new DownloadTask().execute();
         }catch(Exception e){
-        e.printStackTrace();
+            e.printStackTrace();
         }
 
         }
-public void Finished(){
-        ItemAdapter.notifyDataSetChanged();
-        mSwipeRefreshLayout.setRefreshing(false);
+        public void Finished(){
+            ItemAdapter.notifyDataSetChanged();
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
 class DownloadTask extends AsyncTask<Void, Void, Void> {

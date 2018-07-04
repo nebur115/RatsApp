@@ -76,7 +76,7 @@ public class fragment_stundenplan extends Fragment {
     }
 
     private void init() {
-
+        VertretungsPlanMethoden.stundenplanfrag = this;
         int menuHeight = 60 + 50 + 35;
         List<Memory_NotenKlausuren> SchnittNotenList = new ArrayList<>();
         String DateMonday;

@@ -2,6 +2,7 @@ package app.stundenplan.ms.rats.ratsapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -27,17 +28,23 @@ public class loading extends AppCompatActivity {
 
 
         try {
-            Thread download = new HandlerThread("DownloadHandler") {
+            new AsyncTask<Void, Void, Void>() {
                 @Override
-                public void run() {
-                    try{
-                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), true);
-                    }catch(Exception e){
-                        System.out.println("Debug: Fehler beim Download in loading.java");
+                protected Void doInBackground(Void... voids) {
+                    VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), true);
+                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
                     }
+                    while(VertretungsPlanMethoden.stundenplanfrag ==null && VertretungsPlanMethoden.changed == -1){}
+                    return null;
                 }
-            };
-            download.start();
+
+                @Override
+                public void onPostExecute(Void result) {
+                    if(VertretungsPlanMethoden.changed == 1)
+                        VertretungsPlanMethoden.stundenplanfrag.reload();
+                }
+
+            }.execute();
         }catch(Exception e){
 
         }

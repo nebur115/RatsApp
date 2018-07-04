@@ -43,6 +43,8 @@ public class VertretungsPlanMethoden {
             {"Ku", "Kunst"}, {"Li", "Literatur"}, {"Mu", "Musik"}, {"Pa", "Pädagogik"}, {"Ph", "Physik"}, {"PK", "Politik"}, {"PL", "Philosophie"},
             {"PP", "Praktische Philosophie"},{"Sp", "Sport"}, {"Sw", "Sozialwiss."},
             {"I", "Italienisch"},{"D", "Deutsch"}, {"S", "Spanisch"}, {"F", "Französisch"}, {"M", "Mathe"}, {"N", "Niederländisch"}, {"L", "Latein"}, {"E", "Englisch"}};
+    public static fragment_stundenplan stundenplanfrag;
+    public static int changed = -1;
 
     /**
      * Bereitet das ergebnis von htmlGet auf
@@ -97,8 +99,10 @@ public class VertretungsPlanMethoden {
                 }
                 row++;
             }
+            changed = 1;
             return output;
         } else {
+            changed = 0;
             return new String[]{""};
         }
     }
@@ -129,6 +133,7 @@ public class VertretungsPlanMethoden {
                     s.setString("VertretungsPlanInhalt", y[1]);
                 }
             }
+
         }
         catch(Exception e){
             offline = true;
