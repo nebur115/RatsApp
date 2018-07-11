@@ -27,7 +27,27 @@ public class loading extends AppCompatActivity {
 
 
 
+        try {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), true);
+                    while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
+                    }
+                    while(VertretungsPlanMethoden.stundenplanfrag ==null || VertretungsPlanMethoden.changed == -1){}
+                    return null;
+                }
 
+                @Override
+                public void onPostExecute(Void result) {
+                    if(VertretungsPlanMethoden.changed == 1)
+                            VertretungsPlanMethoden.stundenplanfrag.reload();
+                }
+
+            }.execute();
+        }catch(Exception e){
+
+        }
         ConstraintLayout loading_frame = findViewById(R.id.loading_frame);
     final ViewTreeObserver observer = loading_frame.getViewTreeObserver();
                 observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
