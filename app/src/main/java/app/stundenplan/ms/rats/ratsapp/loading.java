@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewTreeObserver;
@@ -21,9 +20,9 @@ public class loading extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
 
-
         Intent intent = getIntent();
         final String Stufe = intent.getExtras().getString("Stufe");
+
 
 
 

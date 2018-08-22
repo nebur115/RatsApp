@@ -147,6 +147,9 @@ public class fragment_stundenplan extends Fragment {
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
 
+            if(settings.contains("NotenKlausurenQ11")){
+
+
             List<Memory_NotenKlausuren> NotenKlausurenQ11;
             List<Memory_NotenKlausuren> NotenKlausurenQ12;
             List<Memory_NotenKlausuren> NotenKlausurenQ21;
@@ -166,6 +169,8 @@ public class fragment_stundenplan extends Fragment {
             SchnittNotenList.addAll(NotenKlausurenQ12);
             SchnittNotenList.addAll(NotenKlausurenQ21);
             SchnittNotenList.addAll(NotenKlausurenQ22);
+
+            }
 
         } else {
             String json = settings.getString("NotenKlausuren", null);
@@ -255,18 +260,20 @@ public class fragment_stundenplan extends Fragment {
                 }
 
                 Klausur = false;
-                for (int j = 0; SchnittNotenList.size() > j; j++) {
-                    if (SchnittNotenList.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())) {
-                        if (Integer.toString(SchnittNotenList.get(j).getDatum1()).replace("2018", "18").equals(Datum.replace(".", ""))) {
-                            Klausur = true;
-                        }
+                if(!(SchnittNotenList == null)) {
+                    for (int j = 0; SchnittNotenList.size() > j; j++) {
+                        if (SchnittNotenList.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())) {
+                            if (Integer.toString(SchnittNotenList.get(j).getDatum1()).replace("2018", "18").equals(Datum.replace(".", ""))) {
+                                Klausur = true;
+                            }
 
-                        if (Integer.toString(SchnittNotenList.get(j).getDatum2()).replace("2018", "18").equals(Datum.replace(".", ""))) {
-                            Klausur = true;
-                        }
+                            if (Integer.toString(SchnittNotenList.get(j).getDatum2()).replace("2018", "18").equals(Datum.replace(".", ""))) {
+                                Klausur = true;
+                            }
 
-                        if (Integer.toString(SchnittNotenList.get(j).getDatum3()).replace("2018", "18").equals(Datum.replace(".", ""))) {
-                            Klausur = true;
+                            if (Integer.toString(SchnittNotenList.get(j).getDatum3()).replace("2018", "18").equals(Datum.replace(".", ""))) {
+                                Klausur = true;
+                            }
                         }
                     }
                 }

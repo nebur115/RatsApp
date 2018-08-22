@@ -29,9 +29,11 @@ public class fragment_no_existing_QPhase extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), QPhase_create.class);
+                i.putExtra("NotOutofSettingsSettings", false);
                 startActivity(i);
             }
         });
         return view;
     }
+
 }

@@ -3,6 +3,7 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,16 +28,17 @@ public class QPhase_create extends AppCompatActivity {
     List<Memory_NotenKlausuren> NotenListQ21 = new ArrayList<>();
     List<Memory_NotenKlausuren> NotenListQ22 = new ArrayList<>();
     ImageView Back;
-
+    SharedPreferences settings;
+    Boolean OutofSettings = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences setting = this.getSharedPreferences("RatsVertretungsPlanApp", 0);
-
         setContentView(R.layout.qphasen_planer);
-
+        Intent intent = getIntent();
+        OutofSettings = intent.getExtras().getBoolean("OutofSettingsSettings");
         linearLayoutManager = new LinearLayoutManager(getBaseContext());
         mrecyclerView = findViewById(R.id.myRecyckerview);
 
@@ -142,6 +144,17 @@ public class QPhase_create extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(OutofSettings) {
+            AlertDialog alertDialog = new AlertDialog.Builder(QPhase_create.this).create();
+            alertDialog.setMessage("Daten werden gespeichert...");
+            alertDialog.show();
+            Intent i = new Intent(QPhase_create.this, vertretungsplan.class);
+            i.putExtra("Stufe", "EXISTINGSTUNDE");
+            i.putExtra("Tab", "Noten/Arbeiten");
+            startActivity(i);
+        }else{
+            super.onBackPressed();
+        }
+
     }
 }

@@ -3,6 +3,7 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -141,6 +142,14 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
                     settings.edit().putInt("MaxStunden", Integer.parseInt(MaxStunden.getText().toString())).apply();
 
                     settings.edit().putBoolean("zweiWöchentlich", ZweiWöchentlich).apply();
+
+                    settings.edit().putString("NotenKlausuren", "").apply();
+
+                    settings.edit().putStringSet("ManuellmeineKurse", new ArraySet<String>()).apply();
+
+                    settings.edit().putString("NotenKlausuren", gson.toJson((new ArrayList<>()))).apply();
+                    settings.edit().putStringSet("Faecher", new ArraySet<String>()).apply();
+                    settings.edit().putStringSet("Kursliste", new ArraySet<String>()).apply();
 
                     Intent i = new Intent(create_stundenplan_obtionen.this, create_stundenplan.class);
                     i.putExtra("Woche", 1);

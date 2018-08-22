@@ -81,7 +81,7 @@ public class Settings extends PreferenceActivity {
 
         CreateStundenplan.setIntent(new Intent(Settings.this, create_stundenplan_obtionen.class));
         EditStundenplan.setIntent(new Intent(Settings.this, create_stundenplan.class).putExtra("Woche", 1));
-        QPlanaendern.setIntent(new Intent(Settings.this, QPhase_create.class));
+        QPlanaendern.setIntent(new Intent(Settings.this, QPhase_create.class).putExtra("NotOutofSettingsSettings", true));
 
 
         if(settings.contains("Kursliste")){
@@ -267,7 +267,7 @@ public class Settings extends PreferenceActivity {
                         SharedPreferences.Editor editor = settings.edit();
                         editor.clear();
                         editor.apply();
-                        Intent j = new Intent(Settings.this, loading.class);
+                        Intent j = new Intent(Settings.this, Stufenwahl.class);
                         startActivity(j);
                     }
                 });
@@ -280,7 +280,9 @@ public class Settings extends PreferenceActivity {
 
     @Override
     public void onBackPressed() {
-
+        AlertDialog alertDialog = new AlertDialog.Builder(Settings.this).create();
+        alertDialog.setMessage("Daten werden gespeichert...");
+        alertDialog.show();
         Tab = settings.getString("Tab", "");
         Intent i = new Intent(Settings.this, vertretungsplan.class);
         if(Stufe.getText().equals(settings.getString("Stufe",""))){
