@@ -24,8 +24,6 @@ public class loading extends AppCompatActivity {
         final String Stufe = intent.getExtras().getString("Stufe");
 
 
-
-
         try {
             new AsyncTask<Void, Void, Void>() {
                 @Override

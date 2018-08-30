@@ -70,11 +70,8 @@
             android:id="@+id/imageButton2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignTop="@+id/btnlogin"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="8dp"
-            android:layout_toLeftOf="@+id/btnlogin"
-            android:layout_toStartOf="@+id/btnlogin"
             android:adjustViewBounds="true"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/settingsbutton"
@@ -82,7 +79,8 @@
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/settingbutton" />
+            app:srcCompat="@drawable/settingbutton"
+            android:layout_marginRight="8dp" />
 
 
     </android.support.constraint.ConstraintLayout>

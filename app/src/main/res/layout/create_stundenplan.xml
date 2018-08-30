@@ -62,11 +62,8 @@
             android:id="@+id/einstellungen"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignTop="@+id/btnlogin"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:layout_toLeftOf="@+id/btnlogin"
-            android:layout_toStartOf="@+id/btnlogin"
             android:adjustViewBounds="true"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/settingsbutton"
@@ -75,7 +72,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/createstundenplan_settingbutton" />
+            app:srcCompat="@drawable/createstundenplan_settingbutton"
+            android:layout_marginLeft="8dp" />
 
 
     </android.support.constraint.ConstraintLayout>
