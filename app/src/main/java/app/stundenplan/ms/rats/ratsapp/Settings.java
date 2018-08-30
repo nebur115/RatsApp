@@ -14,6 +14,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -99,13 +101,7 @@ public class Settings extends PreferenceActivity {
         }
 
 
-        Copyright.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(Settings.this,"In der Testverion sind die Copyrights noch nicht verfügbar", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
+
 
         StundenVertretungsplanAnzeigen.setOnPreferenceClickListener(new CheckBoxPreference.OnPreferenceClickListener() {
             @Override
@@ -192,6 +188,20 @@ public class Settings extends PreferenceActivity {
             }
         });
 
+        Copyright.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Settings.this);
+
+                LayoutInflater inflater = Settings.this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.info_allerdialog_layout, null);
+                dialogBuilder.setView(dialogView);
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
+                return false;
+            }
+        });
+
         AlleKurse.setOnPreferenceClickListener(new CheckBoxPreference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -217,7 +227,6 @@ public class Settings extends PreferenceActivity {
                 return false;
             }
         });
-
 
         PlusMinusMitrechnen.setOnPreferenceClickListener(new CheckBoxPreference.OnPreferenceClickListener() {
             @Override

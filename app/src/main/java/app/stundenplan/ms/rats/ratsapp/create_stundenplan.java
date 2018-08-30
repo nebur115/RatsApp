@@ -151,9 +151,9 @@ public class create_stundenplan extends AppCompatActivity {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
 
-        ImageButton Speichern = findViewById(R.id.Speichern);
 
-        Speichern.setImageResource(R.drawable.tick);
+
+
         ImageButton Einstellungen = findViewById(R.id.einstellungen);
 
 
@@ -166,13 +166,6 @@ public class create_stundenplan extends AppCompatActivity {
         });
 
 
-        Speichern.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Save();
-
-            }
-        });
 
 
 

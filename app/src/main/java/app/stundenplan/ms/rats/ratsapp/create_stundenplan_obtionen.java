@@ -68,11 +68,9 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
 
 
                         if(settings.getInt("MaxStunden", 0) > Integer.parseInt(MaxStunden.getText().toString())){
-
                             for(int j = 0; j < settings.getInt("MaxStunden", 0) - Integer.parseInt(MaxStunden.getText().toString()); j++){
                                 aStundenListe.remove(settings.getInt("MaxStunden", 0)-j);
                             }
-
                         }
                         else if (settings.getInt("MaxStunden", 0) < Integer.parseInt(MaxStunden.getText().toString())){
 

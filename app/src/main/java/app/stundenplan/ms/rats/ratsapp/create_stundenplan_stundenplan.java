@@ -59,7 +59,7 @@ public class create_stundenplan_stundenplan extends Fragment {
 
         View view = inflater.inflate(R.layout.create_stundenplan_stundenplan, container,Boolean.parseBoolean(null));
 
-        int menuHeight = 56 + 30;
+        int menuHeight = 60 + 30;
         int StundenAnzahl = MaxStunden;
         SharedPreferences settings = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 

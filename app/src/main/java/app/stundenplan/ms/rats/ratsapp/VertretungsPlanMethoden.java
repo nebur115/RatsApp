@@ -114,7 +114,7 @@ public class VertretungsPlanMethoden {
     public static void downloadDaten(SharedPreferences share, boolean einsparen) {
 
         //Variablen werden Deklariert und zum Teil initialisiert
-        String request = "https://rats-ms.de/services/scripts/output.php";
+        String request = "https://rats-ms.de/services/stupla_s/output.php";
         SpeicherVerwaltung s;
 
         //Vereinfachter Zugriff auf die SharedPreference
@@ -184,7 +184,7 @@ public class VertretungsPlanMethoden {
      * @param stufe
      * @throws Exception
      */
-    private static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) throws Exception {
+    private static void zeigeDaten(List<Object> ItemList, SharedPreferences share, String stufe, boolean AlleKlassen) {
 
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
@@ -290,7 +290,7 @@ public class VertretungsPlanMethoden {
         return Fach;
     }
 
-    public static VertretungsStunde kursInfo(SharedPreferences share, String kurs, String Datum) throws Exception {
+    public static VertretungsStunde kursInfo(SharedPreferences share, String kurs, String Datum) {
         //Variablen
         String Inhalt = new SpeicherVerwaltung(share).getString("VertretungsPlanInhalt");
         String stufe = new SpeicherVerwaltung(share).getString("Stufe");

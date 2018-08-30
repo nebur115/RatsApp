@@ -75,7 +75,7 @@
         <Preference
             android:key="Copyright"
             android:summary=""
-            android:title="Copyright und Nutzungsbedingungen" />
+            android:title="Informationen" />
 
     </PreferenceCategory>
 </PreferenceScreen>

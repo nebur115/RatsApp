@@ -3,7 +3,6 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -378,9 +377,6 @@ public class vertretungsplan extends AppCompatActivity {
         }
 
         super.onResume();
-
-
-
     }
 
     public void ManuellSave(){
