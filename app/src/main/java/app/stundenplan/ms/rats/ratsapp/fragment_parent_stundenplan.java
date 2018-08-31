@@ -158,4 +158,10 @@ public class fragment_parent_stundenplan extends Fragment {
         }
     }
 
+    public void timereload() {
+        if (loaded) {
+            Fragmentlayouts.get(0).timereload();
+        }
+    }
+
 }
