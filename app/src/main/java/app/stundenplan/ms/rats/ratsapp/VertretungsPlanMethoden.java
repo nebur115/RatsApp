@@ -296,13 +296,14 @@ public class VertretungsPlanMethoden {
         String stufe = new SpeicherVerwaltung(share).getString("Stufe");
         String[] lines = Inhalt.split("\n");
         int row = 0;
+        //Suche nach den der gegebenen Stunde
         while (row + 12 < lines.length) {
             if (lines[row + 7].replace("  ", " ").toUpperCase().equals(kurs)) {
-
-                if (lines[row + 2].equals(stufe)){
+                if (lines[row + 2].contains(stufe)){
                     if (isSameDate(lines[row+13], Datum)) {
+                        //Gibt ein Vertretungsstundenobjekt von der gewünschten Stunde zurück
                         return new VertretungsStunde(Arrays.copyOfRange(lines, row + 2, row + 14));
-                }
+                    }
                 }
             }
             row += 13;

@@ -33,7 +33,7 @@ public class VertretungsStunde {
         else {
             switch (in[6]) {
                 case "2":
-                    type = 1; //Information
+                    type = 5; //Information
                     break;
                 case "1":
                     if(lehrer.equals(urspr_lehrer))
