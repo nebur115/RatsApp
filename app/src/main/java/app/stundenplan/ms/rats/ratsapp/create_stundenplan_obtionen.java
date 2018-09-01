@@ -118,7 +118,6 @@ public class create_stundenplan_obtionen  extends AppCompatActivity {
                         }
                     }
 
-
                     Gson gson = new Gson();
                     String json;
 

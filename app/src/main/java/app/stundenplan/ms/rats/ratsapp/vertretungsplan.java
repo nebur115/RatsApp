@@ -371,11 +371,9 @@ public class vertretungsplan extends AppCompatActivity {
 
 
     protected void onResume() {
-
         if(!(childstundenplanfragment==null)) {
             childstundenplanfragment.reload();
         }
-
         super.onResume();
     }
 

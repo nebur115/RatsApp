@@ -478,18 +478,20 @@ public class fragment_stundenplan extends Fragment {
         int time1 = settings.getInt("Time", 0);
         Calendar timecalendar = Calendar.getInstance();
         SimpleDateFormat mdformat = new SimpleDateFormat("HHmm", Locale.getDefault());
+        SimpleDateFormat dateformat = new SimpleDateFormat("D", Locale.getDefault());
         int time2 = Integer.parseInt(mdformat.format(timecalendar.getTime()));
+        int day1 = settings.getInt("Day", 0);
+        int day2 = Integer.parseInt(dateformat.format(timecalendar.getTime()));
 
-
-        if((time1<745 && time2>=745) || (time1<835 && time2>=835) || (time1<920 && time2>=920) || (time1<940 && time2>=940)  || (time1<1025 && time2>=1025) || (time1<1030 && time2>=1030) || (time1<1115 && time2>=1115) || (time1<1130 && time2>=1130) || (time1<1215 && time2>=1215) || (time1<1300 && time2>=1300) || (time1<1315 && time2>=1315) || (time1<1400 && time2>=1400) || (time1<1445 && time2>=1445) || (time1<1530 && time2>=1530) || (time1<1615 && time2>=1615) || (time1<1700 && time2>=1700) || (time1<1830 && time2>=1830) || (time1<1915 && time2>=1915)) {
+        if((time1<745 && time2>=745) || (time1<835 && time2>=835) || (time1<920 && time2>=920) || (time1<940 && time2>=940)  || (time1<1025 && time2>=1025) || (time1<1030 && time2>=1030) || (time1<1115 && time2>=1115) || (time1<1130 && time2>=1130) || (time1<1215 && time2>=1215) || (time1<1300 && time2>=1300) || (time1<1315 && time2>=1315) || (time1<1400 && time2>=1400) || (time1<1445 && time2>=1445) || (time1<1530 && time2>=1530) || (time1<1615 && time2>=1615) || (time1<1700 && time2>=1700) || (time1<1830 && time2>=1830) || (time1<1915 && time2>=1915) || !(day1==day2)) {
             isCreated = false;
             StundenListe.clear();
             init();
             mystundenplanadapter.notifyDataSetChanged();
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("Time", time2);
+            editor.putInt("Day", day2);
             editor.apply();
-            Toast.makeText(getContext(), "Debug: Timereload Done", Toast.LENGTH_SHORT).show();
         }
 
     }
