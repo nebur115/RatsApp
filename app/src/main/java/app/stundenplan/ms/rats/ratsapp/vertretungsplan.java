@@ -58,10 +58,10 @@ public class vertretungsplan extends AppCompatActivity {
             progressBar2 = findViewById(R.id.progressBar2);
             try{
                 SharedPreferences settings1 = getSharedPreferences("RatsVertretungsPlanApp",0);
-                if (!settings1.contains("Stufe")) {
+
                     if (!settings1.edit().putString("Stufe", Stufe).commit())
                         finish();
-                }
+
             }catch(ClassCastException e){
                 //Falls settings.contains eine exception auslöst
             }}
@@ -371,10 +371,11 @@ public class vertretungsplan extends AppCompatActivity {
 
 
     protected void onResume() {
+         super.onResume();
         if(!(childstundenplanfragment==null)) {
             childstundenplanfragment.reload();
         }
-        super.onResume();
+
     }
 
     public void ManuellSave(){

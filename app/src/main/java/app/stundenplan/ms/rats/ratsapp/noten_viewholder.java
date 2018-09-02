@@ -66,9 +66,14 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
     String Fach;
     boolean Shown;
     String Stufe;
+    View view;
+    boolean visible = false;
+    int height = 0;
+    int position;
 
     public noten_viewholder(View View) {
         super(View);
+        view = View;
         context = itemView.getContext();
         cExtender = View.findViewById(R.id.extender);
         tFach = View.findViewById(R.id.fachText);
@@ -88,6 +93,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         viewholder = View;
         Klausur3 = View.findViewById(R.id.Klausur3);
         tSchriftlich3 = View.findViewById(R.id.Schriftlich3);
+
     }
 
     public void showDetails(Memory_NotenKlausuren Object){
@@ -149,7 +155,9 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         Datum1 = Object.getDatum1();
         Datum2 = Object.getDatum2();
         Fach = Object.getFach();
-        alreadyshown = true;
+
+
+
 
 
         if(!(Datum1 ==0)){
@@ -166,10 +174,11 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         }
 
 
-        if(!Object.getFindetStatt()) {
-            viewholder.setVisibility(View.GONE);
-            viewholder.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-        }
+
+
+        alreadyshown = true;
+
+
 
 
         if(!(Datum2 ==0)){
@@ -518,6 +527,7 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
                         cSchriftlich.setVisibility(View.VISIBLE);
                     }
 
+
                 }
             }
         });
@@ -606,30 +616,25 @@ public class noten_viewholder extends RecyclerView.ViewHolder{
         int saveDate3 = 0;
         int saveZeugnis = 0;
 
-        if(!tMuendlich1.getSelectedItem().toString().equals("---")){
+
             String StringSaveZeugnis = tMuendlich1.getSelectedItem().toString();
             saveMuendlich1 = NotezuPunkte(tMuendlich1.getSelectedItem().toString());
-        }
 
-        if(!tZeugnis.getSelectedItem().toString().equals("---")){
+
             saveZeugnis = NotezuPunkte(tZeugnis.getSelectedItem().toString());
-        }
 
-        if(!tMuendlich2.getSelectedItem().toString().equals("---")){
+
             saveMuendlich2 = NotezuPunkte(tMuendlich2.getSelectedItem().toString());
-        }
 
-        if(!tSchriftlich1.getSelectedItem().toString().equals("---")){
+
             saveSchriftlich1 = NotezuPunkte(tSchriftlich1.getSelectedItem().toString());
-        }
 
-        if(!tSchriftlich2.getSelectedItem().toString().equals("---")){
             saveSchriftlich2 = NotezuPunkte(tSchriftlich2.getSelectedItem().toString());
-        }
 
-        if(!tSchriftlich3.getSelectedItem().toString().equals("---")){
+
+
             saveSchriftlich3 = NotezuPunkte(tSchriftlich3.getSelectedItem().toString());
-        }
+
 
 
         if(!(tDate1.getText()=="01.01.2000")){

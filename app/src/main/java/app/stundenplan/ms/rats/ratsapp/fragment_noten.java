@@ -20,9 +20,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
+import android.support.v7.app.AlertDialog;
 
 public class fragment_noten extends Fragment {
+
     private RecyclerView mrecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<Object> NotenList = new ArrayList<>();
@@ -31,6 +32,7 @@ public class fragment_noten extends Fragment {
     TextView tBestmoeglich;
     TextView tSchnitt;
     TextView tNote;
+    TextView InfoTextView;
     Boolean shown = false;
     String Stufe;
     ConstraintLayout Stufenwahl;
@@ -74,6 +76,7 @@ public class fragment_noten extends Fragment {
         };
         mrecyclerView = view.findViewById(R.id.recyclerview_noten);
 
+
         String json;
         Gson gson = new Gson();
 
@@ -87,6 +90,8 @@ public class fragment_noten extends Fragment {
         Arrow = view.findViewById(R.id.tendenz);
         MoeglichePunkte = view.findViewById(R.id.MoeglichePunkt);
         EreichtePunkte = view.findViewById(R.id.EreichtePunkte);
+        InfoTextView = view.findViewById(R.id.InfoTextView);
+
 
         if(Stufe.equals("Q1") || Stufe.equals("Q2")){
 
@@ -109,7 +114,7 @@ public class fragment_noten extends Fragment {
 
                 json = setting.getString("NotenKlausurenQ11", null);
                 NotenList = gson.fromJson(json , type);
-                NotenList.add(0,new noten_placeholder());
+
 
             }else{
                 StufeHalbjahr = "Q11";
@@ -120,24 +125,29 @@ public class fragment_noten extends Fragment {
                 Q12.setBackgroundColor(Color.TRANSPARENT);
                 Q21.setBackgroundColor(Color.TRANSPARENT);
                 Q22.setBackgroundColor(Color.TRANSPARENT);
+
                 json = setting.getString("NotenKlausurenQ12", null);
                 NotenList = gson.fromJson(json , type);
-                NotenList.add(0,new noten_placeholder());
+
 
             }
         }else{
             if(month>2 && month<7){
                 StufeHalbjahr = "Q22";
+
                 SharedPreferences.Editor editor = setting.edit();
+
                 editor.putString("ShownHalbjahr", StufeHalbjahr);
                 editor.apply();
+
                 Q22.setBackgroundColor(Color.parseColor("#D8D8D8"));
                 Q11.setBackgroundColor(Color.TRANSPARENT);
                 Q12.setBackgroundColor(Color.TRANSPARENT);
                 Q21.setBackgroundColor(Color.TRANSPARENT);
+
                 json = setting.getString("NotenKlausurenQ21", null);
                 NotenList = gson.fromJson(json , type);
-                NotenList.add(0,new noten_placeholder());
+
 
             }else{
                 StufeHalbjahr = "Q21";
@@ -150,27 +160,62 @@ public class fragment_noten extends Fragment {
                 Q22.setBackgroundColor(Color.TRANSPARENT);
                 json = setting.getString("NotenKlausurenQ22", null);
                 NotenList = gson.fromJson(json , type);
-                NotenList.add(0,new noten_placeholder());
+
 
         }}
-
-
-
         }else{
             Stufenwahl.setVisibility(View.GONE);
             json = setting.getString("NotenKlausuren", null);
             NotenList = gson.fromJson(json , type);
-            NotenList.add(0,new noten_placeholder());
             StufeHalbjahr = "---";
         }
 
         tSchnitt = view.findViewById(R.id.schnitt);
         tNote = view.findViewById(R.id.schelchtmoeglich);
         mrecyclerView.setLayoutManager(linearLayoutManager);
+        for(int i= 0; i<NotenList.size(); i++){
+
+                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                if(!Object.getFindetStatt()){
+                    NotenList.remove(i);
+                    i--;
+                }
+        }
+        NotenList.add(0,new noten_placeholder());
         adapter = new noten_adapter(getActivity(),NotenList);
         mrecyclerView.setAdapter(adapter);
         AktualisiereZahlen();
+        mrecyclerView.getRecycledViewPool()
+            .setMaxRecycledViews(1, 20);
         adapter.notifyDataSetChanged();
+
+        InfoTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Hinweis:");
+                alertDialog.setMessage("Der hier angezeigte Notenschnitt ist der Schnitt aller Noten \n(inkl. ihrer Gewichtung). \n  \nIm Abitur wird dieser allerdings Abweichen, da du zum Teil schlechte Noten streichen kannst.  \n   \nFür mehr Informationen empfehlen wir das unten verlinkte Merkblatt  \ndes Schulministeriums NRW. ");
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Merkblatt (PDF)", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialogInterface, int i) {
+                        android.content.Intent browserIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW,
+                        android.net.Uri.parse("https://www.schulministerium.nrw.de/docs/Schulsystem/Schulformen/Gymnasium/Merkblaetter/Merkblatt_G8_zur_Berechnung_der_Gesamtqualifikation.pdf"));
+                        startActivity(browserIntent);
+                        }
+                });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+
+                    }
+                });
+                alertDialog.show();
+
+            }
+            });
 
 
 
@@ -186,6 +231,14 @@ public class fragment_noten extends Fragment {
                 setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
                 String json11 = setting.getString("NotenKlausurenQ11", null);
                 NotenList11 = gson.fromJson(json11 , type);
+                for(int i= 0; i<NotenList.size(); i++){
+
+                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                if(!Object.getFindetStatt()){
+                    NotenList.remove(i);
+                    i--;
+                }
+        }
                 NotenList11.add(0,new noten_placeholder());
                 adapter = new noten_adapter(getActivity(),NotenList11);
                 mrecyclerView.setAdapter(adapter);
@@ -210,6 +263,14 @@ public class fragment_noten extends Fragment {
                 setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
                 String json12 = setting.getString("NotenKlausurenQ12", null);
                 NotenList12 = gson.fromJson(json12 , type);
+                for(int i= 0; i<NotenList.size(); i++){
+
+                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                if(!Object.getFindetStatt()){
+                    NotenList.remove(i);
+                    i--;
+                }
+        }
                 NotenList12.add(0,new noten_placeholder());
                 adapter = new noten_adapter(getActivity(),NotenList12);
                 mrecyclerView.setAdapter(adapter);
@@ -233,9 +294,18 @@ public class fragment_noten extends Fragment {
                 Q22.setBackgroundColor(Color.TRANSPARENT);
                 Gson gson = new Gson();
                 String json21 = setting.getString("NotenKlausurenQ21", null);
+
                 NotenList21 = gson.fromJson(json21 , type);
+                for(int i= 0; i<NotenList.size(); i++){
+
+                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                if(!Object.getFindetStatt()){
+                    NotenList.remove(i);
+                    i--;
+                }
+        }
                 NotenList21.add(0,new noten_placeholder());
-                NotenList21.add(new noten_placeholder());
+
                 adapter = new noten_adapter(getActivity(),NotenList21);
                 mrecyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -260,6 +330,15 @@ public class fragment_noten extends Fragment {
                 setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
                 String json22 = setting.getString("NotenKlausurenQ22", null);
                 NotenList22 = gson.fromJson(json22 , type);
+                for(int i= 0; i<NotenList.size(); i++){
+
+                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                    if(!Object.getFindetStatt()){
+                        NotenList.remove(i);
+                        i--;
+                    }
+                 }
+
                 NotenList22.add(0,new noten_placeholder());
                 adapter = new noten_adapter(getActivity(),NotenList22);
                 mrecyclerView.setAdapter(adapter);
@@ -483,6 +562,14 @@ public class fragment_noten extends Fragment {
             }
             Type type = new TypeToken<ArrayList<Memory_NotenKlausuren>>() {}.getType();
             NotenList = gson.fromJson(json , type);
+            for(int i= 0; i<NotenList.size(); i++){
+
+                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                if(!Object.getFindetStatt()){
+                    NotenList.remove(i);
+                    i--;
+                }
+                }
             NotenList.add(0,new noten_placeholder());
             SchnittNotenList = gson.fromJson(json, type);
 
@@ -641,5 +728,6 @@ public class fragment_noten extends Fragment {
               return "";
         }
     }
+
 
 }

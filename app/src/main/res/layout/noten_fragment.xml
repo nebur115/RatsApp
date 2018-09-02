@@ -20,11 +20,22 @@
         tools:targetApi="lollipop">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout14"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.69"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayout11">
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout11"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.41"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout9"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -36,6 +47,7 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.45"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -56,7 +68,6 @@
             android:id="@+id/cQ11"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
             android:background="#D8D8D8"
             android:paddingBottom="0dp"
@@ -104,10 +115,11 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cQ21"
-            android:layout_width="0dp"
+            android:layout_width="85dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="1dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginRight="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout11"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout9"
@@ -130,10 +142,12 @@
             android:id="@+id/cQ22"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="1dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
+            android:layout_marginStart="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout14"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout11"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -149,6 +163,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/InfoTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="!"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayout14"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout

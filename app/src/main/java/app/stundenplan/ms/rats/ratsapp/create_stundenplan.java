@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.support.v7.app.AlertDialog;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +29,8 @@ import java.util.Set;
 
 public class create_stundenplan extends AppCompatActivity {
 
+
+    boolean outofsettings = false;
     SharedPreferences settings;
     public int shownWeek;
     private boolean Overwrite;
@@ -58,6 +61,7 @@ public class create_stundenplan extends AppCompatActivity {
 
         Intent intent = getIntent();
         int iWoche = intent.getExtras().getInt("Woche");
+        outofsettings = intent.getExtras().getBoolean("OutofSettingsSettings", false);
         final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
 
@@ -217,11 +221,18 @@ public class create_stundenplan extends AppCompatActivity {
         editor.putStringSet("Kursliste", Kurse);
         editor.apply();
 
-
-
-
-        Intent i = new Intent(create_stundenplan.this, Settings.class);
-        startActivity(i);
+        if(outofsettings){
+            Intent i = new Intent(create_stundenplan.this, Settings.class);
+            startActivity(i);
+        }else{
+             android.support.v7.app.AlertDialog alertDialog = new AlertDialog.Builder(create_stundenplan.this).create();
+            alertDialog.setMessage("Daten werden gespeichert...");
+            alertDialog.show();
+            Intent i = new Intent(create_stundenplan.this, vertretungsplan.class);
+            i.putExtra("Stufe", "EXISTINGSTUNDE");
+            i.putExtra("Tab", "Stundenplan");
+            startActivity(i);
+        }
     }
 
 

@@ -109,8 +109,8 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
 
         StartJahr = Integer.parseInt("0" + eUnterichtbegin.getText().toString());
 
-
         Schriftlich = Bewertung.equals("Schriftlich") || (!(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2")) && (fach.equals("Deutsch") || fach.equals("Englisch") || fach.equals("Mathe") || fach.equals("MathePhysikInformatik") || fach.equals("BioChemie") || fach.equals("Spanisch") || fach.equals("Französisch") || fach.equals("Latein")));
+
 
         if (
                 (
@@ -180,10 +180,10 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
             }
 
         } else {
-            toast = Toast.makeText(create_stundenplan_stunden_obtionen.this, "Du hast nicht alle Pflichtfelder ausgefüllt", Toast.LENGTH_SHORT);
-            toast.show();
+             super.onBackPressed();
         }
-    }
+        }
+
 
     @SuppressLint("SetTextI18n")
     @Override

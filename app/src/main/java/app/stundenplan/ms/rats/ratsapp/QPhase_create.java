@@ -145,6 +145,8 @@ public class QPhase_create extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(OutofSettings) {
+            super.onBackPressed();
+        }else{
             AlertDialog alertDialog = new AlertDialog.Builder(QPhase_create.this).create();
             alertDialog.setMessage("Daten werden gespeichert...");
             alertDialog.show();
@@ -152,8 +154,6 @@ public class QPhase_create extends AppCompatActivity {
             i.putExtra("Stufe", "EXISTINGSTUNDE");
             i.putExtra("Tab", "Noten/Arbeiten");
             startActivity(i);
-        }else{
-            super.onBackPressed();
         }
 
     }

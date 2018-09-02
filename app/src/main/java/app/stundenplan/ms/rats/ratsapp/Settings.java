@@ -82,8 +82,8 @@ public class Settings extends PreferenceActivity {
 
 
         CreateStundenplan.setIntent(new Intent(Settings.this, create_stundenplan_obtionen.class));
-        EditStundenplan.setIntent(new Intent(Settings.this, create_stundenplan.class).putExtra("Woche", 1));
-        QPlanaendern.setIntent(new Intent(Settings.this, QPhase_create.class).putExtra("NotOutofSettingsSettings", true));
+        EditStundenplan.setIntent(new Intent(Settings.this, create_stundenplan.class).putExtra("Woche", 1).putExtra("OutofSettingsSettings", true));
+        QPlanaendern.setIntent(new Intent(Settings.this, QPhase_create.class).putExtra("OutofSettingsSettings", true));
 
 
         if(settings.contains("Kursliste")){
@@ -298,11 +298,10 @@ public class Settings extends PreferenceActivity {
             i.putExtra("Stufe", "EXISTINGSTUNDE");
             i.putExtra("Tab", Tab);
         }else{
-            i.putExtra("Stufe", Stufe.getText());
+            String Text = Stufe.getEditText().getText().toString();
+            i.putExtra("Stufe", Text);
             i.putExtra("Tab", Tab);
         }
-
-
         startActivity(i);
 
 

@@ -31,13 +31,9 @@ public class QPhase_SELECTOR_Viewholder extends RecyclerView.ViewHolder{
     ArrayAdapter<String> adapter;
     Context context;
 
-
-
     public String[] Fächer = {  "Bio",  "Bio Chemie",   "Chemie",   "Deutsch",  "Englisch", "Erdkunde", "ev. Religion",
             "Französisch",  "Geschichte",   "Italienisch",  "Informatik",   "Informatische Grundbildung", "kath. Religion", "Kunst", "Latein", "Literatur", "Mathematik", "MathePhysikInformatik", "Musik", "Niederländisch",
             "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
-
-
 
     public QPhase_SELECTOR_Viewholder(View itemView) {
         super(itemView);
@@ -257,6 +253,7 @@ public class QPhase_SELECTOR_Viewholder extends RecyclerView.ViewHolder{
                     tQ22.setText("---");
                     }
                 }
+                save();
             }
         });
     }

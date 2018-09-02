@@ -12,6 +12,10 @@ public class noten_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context context;
     private final static int TYPE_NORMAL=1, TYPE_PLACEHOLDER=2;
 
+
+
+
+
     noten_adapter(Context context, List<Object> Liste){
         this.context=context;
         this.liste = Liste;
