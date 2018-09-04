@@ -93,6 +93,7 @@ public class fragment_vertretungsplan extends Fragment {
                             ItemAdapter.notifyDataSetChanged();
                             ItemList.clear();
                             VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
+                            Finished();
                         }
                     }, 0);
                     textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:", ""));
@@ -104,7 +105,6 @@ public class fragment_vertretungsplan extends Fragment {
     }
 
     public void reload(final boolean AlleStunden, final String Stufe) {
-
         try {
             new AsyncTask<Void, Void, Void>(){
                 @Override
@@ -121,6 +121,7 @@ public class fragment_vertretungsplan extends Fragment {
                             ItemList.clear();
                             VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
                             ItemAdapter.notifyDataSetChanged();
+                            Finished();
                         }
                     }, 0);
                     textStand.setText(new SpeicherVerwaltung(setting).getString("Stand").replace("Stand:", ""));

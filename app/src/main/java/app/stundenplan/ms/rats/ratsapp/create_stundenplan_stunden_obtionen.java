@@ -288,11 +288,12 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
         DatumStunde.setText(Wochentag + ": " + Integer.toString(Stunde) + ". Stunde");
 
 
+        if(pos<MemoryStundenListe.size()){
         if (MemoryStundenListe.get(pos - 5).getFach().equals(MemoryStundenListe.get(pos).getFach()) && !MemoryStundenListe.get(pos - 5).isFreistunde()) {
             eDoppelstunde.setChecked(true);
             wasDopellstunde = true;
             DatumStunde.setText(Wochentag + ": " + Integer.toString(Stunde) + ". & " + Integer.toString(Stunde + 1) + ". Stunde");
-        }
+        }}
 
 
         if (MemoryStundenListe.get(pos - 5).getFach().equals("Französisch") || MemoryStundenListe.get(pos - 5).getFach().equals("Spanisch") || MemoryStundenListe.get(pos - 5).getFach().equals("Italiensich") || MemoryStundenListe.get(pos - 5).getFach().equals("Niederländisch")) {
@@ -660,6 +661,10 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
         MemoryStundenListe = gson.fromJson(json, type);
 
 
+        if(pos>MemoryStundenListe.size()){
+            Doppelstunde = false;
+
+}
         if (fach.equals("Sport")) {
             if (sHalle.getSelectedItem().toString().equals("kleine Halle")) {
                 Raum = "kl. Hl.";

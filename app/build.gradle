@@ -7,7 +7,7 @@ android {
         applicationId "app.stundenplan.ms.rats.ratsapp"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
+        versionCode 180903
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
