@@ -53,7 +53,6 @@ public class fragment_vertretungsplan extends Fragment {
             @Override
             public void onRefresh() {
                 refreshItems();
-
             }
         });
 
@@ -106,6 +105,7 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden, final String Stufe) {
         try {
+
             new AsyncTask<Void, Void, Void>(){
                 @Override
                 protected Void doInBackground(Void... voids) {
@@ -133,8 +133,14 @@ public class fragment_vertretungsplan extends Fragment {
     }
 
         void refreshItems(){
-        try{
-            new DownloadTask().execute();
+        try {
+
+            VertretungsPlanMethoden.downloadedDaten = false;
+            VertretungsPlanMethoden.offline = false;
+            VertretungsPlanMethoden.downloadDaten(setting, false);
+            ItemList.clear();
+            VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
+            Finished();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -151,8 +157,7 @@ class DownloadTask extends AsyncTask<Void, Void, Void> {
         VertretungsPlanMethoden.downloadedDaten = false;
         VertretungsPlanMethoden.offline = false;
         VertretungsPlanMethoden.downloadDaten(setting, false);
-        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
-        }
+        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) { }
         ItemList.clear();
         VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
         return null;
