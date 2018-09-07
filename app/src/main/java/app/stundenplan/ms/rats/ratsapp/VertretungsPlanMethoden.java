@@ -206,7 +206,7 @@ public class VertretungsPlanMethoden {
                 if (nachGestern(lines[row + 13])) {
                     if (AlleKlassen || ( manuellmeineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase())||(meineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()) && (!(manuellnichtmeineKurse.contains(lines[row + 7].replace("  ", " ").toUpperCase()))))) || !share.contains("Stundenliste") || !(share.getBoolean("AlleKurseAnzeigen", share.contains("Kursliste")))) {
                         if (lines[row + 2].contains(stufe)) {
-                            if (!temp.equals(lines[row])) {
+                            if (!temp.equals(lines[row+13]) || !temp.contains(lines[row+13])) {
                                 ItemList.add(new Datum(lines[row + 12] + " " + lines[row + 13]));
                                 temp = lines[row + 13];
                             }
