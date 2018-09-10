@@ -631,6 +631,7 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
     private void DatenSpeichern() {
         if (sRaumSchule.getSelectedItem().toString().equals("Schule")) {
             Raum = eSchule.getText().toString();
+            kursname = Raum + kursname;
         } else {
             Raum = eRaum.getText().toString();
             if (!(Raum.equals(""))) {
@@ -661,7 +662,7 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
         MemoryStundenListe = gson.fromJson(json, type);
 
 
-        if(pos>MemoryStundenListe.size()){
+        if(pos>=MemoryStundenListe.size()){
             Doppelstunde = false;
 
 }
@@ -678,7 +679,12 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
         if (Arrays.asList(Fächer).contains(fach)) {
             fachkürzel = Kürzel[Arrays.asList(Fächer).indexOf(fach)];
         } else {
-            fachkürzel = fach.substring(0, 2);
+            if(fach.length()>=2){
+                fachkürzel = fach.substring(0, 2);
+            }else{
+                fachkürzel = fach;
+            }
+
         }
 
         SharedPreferences.Editor editor = settings.edit();

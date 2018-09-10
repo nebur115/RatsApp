@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import android.support.v7.app.AlertDialog;
 
 public class fragment_noten extends Fragment {
 
@@ -175,11 +175,13 @@ public class fragment_noten extends Fragment {
         mrecyclerView.setLayoutManager(linearLayoutManager);
         for(int i= 0; i<NotenList.size(); i++){
 
-                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
-                if(!Object.getFindetStatt()){
-                    NotenList.remove(i);
-                    i--;
-                }
+                if (NotenList.get(i) instanceof Memory_NotenKlausuren) {
+                        Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                        if (!Object.getFindetStatt()) {
+                            NotenList.remove(i);
+                            i--;
+                        }
+                    }
         }
         NotenList.add(0,new noten_placeholder());
         adapter = new noten_adapter(getActivity(),NotenList);
@@ -233,11 +235,13 @@ public class fragment_noten extends Fragment {
                 NotenList11 = gson.fromJson(json11 , type);
                 for(int i= 0; i<NotenList.size(); i++){
 
-                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
-                if(!Object.getFindetStatt()){
-                    NotenList.remove(i);
-                    i--;
-                }
+                if (NotenList.get(i) instanceof Memory_NotenKlausuren) {
+                        Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                        if (!Object.getFindetStatt()) {
+                            NotenList.remove(i);
+                            i--;
+                        }
+                    }
         }
                 NotenList11.add(0,new noten_placeholder());
                 adapter = new noten_adapter(getActivity(),NotenList11);
@@ -265,11 +269,13 @@ public class fragment_noten extends Fragment {
                 NotenList12 = gson.fromJson(json12 , type);
                 for(int i= 0; i<NotenList.size(); i++){
 
-                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
-                if(!Object.getFindetStatt()){
-                    NotenList.remove(i);
-                    i--;
-                }
+                if (NotenList.get(i) instanceof Memory_NotenKlausuren) {
+                        Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                        if (!Object.getFindetStatt()) {
+                            NotenList.remove(i);
+                            i--;
+                        }
+                    }
         }
                 NotenList12.add(0,new noten_placeholder());
                 adapter = new noten_adapter(getActivity(),NotenList12);
@@ -298,11 +304,14 @@ public class fragment_noten extends Fragment {
                 NotenList21 = gson.fromJson(json21 , type);
                 for(int i= 0; i<NotenList.size(); i++){
 
-                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
-                if(!Object.getFindetStatt()){
-                    NotenList.remove(i);
-                    i--;
-                }
+
+                if (NotenList.get(i) instanceof Memory_NotenKlausuren) {
+                        Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                        if (!Object.getFindetStatt()) {
+                            NotenList.remove(i);
+                            i--;
+                        }
+                    }
         }
                 NotenList21.add(0,new noten_placeholder());
 
@@ -330,14 +339,15 @@ public class fragment_noten extends Fragment {
                 setting = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
                 String json22 = setting.getString("NotenKlausurenQ22", null);
                 NotenList22 = gson.fromJson(json22 , type);
-                for(int i= 0; i<NotenList.size(); i++){
-
-                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
-                    if(!Object.getFindetStatt()){
-                        NotenList.remove(i);
-                        i--;
+                for(int i= 0; i<NotenList.size(); i++) {
+                    if (NotenList.get(i) instanceof Memory_NotenKlausuren) {
+                        Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                        if (!Object.getFindetStatt()) {
+                            NotenList.remove(i);
+                            i--;
+                        }
                     }
-                 }
+                }
 
                 NotenList22.add(0,new noten_placeholder());
                 adapter = new noten_adapter(getActivity(),NotenList22);
@@ -564,11 +574,13 @@ public class fragment_noten extends Fragment {
             NotenList = gson.fromJson(json , type);
             for(int i= 0; i<NotenList.size(); i++){
 
-                Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
-                if(!Object.getFindetStatt()){
-                    NotenList.remove(i);
-                    i--;
-                }
+                if (NotenList.get(i) instanceof Memory_NotenKlausuren) {
+                        Memory_NotenKlausuren Object = (Memory_NotenKlausuren) NotenList.get(i);
+                        if (!Object.getFindetStatt()) {
+                            NotenList.remove(i);
+                            i--;
+                        }
+                    }
                 }
             NotenList.add(0,new noten_placeholder());
             SchnittNotenList = gson.fromJson(json, type);
