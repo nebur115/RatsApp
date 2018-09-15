@@ -89,7 +89,6 @@ public class fragment_vertretungsplan extends Fragment {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            ItemAdapter.notifyDataSetChanged();
                             ItemList.clear();
                             VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null);
                             Finished();
@@ -120,7 +119,6 @@ public class fragment_vertretungsplan extends Fragment {
                         public void run() {
                             ItemList.clear();
                             VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), AlleStunden, null, Stufe);
-                            ItemAdapter.notifyDataSetChanged();
                             Finished();
                         }
                     }, 0);
@@ -133,39 +131,32 @@ public class fragment_vertretungsplan extends Fragment {
     }
 
         void refreshItems(){
-        try {
-
-            VertretungsPlanMethoden.downloadedDaten = false;
-            VertretungsPlanMethoden.offline = false;
-            VertretungsPlanMethoden.downloadDaten(setting, false);
-            ItemList.clear();
-            VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
-            Finished();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
+            new DownloadTask().execute();
         }
         public void Finished(){
             ItemAdapter.notifyDataSetChanged();
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-class DownloadTask extends AsyncTask<Void, Void, Void> {
-    @Override
-    protected Void doInBackground(Void... voids) {
-        VertretungsPlanMethoden.downloadedDaten = false;
-        VertretungsPlanMethoden.offline = false;
-        VertretungsPlanMethoden.downloadDaten(setting, false);
-        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) { }
-        ItemList.clear();
-        VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
-        return null;
-    }
+    class DownloadTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                System.out.println("Ok");
+                VertretungsPlanMethoden.downloadedDaten = false;
+                VertretungsPlanMethoden.offline = false;
+                VertretungsPlanMethoden.downloadDaten(setting, false);
+                ItemList.clear();
+                VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
 
-    @Override
-    public void onPostExecute(Void result) {
-        Finished();
+        @Override
+        public void onPostExecute(Void result) {
+            Finished();
     }
 }
 }

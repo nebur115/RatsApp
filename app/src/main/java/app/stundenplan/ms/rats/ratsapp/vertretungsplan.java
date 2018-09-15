@@ -256,9 +256,7 @@ public class vertretungsplan extends AppCompatActivity {
                     StundenplanTab.setIcon(R.drawable.stundenplanacctive);
                     if(!(childstundenplanfragment==null)){
                         childstundenplanfragment.timereload();
-                        while(!VertretungsPlanMethoden.downloadedDaten){
-                            if(VertretungsPlanMethoden.offline) break;
-                        }
+                        while(!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline){}
                     }
                 }
                 else if(AktiveTap == "Vertretungsplan") {
