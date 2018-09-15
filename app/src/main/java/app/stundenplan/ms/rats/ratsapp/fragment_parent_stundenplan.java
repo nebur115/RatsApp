@@ -24,10 +24,6 @@ public class fragment_parent_stundenplan extends Fragment {
     boolean intranstion = false;
     boolean loaded = false;
 
-
-    public fragment_parent_stundenplan(){
-    }
-
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -38,9 +34,9 @@ public class fragment_parent_stundenplan extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.stundenplan_frame, container,Boolean.parseBoolean(null));
-        Fragmentlayouts.add(new fragment_stundenplan(0));
-        Fragmentlayouts.add(new fragment_stundenplan(1));
-        Fragmentlayouts.add(new fragment_stundenplan(2));
+        Fragmentlayouts.add(new fragment_stundenplan().newInstance(0));
+        Fragmentlayouts.add(new fragment_stundenplan().newInstance(1));
+        Fragmentlayouts.add(new fragment_stundenplan().newInstance(2));
 
 
         FrameLayout myFramelayout = view.findViewById(R.id.myFramelayout);
@@ -138,7 +134,7 @@ public class fragment_parent_stundenplan extends Fragment {
 
                         if (lastCreatetPage == currentpage + 1) {
                             lastCreatetPage++;
-                            Fragmentlayouts.add(new fragment_stundenplan(currentpage + 2));
+                            Fragmentlayouts.add(new fragment_stundenplan().newInstance(currentpage + 2));
                         }
                     }
                 }

@@ -1,8 +1,8 @@
 package app.stundenplan.ms.rats.ratsapp;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 
-@SuppressLint("ValidFragment")
 public class fragment_stundenplan extends Fragment {
     public int Height = vertretungsplan.getheight();
     List<Memory_Stunde> MemoryStundenListe = new ArrayList<>();
@@ -35,15 +34,24 @@ public class fragment_stundenplan extends Fragment {
 
 
 
-    @SuppressLint("ValidFragment")
-    public fragment_stundenplan(int pWeek) {
-        Week = pWeek;
-    }
-
     Stundenplanadapter mystundenplanadapter;
     RecyclerView stundenplan_recyclerView;
     private List<Object> StundenListe = new ArrayList<>();
 
+    public static fragment_stundenplan newInstance(int pWeek) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("pWeek", pWeek);
+        fragment_stundenplan fragment = new fragment_stundenplan();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            Week = bundle.getInt("pWeek");
+        }
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +65,7 @@ public class fragment_stundenplan extends Fragment {
 
         stundenplan_recyclerView = view.findViewById(R.id.recyclerview_stundenplan);
 
+        readBundle(getArguments());
 
         init();
 
@@ -259,24 +268,7 @@ public class fragment_stundenplan extends Fragment {
                         break;
                 }
 
-                Klausur = false;
-                if(!(SchnittNotenList == null)) {
-                    for (int j = 0; SchnittNotenList.size() > j; j++) {
-                        if (SchnittNotenList.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())) {
-                            if (Integer.toString(SchnittNotenList.get(j).getDatum1()).replace("2018", "18").equals(Datum.replace(".", ""))) {
-                                Klausur = true;
-                            }
 
-                            if (Integer.toString(SchnittNotenList.get(j).getDatum2()).replace("2018", "18").equals(Datum.replace(".", ""))) {
-                                Klausur = true;
-                            }
-
-                            if (Integer.toString(SchnittNotenList.get(j).getDatum3()).replace("2018", "18").equals(Datum.replace(".", ""))) {
-                                Klausur = true;
-                            }
-                        }
-                    }
-                }
 
 
                 int Stunde = (i - (i % 5)) / 5;
@@ -394,7 +386,6 @@ public class fragment_stundenplan extends Fragment {
 
                 }
 
-                //Kurs wird nicht richtig initialisiert
                 Kurs = MemoryStundenListe.get(i).getKürzel();
                 Schriftlich = MemoryStundenListe.get(i).isSchriftlich();
 
@@ -440,10 +431,25 @@ public class fragment_stundenplan extends Fragment {
                     }
 
                 }
-                //Aus Kürzel, Datum und Schriftlich bestimmen ob ein Event vorhanden ist.
-                //Bei Raum / Lehrerwechsel Wert anpassen
-                //Es können mehrere Werte gleichzeitig Wahr sein (Entfaellt, Klausur, und Veranstalltung allerdings nicht).
-                //Wenn Mündlich, Klausur und "Restgruppe Entfaellt", dann Frei.
+
+
+                if(!(SchnittNotenList == null)) {
+                    for (int j = 0; SchnittNotenList.size() > j; j++) {
+                        if (SchnittNotenList.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())) {
+                            if (Integer.toString(SchnittNotenList.get(j).getDatum1()).replace("20", "").equals(Datum.replace(".", ""))) {
+                                Klausur = true;
+                            }
+
+                            if (Integer.toString(SchnittNotenList.get(j).getDatum2()).replace("20", "").equals(Datum.replace(".", ""))) {
+                                Klausur = true;
+                            }
+
+                            if (Integer.toString(SchnittNotenList.get(j).getDatum3()).replace("20", "").equals(Datum.replace(".", ""))) {
+                                Klausur = true;
+                            }
+                        }
+                    }
+                }
 
                 if (ShowStunde && !Freistunde) {
                     StundenListe.add(new Stunde(Wochentag, DoppelStunde, itemHeight, itemWidth, dpHeight, Fach, Lehrer, Raum, Raumwechsel, Lehrerwechsel, Entfaellt, Klausur, Veranstalltung, aktiveStunde));
@@ -473,7 +479,9 @@ public class fragment_stundenplan extends Fragment {
 
 
     public void timereload() {
-        if (!(getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0) == null)) {
+        @Nullable
+        SharedPreferences preferences = (getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
+        if (!(preferences == null)) {
             SharedPreferences settings = getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0);
 
             int time1 = settings.getInt("Time", 0);

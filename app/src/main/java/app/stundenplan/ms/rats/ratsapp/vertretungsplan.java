@@ -59,17 +59,17 @@ public class vertretungsplan extends AppCompatActivity {
             try{
                 SharedPreferences settings1 = getSharedPreferences("RatsVertretungsPlanApp",0);
 
-                    if (!settings1.edit().putString("Stufe", Stufe).commit())
-                        finish();
+                if (!settings1.edit().putString("Stufe", Stufe).commit())
+                    finish();
 
             }catch(ClassCastException e){
                 //Falls settings.contains eine exception auslöst
             }}
-            settings.getInt("Height", 0);
+        settings.getInt("Height", 0);
 
 
 
-         prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
+        prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
@@ -102,33 +102,33 @@ public class vertretungsplan extends AppCompatActivity {
         final Fragment notenfragment;
 
         SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp", 0);
-            if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))) {
-                if (settings3.contains("Stundenliste")) {
-                    childstundenplanfragment = new fragment_parent_stundenplan();
-                    stundenplanfragment = childstundenplanfragment;
-                    childnotenfragment = new fragment_noten();
-                    notenfragment = childnotenfragment;
-                } else {
-                    stundenplanfragment = new fragment_no_existing_stundenplan();
-                    notenfragment = new fragment_no_existing_stundenplan();
+        if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))) {
+            if (settings3.contains("Stundenliste")) {
+                childstundenplanfragment = new fragment_parent_stundenplan();
+                stundenplanfragment = childstundenplanfragment;
+                childnotenfragment = new fragment_noten();
+                notenfragment = childnotenfragment;
+            } else {
+                stundenplanfragment = new fragment_no_existing_stundenplan();
+                notenfragment = new fragment_no_existing_stundenplan();
 
-                }
-            }else{
-                if (settings3.contains("Stundenliste")) {
-                    childstundenplanfragment = new fragment_parent_stundenplan();
-                    stundenplanfragment = childstundenplanfragment;
-
-                } else {
-                    stundenplanfragment = new fragment_no_existing_stundenplan();
-                }
-
-                if(settings3.contains("NotenKlausurenQ11")){
-                    childnotenfragment = new fragment_noten();
-                    notenfragment = childnotenfragment;
-                }else{
-                    notenfragment = new fragment_no_existing_QPhase();
-                }
             }
+        }else{
+            if (settings3.contains("Stundenliste")) {
+                childstundenplanfragment = new fragment_parent_stundenplan();
+                stundenplanfragment = childstundenplanfragment;
+
+            } else {
+                stundenplanfragment = new fragment_no_existing_stundenplan();
+            }
+
+            if(settings3.contains("NotenKlausurenQ11")){
+                childnotenfragment = new fragment_noten();
+                notenfragment = childnotenfragment;
+            }else{
+                notenfragment = new fragment_no_existing_QPhase();
+            }
+        }
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -371,7 +371,7 @@ public class vertretungsplan extends AppCompatActivity {
 
 
     protected void onResume() {
-         super.onResume();
+        super.onResume();
         if(!(childstundenplanfragment==null)) {
             childstundenplanfragment.reload();
         }

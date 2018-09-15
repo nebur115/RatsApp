@@ -20,9 +20,6 @@ public class fragment_website extends Fragment {
     public ConstraintLayout blockview;
 
 
-    public fragment_website() {
-    }
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

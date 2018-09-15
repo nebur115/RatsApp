@@ -10,9 +10,6 @@ import android.widget.Button;
 
 public class fragment_no_existing_QPhase extends Fragment {
 
-    public fragment_no_existing_QPhase() {
-    }
-
 
     @Override
     public  void onCreate(Bundle savedInstanceState) {
