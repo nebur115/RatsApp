@@ -104,7 +104,6 @@ public class fragment_vertretungsplan extends Fragment {
 
     public void reload(final boolean AlleStunden, final String Stufe) {
         try {
-
             new AsyncTask<Void, Void, Void>(){
                 @Override
                 protected Void doInBackground(Void... voids) {
@@ -131,7 +130,16 @@ public class fragment_vertretungsplan extends Fragment {
     }
 
         void refreshItems(){
-            new DownloadTask().execute();
+            if(setting.contains("Stundenliste"))
+                new DownloadTask().execute();
+            else{
+                VertretungsPlanMethoden.downloadedDaten = false;
+                VertretungsPlanMethoden.offline = false;
+                VertretungsPlanMethoden.downloadDaten(setting, false);
+                ItemList.clear();
+                VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
+                Finished();
+            }
         }
         public void Finished(){
             ItemAdapter.notifyDataSetChanged();
