@@ -15,8 +15,6 @@ import android.widget.Button;
 
 public class fragment_no_existing_stundenplan extends Fragment {
 
-    public fragment_no_existing_stundenplan() {
-    }
 
 
     @Override

@@ -19,10 +19,6 @@ import java.util.List;
 public class fragment_vertretungsplan extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public fragment_vertretungsplan() {
-
-    }
-
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<Object> ItemList = new ArrayList<>();

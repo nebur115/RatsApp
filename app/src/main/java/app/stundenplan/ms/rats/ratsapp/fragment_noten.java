@@ -51,9 +51,6 @@ public class fragment_noten extends Fragment {
     TextView MoeglichePunkte;
     TextView EreichtePunkte;
 
-    public fragment_noten() {
-    }
-
 
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
