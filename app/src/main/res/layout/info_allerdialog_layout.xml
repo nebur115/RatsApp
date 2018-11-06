@@ -86,53 +86,6 @@
                 android:text="und freuen uns über konstruktive Kritik." />
 
             <TextView
-                android:id="@+id/textView34"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Datenschutz"
-                android:textAllCaps="true"
-                android:textColor="#424242"
-                android:textSize="21sp" />
-
-            <TextView
-                android:id="@+id/textView35"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Alle eingetragenen Informationen " />
-
-            <TextView
-                android:id="@+id/textView39"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="werden Lokal gespeichert und können" />
-
-            <TextView
-                android:id="@+id/textView40"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="von den Betreibern der App nicht abgerufen werden." />
-
-            <TextView
-                android:id="@+id/textView41"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Alle Informationen, die von App heruntergeladen und angezeigt werden, sind im Internet bereits frei verfügbar." />
-
-            <TextView
                 android:id="@+id/textView49"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +93,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Mitwirkende"
+                android:text="Entwickler"
                 android:textColor="#424242"
                 android:textSize="21sp" />
 
@@ -213,6 +166,14 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="die Schulleitung des Rats" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Team der Rats Vertretungsplan App" />
 
             <TextView
                 android:id="@+id/textView52"

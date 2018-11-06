@@ -72,6 +72,15 @@
             android:summary=""
             android:title="Alles löschen" />
 
+
+        <Preference
+            android:id="@+id/preference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:key="Datenschutz"
+            android:summary=""
+            android:title="Datenschutz" />
+
         <Preference
             android:key="Copyright"
             android:summary=""

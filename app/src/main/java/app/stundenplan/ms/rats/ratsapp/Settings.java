@@ -33,6 +33,7 @@ public class Settings extends PreferenceActivity {
     EditTextPreference Stufe;
     Preference AllesLoeschen;
     Preference Copyright;
+    Preference Datenschutz;
     PreferenceCategory Stundenplan;
     PreferenceCategory Vertretungsplan;
     PreferenceCategory Notenrechner;
@@ -71,6 +72,7 @@ public class Settings extends PreferenceActivity {
         Stufe = (EditTextPreference) findPreference("Stufe");
         AllesLoeschen = findPreference("Alles löschen");
         Copyright = findPreference("Copyright");
+        Datenschutz = findPreference("Datenschutz");
 
         CreateStundenplan.setIntent(new Intent(Settings.this, create_stundenplan_obtionen.class));
 
@@ -195,6 +197,20 @@ public class Settings extends PreferenceActivity {
 
                 LayoutInflater inflater = Settings.this.getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.info_allerdialog_layout, null);
+                dialogBuilder.setView(dialogView);
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
+                return false;
+            }
+        });
+
+        Datenschutz.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Settings.this);
+
+                LayoutInflater inflater = Settings.this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.datenschutz, null);
                 dialogBuilder.setView(dialogView);
                 AlertDialog alertDialog = dialogBuilder.create();
                 alertDialog.show();

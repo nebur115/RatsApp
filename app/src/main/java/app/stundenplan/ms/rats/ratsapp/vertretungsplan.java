@@ -1,6 +1,7 @@
 package app.stundenplan.ms.rats.ratsapp;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -68,8 +71,35 @@ public class vertretungsplan extends AppCompatActivity {
         settings.getInt("Height", 0);
 
 
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(vertretungsplan.this);
+
+        LayoutInflater inflater = vertretungsplan.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.datenschutz, null);
+
+
+
 
         prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
+
+        if(!prefs.contains("datenschutzerklärung_zustimmung")) {
+            dialogBuilder.setView(dialogView);
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ich habe die Datenschutzerklärung gelesen und bin einverstanden", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    SharedPreferences.Editor editor = prefs.edit();
+
+                    editor.putBoolean("datenschutzerklärung_zustimmung", true);
+
+                    editor.apply();
+
+
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialog.show();
+        }
 
         SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
