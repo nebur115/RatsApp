@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -23,15 +22,10 @@ import java.util.HashSet;
 
 public class vertretungsplan extends AppCompatActivity {
 
-
+    public boolean reloadStundenplan;
     SharedPreferences settings;
     static ProgressBar progressBar2;
     public String AktiveTap;
-    public boolean noten_created =false;
-    public boolean kalender_created = false;
-    public boolean website_created = false;
-    public boolean vertretungsplan_created = false;
-    public boolean stundenplan_created = false;
     static fragment_noten childnotenfragment;
     static SharedPreferences prefs;
     fragment_parent_stundenplan childstundenplanfragment;
@@ -44,44 +38,42 @@ public class vertretungsplan extends AppCompatActivity {
     fragment_website websitefragment;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        settings = getSharedPreferences("RatsVertretungsPlanApp",0);
+        settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
         stundenplan_active = true;
         setContentView(R.layout.activity_vertretungsplan);
 
         Intent intent = getIntent();
         String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
 
-        if(!(Stufe.equals("EXISTINGSTUNDE"))){
-            if(Stufe.charAt(0) != '0' && !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))){
-                Stufe = "0"+ Stufe; }
+        if (!(Stufe.equals("EXISTINGSTUNDE"))) {
+            if (Stufe.charAt(0) != '0' && !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))) {
+                Stufe = "0" + Stufe;
+            }
             progressBar2 = findViewById(R.id.progressBar2);
-            try{
-                SharedPreferences settings1 = getSharedPreferences("RatsVertretungsPlanApp",0);
+            try {
+                SharedPreferences settings1 = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
-                if (!settings1.edit().putString("Stufe", Stufe).commit())
-                    finish();
+                if (!settings1.edit().putString("Stufe", Stufe).commit()) finish();
 
-            }catch(ClassCastException e){
+            } catch (ClassCastException e) {
                 //Falls settings.contains eine exception auslöst
-            }}
+            }
+        }
         settings.getInt("Height", 0);
-
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(vertretungsplan.this);
 
         LayoutInflater inflater = vertretungsplan.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.datenschutz, null);
 
-
-
-
         prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
 
-        if(!prefs.contains("datenschutzerklärung_zustimmung")) {
+        if (!prefs.contains("datenschutzerklärung_zustimmung")) {
             dialogBuilder.setView(dialogView);
             AlertDialog alertDialog = dialogBuilder.create();
             alertDialog.setCancelable(false);
@@ -101,64 +93,42 @@ public class vertretungsplan extends AppCompatActivity {
             alertDialog.show();
         }
 
-        SimpleFrameLayout  = findViewById(R.id.simpleframelayout);
+        SimpleFrameLayout = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
-
 
         Stufe = settings.getString("Stufe", "");
 
-        final TabLayout.Tab StundenplanTab= tablayout.newTab();
+        final TabLayout.Tab StundenplanTab = tablayout.newTab();
         StundenplanTab.setIcon(R.drawable.stundenplanacctive);
         tablayout.addTab(StundenplanTab);
 
-        final TabLayout.Tab VertretungsplanTab= tablayout.newTab();
+        final TabLayout.Tab VertretungsplanTab = tablayout.newTab();
         VertretungsplanTab.setIcon(R.drawable.vertretungsplaninactive);
         tablayout.addTab(VertretungsplanTab);
 
-        final TabLayout.Tab NotenTab= tablayout.newTab();
+        final TabLayout.Tab NotenTab = tablayout.newTab();
         NotenTab.setIcon(R.drawable.noteninactive);
         tablayout.addTab(NotenTab);
 
 
-        final TabLayout.Tab WebsiteTab= tablayout.newTab();
+        final TabLayout.Tab WebsiteTab = tablayout.newTab();
         WebsiteTab.setIcon(R.drawable.webiteinactive);
         tablayout.addTab(WebsiteTab);
 
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
-        final Fragment kalenderfragment = new fragment_kalender();
         websitefragment = new fragment_website();
-
-        final Fragment notenfragment;
+        final Fragment notenfragment = new fragment_kalender();
 
         SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp", 0);
-        if(!(Stufe.equals("Q1") || Stufe.equals("Q2"))) {
-            if (settings3.contains("Stundenliste")) {
-                childstundenplanfragment = new fragment_parent_stundenplan();
-                stundenplanfragment = childstundenplanfragment;
-                childnotenfragment = new fragment_noten();
-                notenfragment = childnotenfragment;
-            } else {
-                stundenplanfragment = new fragment_no_existing_stundenplan();
-                notenfragment = new fragment_no_existing_stundenplan();
+        if (settings3.contains("Stundenliste")) {
+            childstundenplanfragment = new fragment_parent_stundenplan();
+            stundenplanfragment = childstundenplanfragment;
 
-            }
-        }else{
-            if (settings3.contains("Stundenliste")) {
-                childstundenplanfragment = new fragment_parent_stundenplan();
-                stundenplanfragment = childstundenplanfragment;
-
-            } else {
-                stundenplanfragment = new fragment_no_existing_stundenplan();
-            }
-
-            if(settings3.contains("NotenKlausurenQ11")){
-                childnotenfragment = new fragment_noten();
-                notenfragment = childnotenfragment;
-            }else{
-                notenfragment = new fragment_no_existing_QPhase();
-            }
+        } else {
+            stundenplanfragment = new fragment_no_existing_stundenplan();
         }
+
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -188,9 +158,10 @@ public class vertretungsplan extends AppCompatActivity {
 
 
 
+
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
-            public boolean noten_created =false;
+            public boolean noten_created = false;
             public boolean website_created = false;
             public boolean vertretungsplan_created = false;
 
@@ -233,12 +204,11 @@ public class vertretungsplan extends AppCompatActivity {
                         break;
 
                     case 1:
-                        if(vertretungsplan_created){
+                        if (vertretungsplan_created) {
                             ft.show(vertretungsplanfragment);
-                        }
-                        else{
+                        } else {
 
-                            ft.add(R.id.simpleframelayout, vertretungsplanfragment);
+                            ft.add(R.id.simpleframelayout, vertretungsplanfragment, "vertretungsplan");
                             vertretungsplan_created = true;
                         }
 
@@ -249,10 +219,9 @@ public class vertretungsplan extends AppCompatActivity {
 
                     case 2:
 
-                        if(noten_created){
+                        if (noten_created) {
                             ft.show(notenfragment);
-                        }
-                        else{
+                        } else {
                             ft.add(R.id.simpleframelayout, notenfragment);
                             noten_created = true;
                         }
@@ -263,12 +232,11 @@ public class vertretungsplan extends AppCompatActivity {
 
                     case 3:
 
-                        if(website_created){
+                        if (website_created) {
                             ft.show(websitefragment);
-                        }
-                        else{
+                        } else {
                             ft.add(R.id.simpleframelayout, websitefragment);
-                            website_created =true;
+                            website_created = true;
                         }
                         AktiveTap = "Homepage";
                         Title.setText("Homepage");
@@ -282,25 +250,27 @@ public class vertretungsplan extends AppCompatActivity {
                 }
 
 
-                if (AktiveTap == "Stundenplan"){
+                if (AktiveTap == "Stundenplan") {
                     StundenplanTab.setIcon(R.drawable.stundenplanacctive);
-                    if(!(childstundenplanfragment==null)){
-                        childstundenplanfragment.timereload();
-                        while(!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline){}
+                    if (!(childstundenplanfragment == null)) {
+                        //childstundenplanfragment.timereload();
+                        while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {
+                        }
                     }
-                }
-                else if(AktiveTap == "Vertretungsplan") {
+                } else if (AktiveTap == "Vertretungsplan") {
                     VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
-                }
-                else if(AktiveTap == "Noten/Arbeiten") {
+                } else if (AktiveTap == "Noten/Arbeiten") {
                     NotenTab.setIcon(R.drawable.notenactive);
-                }
-                else if(AktiveTap == "Homepage") {
+                } else if (AktiveTap == "Homepage") {
                     WebsiteTab.setIcon(R.drawable.webiteactive);
                 }
 
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
+
+                if(tab.getPosition()==0 && reloadStundenplan){
+                    ((fragment_parent_stundenplan) stundenplanfragment).reload();
+                }
 
             }
 
@@ -317,35 +287,33 @@ public class vertretungsplan extends AppCompatActivity {
         });
 
 
-        if(!settings.contains("Stundenliste")){
+        if (!settings.contains("Stundenliste")) {
             TabLayout.Tab tab = tablayout.getTabAt(1);
             tab.select();
         }
 
 
-        if(intent.getExtras().containsKey("Tab")){
+        if (intent.getExtras().containsKey("Tab")) {
 
-            if(intent.getStringExtra("Tab").equals("Stundenplan")){
+            if (intent.getStringExtra("Tab").equals("Stundenplan")) {
                 TabLayout.Tab tab = tablayout.getTabAt(0);
                 tab.select();
             }
 
-            if(intent.getStringExtra("Tab").equals("Vertretungsplan")){
+            if (intent.getStringExtra("Tab").equals("Vertretungsplan")) {
                 TabLayout.Tab tab = tablayout.getTabAt(1);
                 tab.select();
             }
 
-            if(intent.getStringExtra("Tab").equals("Noten/Arbeiten")){
+            if (intent.getStringExtra("Tab").equals("Noten/Arbeiten")) {
                 TabLayout.Tab tab = tablayout.getTabAt(2);
                 tab.select();
             }
 
-            if(intent.getStringExtra("Tab").equals("Homepage")){
+            if (intent.getStringExtra("Tab").equals("Homepage")) {
                 TabLayout.Tab tab = tablayout.getTabAt(3);
                 tab.select();
             }
-
-
         }
 
 
@@ -353,60 +321,24 @@ public class vertretungsplan extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(AktiveTap.equals("Homepage")){
+        if (AktiveTap.equals("Homepage")) {
             websitefragment.back();
         }
     }
 
-    public static boolean isStundenlanactive()  {
-        return stundenplan_active;
-    }
-    public static int getheight()  {
+
+    public static int getheight() {
         return Height;
     }
 
 
-
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp",0);
-        if (settings3.contains("Stundenliste")) {
-            super.dispatchTouchEvent(ev);
-            return OnSwipeTouchListener.getGestureDetector().onTouchEvent(ev);
-        }
-        else {
-            return super.dispatchTouchEvent(ev);
-        }
-
-    }
-
-    public static void zeigeLaden(){
-        progressBar2.setVisibility(View.GONE);
-
-    }
-
-    public static void notenreload(){
-        if(!(childnotenfragment==null)) {
+    public static void notenreload() {
+        if (!(childnotenfragment == null)) {
             childnotenfragment.newnumbers();
         }
     }
 
-    public static void versteckeLaden(){
-        progressBar2.setVisibility(View.GONE);
-    }
-
-
-
-    protected void onResume() {
-        super.onResume();
-        if(!(childstundenplanfragment==null)) {
-            childstundenplanfragment.reload();
-        }
-
-    }
-
-    public void ManuellSave(){
+    public void ManuellSave() {
         SharedPreferences prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
         HashSet<String> nichtmeineKurse = new HashSet<String>();
         HashSet<String> meineKurse = new HashSet<String>();
@@ -418,7 +350,19 @@ public class vertretungsplan extends AppCompatActivity {
         editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
         editor.apply();
     }
+
+    public void reloadStundenplan() {
+        if(settings.contains("Stundenliste")) {
+            if (AktiveTap.equals("Stundenplan")) {
+                ((fragment_parent_stundenplan) stundenplanfragment).reload();
+            } else {
+                reloadStundenplan = true;
+            }
+        }
+    }
 }
+
+
 
 
 

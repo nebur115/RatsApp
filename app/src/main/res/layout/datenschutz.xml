@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datenschutzerklärung"
+                android:textSize="21sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="
+ \n
+Die nachfolgende Datenschutzerklärung gilt für die Nutzung des Angebots der für die Schüler und Schülerinnen bereitgestellten „RatsApp“. \n
+Wir messen dem Datenschutz große Bedeutung bei. Die Erhebung und Verarbeitung Ihrer personenbezogenen Daten geschieht unter Beachtung der geltenden datenschutzrechtlichen Vorschriften, insbesondere der Datenschutzgrundverordnung (DSGVO). \n
+ \n
+1.	Verantwortlicher \n
+Verantwortlicher für die Erhebung, Verarbeitung und Nutzung Ihrer personenbezogenen Daten im Sinne von Art. 4 Nr. 7 DSGVO ist Nadine Förster, Gartenstraße 126 und +49 170 5651942. Verantwortlich im Sinne des Telemediengesetzes: Nadine Förster, Gartenstraße 126, 48147 Münster, Tel.:+49 170 5651942 \n
+Sofern Sie der Erhebung, Verarbeitung oder Nutzung Ihrer Daten durch uns nach Maßgabe dieser Datenschutzbestimmungen insgesamt oder für einzelne Maßnahmen widersprechen wollen, können Sie Ihren Widerspruch an den Verantwortlichen richten. Sie können diese Datenschutzerklärung jederzeit speichern und ausdrucken.  \n
+ \n
+2.   	Allgemeine Zwecke der Verarbeitung \n
+Wir verwenden personenbezogene Daten zur organisierten Darstellung dieser, Bereitstellung von Vertretungsplandaten und Erstellung von Prognosen. \n
+ \n
+3.	Welche Daten wir verwenden und warum \n
+ \n
+3.1	Stundenplan \n
+Wir verwenden den selbst eingetragenen Stundenplan des Schülers/der Schülerin, um diesen mit aktuellen Ereignissen aus dem Vertretungsplan darzustellen. Diese Daten sind optional und können jederzeit in den Einstellungen gelöscht bzw. bearbeitet werden.\n
+\n
+3.2	Stufe/Klasse\n
+Wir verwenden die von dem Schüler/ der Schülerin eingetragene Stufe/Klasse, um die vom Server angefragten Vertretungsplandaten optimiert/gefiltert darzustellen. Diese Stufe kann temporär auf der Anzeige des Vertretungsplans bearbeitet oder langfristig in den Einstellungen bearbeitet bzw. gelöscht werden.\n
+\n
+3.3	Noten\n
+Wir verwenden die von dem Schüler/ der Schülerin eingetragenen Noten, um diese für den Nutzer zu speichern und mit einer Durchschnittsprognose anzuzeigen. Diese Daten sind optional und können jederzeit geändert bzw. gelöscht werden.\n
+\n
+4.	Speicherdauer\n
+Sofern nicht spezifisch angegeben sind personenbezogene Daten nur solange gespeichert, wie die Anwendung auf dem Endgerät installiert ist oder der Nutzer diese in den Einstellungen noch nicht gelöscht hat.\n
+\n
+5.	Weitergabe von Daten an Dritte\n
+Grundsätzlich verwenden wir Ihre personenbezogenen Daten nur auf dem Endnutzgerät. Insofern werden keine Daten an Dritte weitergegeben. \n"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

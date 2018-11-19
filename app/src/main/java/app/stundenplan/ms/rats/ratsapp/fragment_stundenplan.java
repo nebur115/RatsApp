@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class fragment_stundenplan extends Fragment {
+public class fragment_stundenplan extends Fragment  {
     public int Height = vertretungsplan.getheight();
     List<Memory_Stunde> MemoryStundenListe = new ArrayList<>();
     int Week;
@@ -38,10 +38,11 @@ public class fragment_stundenplan extends Fragment {
     RecyclerView stundenplan_recyclerView;
     private List<Object> StundenListe = new ArrayList<>();
 
-    public static fragment_stundenplan newInstance(int pWeek) {
+    static fragment_stundenplan newInstance(int pWeek) {
+        fragment_stundenplan fragment = new fragment_stundenplan();
         Bundle bundle = new Bundle();
         bundle.putInt("pWeek", pWeek);
-        fragment_stundenplan fragment = new fragment_stundenplan();
+
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -84,7 +85,7 @@ public class fragment_stundenplan extends Fragment {
         return view;
     }
 
-    private void init() {
+    public void init() {
         VertretungsPlanMethoden.stundenplanfrag = this;
         int menuHeight = 60 + 50 + 35;
         List<Memory_NotenKlausuren> SchnittNotenList = new ArrayList<>();
