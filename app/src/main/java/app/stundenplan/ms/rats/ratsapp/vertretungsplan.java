@@ -43,6 +43,8 @@ public class vertretungsplan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
         settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
         stundenplan_active = true;
         setContentView(R.layout.activity_vertretungsplan);
@@ -138,8 +140,6 @@ public class vertretungsplan extends AppCompatActivity {
         ft.commit();
 
 
-
-
         Title = findViewById(R.id.title);
         Title.setText("Stundenplan");
 
@@ -155,8 +155,6 @@ public class vertretungsplan extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-
 
 
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -207,11 +205,9 @@ public class vertretungsplan extends AppCompatActivity {
                         if (vertretungsplan_created) {
                             ft.show(vertretungsplanfragment);
                         } else {
-
                             ft.add(R.id.simpleframelayout, vertretungsplanfragment, "vertretungsplan");
                             vertretungsplan_created = true;
                         }
-
 
                         AktiveTap = "Vertretungsplan";
                         Title.setText("Vertretungsplan");
@@ -227,7 +223,7 @@ public class vertretungsplan extends AppCompatActivity {
                         }
 
                         AktiveTap = "Noten/Arbeiten";
-                        Title.setText("Klausuren und Arbeiten");
+                        Title.setText("Kalender");
                         break;
 
                     case 3:

@@ -1,5 +1,6 @@
 package app.stundenplan.ms.rats.ratsapp;
 
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -51,6 +52,7 @@ public class fragment_kalender extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private KalenderAdapter Adapter;
     private DatePickerDialog.OnDateSetListener mDateListener;
+    List<Object> ItemList = new ArrayList<>();
 
     public fragment_kalender() {
     }
@@ -73,6 +75,9 @@ public class fragment_kalender extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         init();
+
+
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +121,7 @@ public class fragment_kalender extends Fragment {
                             }
                             kalenderListe.add(position, new kalender_event(EventType, Fach.getText().toString(), Notiz.getText().toString(), Datum.getText().toString().replace("\\D+", "")));
                         }
-                            SharedPreferences preferences = (getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
+                        SharedPreferences preferences = (getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
 
 
                         Gson gson = new Gson();
@@ -332,7 +337,7 @@ public class fragment_kalender extends Fragment {
 
         Adapter = new KalenderAdapter(getActivity());
         recyclerView.setAdapter(Adapter);
-        List<Object> ItemList = new ArrayList<>();
+        ItemList = new ArrayList<>();
         String CurrentDate;
 
 
@@ -350,11 +355,78 @@ public class fragment_kalender extends Fragment {
             }
 
         }
-
-
         Adapter.setitemFeed(ItemList);
         Adapter.notifyDataSetChanged();
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+
+            return false;
+        }
+
+    @Override
+    public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        if (ItemList.get(viewHolder.getAdapterPosition ()) instanceof kalender_event) return super.getSwipeDirs(recyclerView, viewHolder);
+        return 0;
+
     }
+
+
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            int position = viewHolder.getAdapterPosition ();
+
+            if(ItemList.get(position) instanceof kalender_event){
+                boolean Datum1;
+                if(position+1<ItemList.size()){
+                Datum1 =ItemList.get(position+1) instanceof Datum;
+                }else{
+                    Datum1= true;
+                }
+
+                boolean Datum2 =ItemList.get(position-1) instanceof Datum;
+                ItemList.remove(position);
+                Adapter.notifyItemRemoved(position);
+
+                if(Datum1 && Datum2){
+                    ItemList.remove(position-1);
+                    Adapter.notifyItemRemoved(position-1);
+
+                }
+
+                SharedPreferences preferences = (getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
+
+
+                        Gson gson = new Gson();
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        List<kalender_event> Temp =new ArrayList<>();
+
+                        for(int i = 0; i<ItemList.size(); i++){
+                            if(ItemList.get(i) instanceof kalender_event){
+                                Temp.add((kalender_event)ItemList.get(i));
+                            }
+                        }
+                        editor.putString("Kalender", gson.toJson(Temp));
+                        editor.apply();
+
+            }
+        }
+        };
+
+
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+    itemTouchHelper.attachToRecyclerView(recyclerView);
+
+    }
+
+
+
 
 }
 

@@ -7,13 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static int TYPE_EREIGNIS=1,TYPE_Datum=2;
     private List<Object> itemFeed = new ArrayList();
     private Context context;
@@ -33,7 +32,7 @@ public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         switch (viewType) {
             case TYPE_EREIGNIS:
-                layout = R.layout.ereignis_list_row;
+                layout = R.layout.kalender_item;
                 View eventView = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
                 viewHolder = new eventViewholder(eventView);
                 break;
@@ -89,11 +88,7 @@ public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class eventViewholder extends RecyclerView.ViewHolder {
 
         private TextView fach;
-        private TextView kurs;
-        private TextView stunde;
         private TextView grund;
-        private TextView lehrer;
-        private ImageView zeichen;
         private ConstraintLayout frame;
 
 
@@ -104,11 +99,7 @@ public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
             fach =  itemView.findViewById(R.id.Stunde_Fach);
-            kurs = itemView.findViewById(R.id.Kurs);
-            stunde = itemView.findViewById(R.id.Stunde);
             grund = itemView.findViewById(R.id.Grund);
-            lehrer = itemView.findViewById(R.id.FachTextView);
-            zeichen = itemView.findViewById(R.id.Zeichen);
             frame= itemView.findViewById(R.id.frame);
 
         }
@@ -121,13 +112,9 @@ public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final String  Description = event.getDescription();
 
 
-            fach.setText(Fach + ": " + Type);
-            kurs.setText("");
-            stunde.setText("");
+            fach.setText(Type + ": " + Fach);
             grund.setText(Description);
-            lehrer.setText("");
 
-            //zeichen.setImageResource();
 
         }
 
@@ -148,5 +135,8 @@ public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
     }
+
+
+
 
 }
