@@ -81,9 +81,7 @@ public class VertretungsPlanMethoden {
         if (!input.equals("FAIL") && !input.equals("Kein Update")) {
 
             //Teilt den input in die verschiedenen Zeilen auf
-            //String[] in = input.split("\n");
-            //Für den Fake:
-            String[] in = FakeData().split("\n");
+            String[] in = input.split("\n");
             if(in.length<2)
                 throw new Exception();
             //Initialisieren von weiteren Variablen
@@ -324,34 +322,6 @@ public class VertretungsPlanMethoden {
             System.out.println("Fuck");
             return false;
         }
-    }
-
-    public static String FakeData(){
-        Random r = new Random();
-        String ret = "Stand: 23.11.2018"+ Calendar.getInstance().getTime();
-        String[] Lehrer = {"ALTV", "BEL", "RENZ", "QUA", "KOE", "BROE", "NEU", "HFM", "BEYB"};
-        String[] Stunden = {"1-2", "3-4", "5-6", "8-9"};
-        String[][] Facher = replacements;
-        String[] Wochentage = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
-        String[] Klassen = {"05a","06a","07a","08a","09a","05b","06b","07b","08b","09b","05c","06c","07c","08c","09c","EF","Q1", "Q2"};
-        String[] Tag = {"23.11.2018","26.11.2018","27.11.2018","28.11.2018","29.11.2018","30.11.2018","3.12.2018","4.11.2018","5.11.2018",};
-
-        for(int i = 0; i<=r.nextInt()%30; i++){
-            ret+="\n";
-            ret+=Klassen[r.nextInt(Klassen.length)]+"\n";
-            ret+=Lehrer[r.nextInt(Lehrer.length)]+"\n";
-            ret+=Lehrer[r.nextInt(Lehrer.length)]+"\n";
-            ret+=Facher[r.nextInt(Facher.length)][0]+"\n";
-            ret+="R"+r.nextInt(3)+"0"+(r.nextInt(9-1)+1)+"\n";
-            ret+=Facher[r.nextInt(Facher.length)][0]+"\n";
-            ret+=r.nextInt(2)+"\n\n";
-            ret+=Stunden[r.nextInt(Stunden.length)]+"\n\n";
-            ret+=Wochentage[r.nextInt(Wochentage.length)]+"\n";
-            ret+=Tag[r.nextInt(Tag.length)]+"\n";
-        }
-        return ret;
-
-
     }
 
 }
