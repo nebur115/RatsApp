@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 
 /**
@@ -110,6 +111,7 @@ public class VertretungsPlanMethoden {
      * Leitet den gesamten Download der VertretungsPlanDaten
      */
     public static void downloadDaten(SharedPreferences share, boolean einsparen) {
+
 
         //Variablen werden Deklariert und zum Teil initialisiert
         String request = "https://rats-ms.de/services/stupla_s/output.php";
@@ -319,4 +321,5 @@ public class VertretungsPlanMethoden {
             return false;
         }
     }
+
 }
