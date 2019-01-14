@@ -590,6 +590,46 @@ public class create_stundenplan_stunden_obtionen extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
+                boolean bSchule =eSchule.getText().toString().equals("");
+                boolean bLehrer = eLehrer.getText().toString().equals("");
+                boolean bRaum = eRaum.getText().toString().equals("");
+                boolean bKursnummer = eKursnummer.getText().toString().equals("");
+                boolean bUnterichtsbegin = eUnterichtbegin.getText().toString().equals("");
+
+                if(bSchule && bLehrer && bRaum && bKursnummer && bUnterichtsbegin){
+
+                    for(int i=0; i<MemoryStundenListe.size(); i++){
+                    if(Fach.getText().toString().equals(MemoryStundenListe.get(i).getFach()) && !(MemoryStundenListe.get(i).getFach().toString().equals(""))){
+
+
+                        eKursnummer.setText(Integer.toString(MemoryStundenListe.get(i).getKursnummer()));
+                        eUnterichtbegin.setText(Integer.toString(MemoryStundenListe.get(i).getStartJahr()));
+                        if(MemoryStundenListe.get(i).isSchriftlich()){
+                            MündlichSchriftlichSpinner.setSelection(1);
+                        }
+
+                        eLehrer.setText(MemoryStundenListe.get(i).getLehrer());
+
+
+
+                        KursartenSpinner.setSelection(((ArrayAdapter<String>)KursartenSpinner.getAdapter()).getPosition(MemoryStundenListe.get(i).getKursart()));
+
+
+
+                        if(!(MemoryStundenListe.get(i).getRaum().toString().equals(""))){
+                        if((MemoryStundenListe.get(i).getRaum().toString().charAt(0)) == 'R'){
+                            eRaum.setText(MemoryStundenListe.get(i).getRaum().replace("R", ""));
+                            sRaumSchule.setSelection(0);
+                        }else{
+                            eSchule.setText(MemoryStundenListe.get(i).getRaum());
+                            sRaumSchule.setSelection(1);
+                        }
+                    }
+                    }
+                    }
+
+                }
+
                 if (Fach.getText().toString().equals("Französisch") || Fach.getText().toString().equals("Spanisch") || Fach.getText().toString().equals("Italiensich") || Fach.getText().toString().equals("Niederländisch") || Fach.getText().toString().equals("Latein")) {
                     cUnterichtstartEingabe.setVisibility(View.VISIBLE);
                 } else {

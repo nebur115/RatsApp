@@ -101,11 +101,40 @@ public class fragment_kalender extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (Type.getSelectedItemPosition()==2){
+                            int position = 0;
+
+
+
+
+                            String Date =ZeitraumBeginn.getText().toString();
+                            Date = Date.substring(6, Date.length());
+
+                            while(position<kalenderListe.size() && Integer.parseInt(kalenderListe.get(position).getDate().replace( ".", "")) <= Integer.parseInt(Date.replace(".", ""))){
+                                position++;
+                            }
+                            kalenderListe.add(position, new kalender_event( "Ferienbeginn" , "",Titel.getText().toString()+"\n  "+ Notiz.getText().toString(), Date.replace("\\D+", "")));
+
+
+                            position = 0;
+
+                            Date =ZeitraumEnde.getText().toString();
+                            Date = Date.substring(6, Date.length());
+
+                            while(position<kalenderListe.size() && Integer.parseInt(kalenderListe.get(position).getDate().replace(".", "")) <= Integer.parseInt(Date.replace(".", ""))){
+                                position++;
+                            }
+                            kalenderListe.add(position, new kalender_event("Ferienende","",Titel.getText().toString() +"\n  "+ Notiz.getText().toString(), Date.replace("\\D+", "")));
+
 
                         }else{
                             int position = 0;
 
-                                for (int j = 0; j<kalenderListe.size(); j++) {
+                                while(position<kalenderListe.size() && Integer.parseInt(kalenderListe.get(position).getDate().replace(".", "")) <= Integer.parseInt(Datum.getText().toString().replace(".", ""))){
+                                    position++;
+                                 }
+
+
+                               /* for (int j = 0; j<kalenderListe.size(); j++) {
                                     position = j;
                                     if(Integer.parseInt(kalenderListe.get(j).getDate().replace(".", "")) > Integer.parseInt(Datum.getText().toString().replace(".", ""))){
                                         j = kalenderListe.size();
@@ -114,12 +143,14 @@ public class fragment_kalender extends Fragment {
                                         }
                                     }
                                 }
+                                */
 
                             String EventType = Type.getSelectedItem().toString();
                             if(!(Titel.getText().toString().equals(""))){
                                 EventType = Titel.getText().toString();
                             }
                             kalenderListe.add(position, new kalender_event(EventType, Fach.getText().toString(), Notiz.getText().toString(), Datum.getText().toString().replace("\\D+", "")));
+
                         }
                         SharedPreferences preferences = (getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
 
@@ -224,9 +255,25 @@ public class fragment_kalender extends Fragment {
                     public void onClick(View view) {
                         ActiveDateTextView = Datum;
                         DateAddition = "";
-                        int day = Integer.parseInt(Datum.getText().toString().substring(0, 2));
-                        int month = Integer.parseInt(Datum.getText().toString().substring(3, 5)) - 1;
-                        int year = Integer.parseInt(Datum.getText().toString().substring(6, 10));
+                        int month;
+                        int pos = 0;
+                        int day;
+                        if((Datum.getText().toString().charAt(pos+2)) == ".".charAt(0)){
+                        day = Integer.parseInt(Datum.getText().toString().substring(pos, pos+2));
+                        pos = pos+3;
+                        }else{
+                        day = Integer.parseInt(Datum.getText().toString().substring(pos, pos+1));
+                        pos = pos+2;
+                        }
+                        if((Datum.getText().toString().charAt(pos+2)) == ".".charAt(0)){
+                        month = Integer.parseInt(Datum.getText().toString().substring(pos, pos+2)) - 1;
+                        pos = pos+3;
+                        }else{
+                        month = Integer.parseInt(Datum.getText().toString().substring(pos, pos+1)) - 1;
+                        pos = pos+2;
+                        }
+
+                        int year = Integer.parseInt(Datum.getText().toString().substring(pos, pos+4));
 
                         DatePickerDialog dialog = new DatePickerDialog(view.getContext(), mDateListener, year, month, day);
                         dialog.getDatePicker().setMinDate(cal.getTime().getTime());
@@ -246,10 +293,26 @@ public class fragment_kalender extends Fragment {
                     public void onClick(View view) {
                         ActiveDateTextView = ZeitraumBeginn;
                         DateAddition = "vom:  ";
-                        int day = Integer.parseInt(ActiveDateTextView.getText().toString().substring(6, 2 + 6));
-                        int month = Integer.parseInt(ActiveDateTextView.getText().toString().substring(3 + 6, 5 + 6)) - 1;
-                        int year = Integer.parseInt(ActiveDateTextView.getText().toString().substring(6 + 6, 10 + 6));
 
+                        int month;
+                        int pos = 6;
+                        int day;
+                        if((ActiveDateTextView.getText().toString().charAt(pos+2)) == ".".charAt(0)){
+                        day = Integer.parseInt(ActiveDateTextView.getText().toString().substring(pos, pos+2));
+                        pos = pos+3;
+                        }else{
+                        day = Integer.parseInt(ActiveDateTextView.getText().toString().substring(pos, pos+1));
+                        pos = pos+2;
+                        }
+                        if((ActiveDateTextView.getText().toString().charAt(pos+2)) == ".".charAt(0)){
+                        month = Integer.parseInt(ActiveDateTextView.getText().toString().substring(pos, pos+2)) - 1;
+                        pos = pos+3;
+                        }else{
+                        month = Integer.parseInt(ActiveDateTextView.getText().toString().substring(pos, pos+1)) - 1;
+                        pos = pos+2;
+                        }
+
+                        int year = Integer.parseInt(ActiveDateTextView.getText().toString().substring(pos, pos+4));
 
                         DatePickerDialog dialog = new DatePickerDialog(view.getContext(), mDateListener, year, month, day);
                         dialog.getDatePicker().setMinDate(cal.getTime().getTime());
@@ -269,9 +332,27 @@ public class fragment_kalender extends Fragment {
                     public void onClick(View view) {
                         ActiveDateTextView = ZeitraumEnde;
                         DateAddition = "bis:  ";
-                        int day = Integer.parseInt(ActiveDateTextView.getText().toString().substring(6, 2 + 6));
-                        int month = Integer.parseInt(ActiveDateTextView.getText().toString().substring(3 + 6, 5 + 6)) - 1;
-                        int year = Integer.parseInt(ActiveDateTextView.getText().toString().substring(6 + 6, 10 + 6));
+                        int month;
+                        int pos = 6;
+                        int day;
+                        if((ZeitraumEnde.getText().toString().charAt(pos+2)) == ".".charAt(0)){
+                        day = Integer.parseInt(ZeitraumEnde.getText().toString().substring(pos, pos+2));
+                        pos = pos+3;
+                        }else{
+                        day = Integer.parseInt(ZeitraumEnde.getText().toString().substring(pos, pos+1));
+                        pos = pos+2;
+                        }
+                        if((ZeitraumEnde.getText().toString().charAt(pos+2)) == ".".charAt(0)){
+                        month = Integer.parseInt(ZeitraumEnde.getText().toString().substring(pos, pos+2)) - 1;
+                        pos = pos+3;
+                        }else{
+                        month = Integer.parseInt(ZeitraumEnde.getText().toString().substring(pos, pos+1)) - 1;
+                        pos = pos+2;
+                        }
+                        int year = Integer.parseInt(ZeitraumEnde.getText().toString().substring(pos, pos+4));
+
+
+
 
                         DatePickerDialog dialog = new DatePickerDialog(view.getContext(), mDateListener, year, month, day);
                         dialog.getDatePicker().setMinDate(cal.getTime().getTime());

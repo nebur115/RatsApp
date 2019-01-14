@@ -42,19 +42,16 @@
 
     </PreferenceCategory>
     <PreferenceCategory
-        android:summary="Notenrechner Einstellungen"
-        android:title="Notenrechner"
-        android:key="Notenrechner"
-      >
+        android:key="Kalender"
+        android:summary="Kalender"
+        android:title="Kalender">
         <CheckBoxPreference
-            android:key="Plusminusmitrechnen"
-            android:title="+/- Mitrechnen"
-            android:summaryOff="Es wird auf ganze Noten gerundet"
-            android:summaryOn="Einzelne Notenpunkte werden mitberechnet"/>
-        <Preference
-            android:key="QPlanändern"
-            android:summary="Fächer der Q1 und Q2 bearbeiten"
-            android:title="Q Phase ändern" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:key="check_box_preference_1"
+            android:summaryOff="Zeigt keine Kalender Ereignisse im Stundenplan"
+            android:summaryOn="Zeigt Kalender Ereignisse im Stundenplan"
+            android:title="Ereignisse im Stundenplan anzeigen" />
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Sonstiges"

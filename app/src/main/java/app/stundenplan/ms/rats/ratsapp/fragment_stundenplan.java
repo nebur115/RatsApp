@@ -396,6 +396,51 @@ public class fragment_stundenplan extends Fragment  {
                 Entfaellt = false;
                 Veranstalltung = false;
 
+                //Kalender events
+
+                        String kalender_json = settings.getString("Kalender", "");
+                 List<kalender_event> kalenderListe;
+                 if (!kalender_json.equals("")) {
+
+                     Type kalender_type = new TypeToken<ArrayList<kalender_event>>() {
+            }.getType();
+                        kalenderListe = gson.fromJson(kalender_json, kalender_type);
+                        String Ferienbeginn = "";
+                        for(int j=0; j<kalenderListe.size();j++){
+                           if(kalenderListe.get(j).getDate().replace(".20", ".").equals(Datum)){
+                           if(kalenderListe.get(j).getType().equals("Freier Tag")){
+                                Entfaellt = true;
+
+                           }else if(kalenderListe.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())){
+                               if(kalenderListe.get(j).getType().equals("Hausaufgabe")){
+                                   Lehrerwechsel = true;
+                                   Lehrer = "HA";
+
+
+                           }else if(kalenderListe.get(j).getType().equals("Klausur")){
+                                   Klausur = true;
+                                   }
+                           }
+
+                           }
+                           if(kalenderListe.get(j).getType().equals("Ferienbeginn")){
+                               Ferienbeginn = kalenderListe.get(j).getDate();
+                           }
+                           if(kalenderListe.get(j).getType().equals("Ferienende") && !(Ferienbeginn.equals(""))){
+                                if(DateStringinDateInt(Datum)<=DateStringinDateInt(kalenderListe.get(j).getDate()) && DateStringinDateInt(Ferienbeginn)<=DateStringinDateInt(Datum)){
+                                    Entfaellt =  true ;
+                                }
+                           }
+
+                        }
+
+                }
+
+
+
+
+
+
                 if (settings.getBoolean("VertretungsplanInStundenplanAnzeigen", true)) {
                     try {
                         VertretungsStunde s = VertretungsPlanMethoden.kursInfo(settings, Kurs, Datum);
@@ -508,4 +553,33 @@ public class fragment_stundenplan extends Fragment  {
     }
 
 
+    public int DateStringinDateInt(String input){
+        if(!(input.equals(""))){
+        int out = 10000*Integer.parseInt(input.substring(input.length()-2, input.length()));
+        int pos = 0;
+        if((input.charAt(2) == '.')){
+           out = out + Integer.parseInt(input.substring(0, 2));
+           pos = 3;
+
+        }else{
+        out = out +  Integer.parseInt(input.substring(0, 1));
+        pos = 2;
+        }
+
+        if((input.charAt(pos+2) == '.')){
+           out = out + 100*Integer.parseInt(input.substring(pos, pos+2));
+
+
+        }else{
+        out = out +  100*Integer.parseInt(input.substring(pos, pos+1));
+
+        }
+        return out;
+
+        }
+return 0;
+
+    }
+
 }
+

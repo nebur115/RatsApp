@@ -112,8 +112,16 @@ public class KalenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final String  Description = event.getDescription();
 
 
+            if(Fach==""){
+            fach.setText(Type);
+            }else{
             fach.setText(Type + ": " + Fach);
+            }
             grund.setText(Description);
+
+            if(Description.equals("")){
+
+            }
 
 
         }

@@ -28,15 +28,14 @@ public class Settings extends PreferenceActivity {
     Preference EditStundenplan;
     Preference LoescheStundenplan;
     CheckBoxPreference AlleKurse;
-    CheckBoxPreference PlusMinusMitrechnen;
-    Preference QPlanaendern;
+
     EditTextPreference Stufe;
     Preference AllesLoeschen;
     Preference Copyright;
     Preference Datenschutz;
     PreferenceCategory Stundenplan;
     PreferenceCategory Vertretungsplan;
-    PreferenceCategory Notenrechner;
+
     PreferenceCategory Sonstiges;
     String Tab = "";
 
@@ -46,7 +45,7 @@ public class Settings extends PreferenceActivity {
 
         Stundenplan = (PreferenceCategory) findPreference("Stundenplan");
         Vertretungsplan = (PreferenceCategory) findPreference("Vertretungsplan");
-        Notenrechner = (PreferenceCategory) findPreference("Notenrechner");
+
         Sonstiges = (PreferenceCategory) findPreference("Sonstiges");
 
         settings = getSharedPreferences("RatsVertretungsPlanApp", 0);
@@ -67,8 +66,7 @@ public class Settings extends PreferenceActivity {
         EditStundenplan = findPreference("EditStundenplan");
         LoescheStundenplan = findPreference("LöscheStundenplan");
         AlleKurse = (CheckBoxPreference) findPreference("AlleKurse");
-        PlusMinusMitrechnen = (CheckBoxPreference) findPreference("Plusminusmitrechnen");
-        QPlanaendern = findPreference("QPlanändern");
+
         Stufe = (EditTextPreference) findPreference("Stufe");
         AllesLoeschen = findPreference("Alles löschen");
         Copyright = findPreference("Copyright");
@@ -79,13 +77,12 @@ public class Settings extends PreferenceActivity {
         Boolean helpboolean = settings.getBoolean("VertretungsplanInStundenplanAnzeigen", settings.contains("Stundenliste"));
         StundenVertretungsplanAnzeigen.setChecked(helpboolean);
         AlleKurse.setChecked(settings.getBoolean("AlleKurseAnzeigen", settings.contains("Kursliste")));
-        PlusMinusMitrechnen.setChecked((settings.getBoolean("+/-Mitrechen", settings.getString("Stufe", "").equals("Q1") ||settings.getString("Stufe", "").equals("Q2") )));
-        Stufe.setText(settings.getString("Stufe", ""));
+           Stufe.setText(settings.getString("Stufe", ""));
 
 
         CreateStundenplan.setIntent(new Intent(Settings.this, create_stundenplan_obtionen.class));
         EditStundenplan.setIntent(new Intent(Settings.this, create_stundenplan.class).putExtra("Woche", 1).putExtra("OutofSettingsSettings", true));
-        QPlanaendern.setIntent(new Intent(Settings.this, QPhase_create.class).putExtra("OutofSettingsSettings", true));
+
 
 
         if(settings.contains("Kursliste")){
@@ -98,9 +95,6 @@ public class Settings extends PreferenceActivity {
             LoescheStundenplan.setEnabled(false);
         }
 
-        if(!(settings.getString("Stufe", "").equals("Q1") ||settings.getString("Stufe", "").equals("Q2"))){
-            Notenrechner.removePreference(QPlanaendern);
-        }
 
 
 
@@ -244,25 +238,7 @@ public class Settings extends PreferenceActivity {
             }
         });
 
-        PlusMinusMitrechnen.setOnPreferenceClickListener(new CheckBoxPreference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
 
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    v.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else {
-
-                    v.vibrate(50);
-                }
-
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean("+/-Mitrechen", PlusMinusMitrechnen.isChecked());
-                editor.apply();
-
-                return false;
-            }
-        });
 
         AllesLoeschen.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
