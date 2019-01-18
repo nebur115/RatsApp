@@ -1,6 +1,5 @@
 package app.stundenplan.ms.rats.ratsapp;
 
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,6 +10,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +28,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class fragment_kalender extends Fragment {
     public String[] Fächer = {"Bio", "Bio Chemie", "Chemie", "Deutsch", "Englisch", "Erdkunde", "ev. Religion", "Französisch", "Geschichte", "Italienisch", "Informatik", "Informatische Grundbildung", "kath. Religion", "Kunst", "Latein", "Literatur", "Mathematik", "MathePhysikInformatik", "Musik", "Niederländisch", "Pädagogik", "Physik", "Politik", "Philosophie", "Praktische Philosophie", "Spanisch", "Sport", "Sozialwissenschaften"};
@@ -103,13 +108,10 @@ public class fragment_kalender extends Fragment {
                         if (Type.getSelectedItemPosition()==2){
                             int position = 0;
 
-
-
-
                             String Date =ZeitraumBeginn.getText().toString();
                             Date = Date.substring(6, Date.length());
 
-                            while(position<kalenderListe.size() && Integer.parseInt(kalenderListe.get(position).getDate().replace( ".", "")) <= Integer.parseInt(Date.replace(".", ""))){
+                            while(position<kalenderListe.size() && DatumalsInt(kalenderListe.get(position).getDate()) <= DatumalsInt(Date)){
                                 position++;
                             }
                             kalenderListe.add(position, new kalender_event( "Ferienbeginn" , "",Titel.getText().toString()+"\n  "+ Notiz.getText().toString(), Date.replace("\\D+", "")));
@@ -120,19 +122,20 @@ public class fragment_kalender extends Fragment {
                             Date =ZeitraumEnde.getText().toString();
                             Date = Date.substring(6, Date.length());
 
-                            while(position<kalenderListe.size() && Integer.parseInt(kalenderListe.get(position).getDate().replace(".", "")) <= Integer.parseInt(Date.replace(".", ""))){
+                            while(position<kalenderListe.size() && DatumalsInt(kalenderListe.get(position).getDate()) <= DatumalsInt(Date)){
                                 position++;
                             }
                             kalenderListe.add(position, new kalender_event("Ferienende","",Titel.getText().toString() +"\n  "+ Notiz.getText().toString(), Date.replace("\\D+", "")));
 
 
                         }else{
-                            int position = 0;
+                                int position = 0;
 
-                                while(position<kalenderListe.size() && Integer.parseInt(kalenderListe.get(position).getDate().replace(".", "")) <= Integer.parseInt(Datum.getText().toString().replace(".", ""))){
+
+
+                                while(position<kalenderListe.size() && DatumalsInt(kalenderListe.get(position).getDate()) <= DatumalsInt(Datum.getText().toString())){
                                     position++;
                                  }
-
 
                                /* for (int j = 0; j<kalenderListe.size(); j++) {
                                     position = j;
@@ -370,6 +373,63 @@ public class fragment_kalender extends Fragment {
                 Fach.setAdapter(adapter);
                 Fach.setThreshold(1);
 
+                Fach.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        SharedPreferences preferences = (getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0));
+                        List<Memory_Stunde> StundenListeA = new ArrayList<>();
+                        List<Memory_Stunde> StundenListeB = new ArrayList<>();
+                        String json;
+                        Gson gson = new Gson();
+                        Calendar calendar = Calendar.getInstance();
+                        int WeekofYear = calendar.get(Calendar.WEEK_OF_YEAR);
+                        int day = calendar.get(Calendar.DAY_OF_WEEK) -2;
+                        Type type = new TypeToken<ArrayList<Memory_Stunde>>() {
+                        }.getType();
+
+                        if (!preferences.getBoolean("zweiWöchentlich", false)) {
+                            if(WeekofYear % 2 == 0){
+                            json = preferences.getString("Stundenliste", null);
+                            StundenListeA = gson.fromJson(json, type);
+                        } else {
+                            json = preferences.getString("WocheBStundenListe", null);
+                            StundenListeB = gson.fromJson(json, type);
+
+                        }}else{
+                            json = preferences.getString("Stundenliste", null);
+                            StundenListeA = gson.fromJson(json, type);
+                            StundenListeB = gson.fromJson(json, type);
+                        }
+
+
+
+                        int DtL = DaystoLesson(Fach.getText().toString(), StundenListeA, day);
+
+                        if(DtL == -1 && !(DaystoLesson(Fach.getText().toString(), StundenListeA, -1)==-1)){
+                            DtL = DaystoLesson(Fach.getText().toString(), StundenListeA, -1) + 6-day;
+
+                        }
+
+                        if(!(DtL ==-1)) {
+                            calendar.add(Calendar.DATE, DtL);
+                            Datum.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + Integer.toString(calendar.get(Calendar.MONTH) + 1) + "." + Integer.toString(calendar.get(Calendar.YEAR)));
+                        }
+
+
+                    }
+
+                });
+
+
+
                 mDateListener = new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -419,10 +479,19 @@ public class fragment_kalender extends Fragment {
         Adapter = new KalenderAdapter(getActivity());
         recyclerView.setAdapter(Adapter);
         ItemList = new ArrayList<>();
-        String CurrentDate;
+
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String CurrentDate = dateFormat.format(Calendar.getInstance().getTime());
+
 
 
         if (kalenderListe.size() > 0) {
+            while(DatumalsInt(kalenderListe.get(0).getDate())< DatumalsInt(CurrentDate)){
+                kalenderListe.remove(0);
+            }
+
+
+
             CurrentDate = kalenderListe.get(0).getDate();
             ItemList.add(new Datum(CurrentDate));
             for (int i = 0; kalenderListe.size() > i; i++) {
@@ -506,9 +575,42 @@ public class fragment_kalender extends Fragment {
 
     }
 
+    private int DatumalsInt(String input){
+        int month;
+        int pos = 0;
+        int day;
+        if((input.charAt(pos+2)) == ".".charAt(0)){
+            day = Integer.parseInt(input.substring(pos, pos+2));
+            pos = pos+3;
+        }else{
+            day = Integer.parseInt(input.substring(pos, pos+1));
+            pos = pos+2;
+        }
+        if((input.charAt(pos+2)) == ".".charAt(0)){
+            month = Integer.parseInt(input.substring(pos, pos+2)) - 1;
+            pos = pos+3;
+        }else{
+            month = Integer.parseInt(input.substring(pos, pos+1)) - 1;
+            pos = pos+2;
+        }
+
+        int year = Integer.parseInt(input.substring(pos, pos+4));
+
+        return day+month*100+year*10000;
+    }
 
 
+    public int DaystoLesson(String Fach, List<Memory_Stunde> MemoryStundenListe, int Day){
+        int r = -1;
+        for (int i = 0; i<MemoryStundenListe.size(); i++){
+            if(MemoryStundenListe.get(i).getFach().equals(Fach) && !MemoryStundenListe.get(i).isFreistunde() && (i % 5)>Day){
+                r = (i % 5)-Day;
+            }
+        }
 
+
+        return r;
+    }
 }
 
 

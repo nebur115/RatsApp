@@ -27,8 +27,10 @@ public class Settings extends PreferenceActivity {
     Preference WochenTausch;
     Preference EditStundenplan;
     Preference LoescheStundenplan;
+
     CheckBoxPreference AlleKurse;
 
+    CheckBoxPreference kalenderImStundenplan;
     EditTextPreference Stufe;
     Preference AllesLoeschen;
     Preference Copyright;
@@ -67,6 +69,10 @@ public class Settings extends PreferenceActivity {
         LoescheStundenplan = findPreference("LöscheStundenplan");
         AlleKurse = (CheckBoxPreference) findPreference("AlleKurse");
 
+        kalenderImStundenplan = (CheckBoxPreference) findPreference("Kalender_Stundenplan");
+
+
+
         Stufe = (EditTextPreference) findPreference("Stufe");
         AllesLoeschen = findPreference("Alles löschen");
         Copyright = findPreference("Copyright");
@@ -77,9 +83,10 @@ public class Settings extends PreferenceActivity {
         Boolean helpboolean = settings.getBoolean("VertretungsplanInStundenplanAnzeigen", settings.contains("Stundenliste"));
         StundenVertretungsplanAnzeigen.setChecked(helpboolean);
         AlleKurse.setChecked(settings.getBoolean("AlleKurseAnzeigen", settings.contains("Kursliste")));
-           Stufe.setText(settings.getString("Stufe", ""));
+        Stufe.setText(settings.getString("Stufe", ""));
 
 
+        kalenderImStundenplan.setChecked(settings.getBoolean("kalenderImStundenplan", settings.contains("Stundenliste")));
         CreateStundenplan.setIntent(new Intent(Settings.this, create_stundenplan_obtionen.class));
         EditStundenplan.setIntent(new Intent(Settings.this, create_stundenplan.class).putExtra("Woche", 1).putExtra("OutofSettingsSettings", true));
 
@@ -89,6 +96,7 @@ public class Settings extends PreferenceActivity {
             Stundenplan.removePreference(CreateStundenplan);
         }else{
             AlleKurse.setEnabled(false);
+            kalenderImStundenplan.setEnabled(false);
             StundenVertretungsplanAnzeigen.setEnabled(false);
             WochenTausch.setEnabled(false);
             EditStundenplan.setEnabled(false);
@@ -237,6 +245,35 @@ public class Settings extends PreferenceActivity {
                 return false;
             }
         });
+
+        kalenderImStundenplan.setOnPreferenceClickListener(new CheckBoxPreference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    v.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+
+                    v.vibrate(50);
+                }
+
+                if(!settings.contains("Stundenliste")){
+                    kalenderImStundenplan.setChecked(true);
+                }else{
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean("kalenderImStundenplan", kalenderImStundenplan.isChecked());
+                    editor.apply();
+                }
+
+                return false;
+            }
+        });
+
+
+
 
 
 

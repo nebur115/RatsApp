@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Erringerung_Tage">
+    <item>"gar nicht"</item>
+    <item>" 3 Tage vorher"</item>
+<item>" 2 Tage vorher"</item>
+<item>" 1 Tage vorher"</item>
+    </string-array>
+</resources>

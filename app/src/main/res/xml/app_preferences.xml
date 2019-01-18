@@ -48,10 +48,16 @@
         <CheckBoxPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:key="check_box_preference_1"
+            android:key="Kalender_Stundenplan"
             android:summaryOff="Zeigt keine Kalender Ereignisse im Stundenplan"
             android:summaryOn="Zeigt Kalender Ereignisse im Stundenplan"
             android:title="Ereignisse im Stundenplan anzeigen" />
+
+
+
+
+
+
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Sonstiges"
