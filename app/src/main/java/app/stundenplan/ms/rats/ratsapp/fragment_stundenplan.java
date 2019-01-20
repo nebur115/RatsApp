@@ -452,8 +452,10 @@ public class fragment_stundenplan extends Fragment  {
                                 Klausur = true;
                                 if (!Raum.equals(s.raum))
                                     Raum = s.raum;
-                                if (!Schriftlich)
-                                    Entfaellt = true;
+                                if (!Schriftlich) {
+                                    if(s.hinweis.toUpperCase().contains("EVA") && s.hinweis.toUpperCase().contains("ENTFÄLLT"))
+                                        Entfaellt = true;
+                                }
                                 break;
                             case 1:
                                 Lehrerwechsel = true;
