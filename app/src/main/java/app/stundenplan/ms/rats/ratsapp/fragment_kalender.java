@@ -116,7 +116,6 @@ public class fragment_kalender extends Fragment {
                             }
                             kalenderListe.add(position, new kalender_event( "Ferienbeginn" , "",Titel.getText().toString()+"\n  "+ Notiz.getText().toString(), Date.replace("\\D+", "")));
 
-
                             position = 0;
 
                             Date =ZeitraumEnde.getText().toString();
@@ -166,7 +165,9 @@ public class fragment_kalender extends Fragment {
                         editor.putString("Kalender", gson.toJson(kalenderListe));
                         editor.apply();
                         dialogInterface.dismiss();
-                        init();
+                        //Hier refresh einfügen
+
+
 
 
                     }

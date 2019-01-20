@@ -18,11 +18,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.HashSet;
-
 public class vertretungsplan extends AppCompatActivity {
 
-    public boolean reloadStundenplan;
+
     SharedPreferences settings;
     static ProgressBar progressBar2;
     public String AktiveTap;
@@ -36,6 +34,7 @@ public class vertretungsplan extends AppCompatActivity {
     public static int Height;
     static boolean stundenplan_active;
     fragment_website websitefragment;
+    boolean created = false;
 
 
 
@@ -83,12 +82,8 @@ public class vertretungsplan extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     SharedPreferences.Editor editor = prefs.edit();
-
                     editor.putBoolean("datenschutzerklärung_zustimmung", true);
-
                     editor.apply();
-
-
                     dialogInterface.dismiss();
                 }
             });
@@ -98,10 +93,8 @@ public class vertretungsplan extends AppCompatActivity {
         SimpleFrameLayout = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);
 
-        Stufe = settings.getString("Stufe", "");
-
         final TabLayout.Tab StundenplanTab = tablayout.newTab();
-        StundenplanTab.setIcon(R.drawable.stundenplanacctive);
+        StundenplanTab.setIcon(R.drawable.stundenplaninacctive);
         tablayout.addTab(StundenplanTab);
 
         final TabLayout.Tab VertretungsplanTab = tablayout.newTab();
@@ -112,11 +105,9 @@ public class vertretungsplan extends AppCompatActivity {
         NotenTab.setIcon(R.drawable.noteninactive);
         tablayout.addTab(NotenTab);
 
-
         final TabLayout.Tab WebsiteTab = tablayout.newTab();
         WebsiteTab.setIcon(R.drawable.webiteinactive);
         tablayout.addTab(WebsiteTab);
-
 
         final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
         websitefragment = new fragment_website();
@@ -132,18 +123,67 @@ public class vertretungsplan extends AppCompatActivity {
         }
 
 
+        Title = findViewById(R.id.title);
+
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+
         ft.add(R.id.simpleframelayout, stundenplanfragment, "stundenplan");
+        ft.hide(stundenplanfragment);
+
+        ft.add(R.id.simpleframelayout, vertretungsplanfragment, "vertretungsplan");
+        ft.hide(vertretungsplanfragment);
+
+        ft.add(R.id.simpleframelayout, notenfragment);
+        ft.hide(notenfragment);
+
+        ft.add(R.id.simpleframelayout, websitefragment);
+        ft.hide(websitefragment);
+
+
+
+        if (settings.contains("Stundenliste")) {
+            ft.show(stundenplanfragment);
+            AktiveTap = "Stundenplan";
+            Title.setText("Stundenplan");
+            StundenplanTab.setIcon(R.drawable.stundenplanacctive);
+        }else{
+            ft.show(vertretungsplanfragment);
+            AktiveTap = "Vertretungsplan";
+            AktiveTap = "Vertretungsplan";
+            StundenplanTab.setIcon(R.drawable.vertretungsplanactive);
+        }
+
+        if (intent.getExtras().containsKey("Tab")) {
+            switch (intent.getStringExtra("Tab")) {
+                case "Stundenplan":
+                    ft.show(stundenplanfragment);
+                    Title.setText("Stundenplan");
+                    AktiveTap = "Stundenplan";
+                    break;
+                case "Vertretungsplan":
+                    ft.show(vertretungsplanfragment);
+                    Title.setText("Vertretungsplan");
+                    AktiveTap = "Vertretungsplan";
+                    break;
+                case "Noten/Arbeiten":
+                    ft.show(notenfragment);
+                    Title.setText("Kalender");
+                    AktiveTap = "Noten/Arbeiten";
+                    break;
+                case "Homepage":
+                    ft.show(websitefragment);
+                    Title = findViewById(R.id.title);
+                    Title.setText("Homepage");
+                    AktiveTap = "Homepage";
+                    break;
+            }
+        }
+
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
-
-
-        Title = findViewById(R.id.title);
-        Title.setText("Stundenplan");
-
-        AktiveTap = "Stundenplan";
 
         ImageButton settingsbutton = findViewById(R.id.imageButton2);
 
@@ -167,8 +207,6 @@ public class vertretungsplan extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-                ManuellSave();
 
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -202,46 +240,25 @@ public class vertretungsplan extends AppCompatActivity {
                         break;
 
                     case 1:
-                        if (vertretungsplan_created) {
-                            ft.show(vertretungsplanfragment);
-                        } else {
-                            ft.add(R.id.simpleframelayout, vertretungsplanfragment, "vertretungsplan");
-                            vertretungsplan_created = true;
-                        }
-
+                        ft.show(vertretungsplanfragment);
                         AktiveTap = "Vertretungsplan";
                         Title.setText("Vertretungsplan");
                         break;
 
                     case 2:
-
-                        if (noten_created) {
-                            ft.show(notenfragment);
-                        } else {
-                            ft.add(R.id.simpleframelayout, notenfragment);
-                            noten_created = true;
-                        }
-
+                        ft.show(notenfragment);
                         AktiveTap = "Noten/Arbeiten";
                         Title.setText("Kalender");
                         break;
 
                     case 3:
-
-                        if (website_created) {
-                            ft.show(websitefragment);
-                        } else {
-                            ft.add(R.id.simpleframelayout, websitefragment);
-                            website_created = true;
-                        }
+                        ft.show(websitefragment);
                         AktiveTap = "Homepage";
                         Title.setText("Homepage");
                         break;
 
                     default:
-                        ft.show(stundenplanfragment);
-                        Title.setText("Stundenplan");
-                        AktiveTap = "Stundenplan";
+
                         break;
                 }
 
@@ -263,11 +280,6 @@ public class vertretungsplan extends AppCompatActivity {
 
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
-
-                if(tab.getPosition()==0 && reloadStundenplan){
-                    ((fragment_parent_stundenplan) stundenplanfragment).reload();
-                }
-
             }
 
             @Override
@@ -315,6 +327,34 @@ public class vertretungsplan extends AppCompatActivity {
 
     }
 
+    public void refreshStundenplan(){
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if(!AktiveTap.equals( "Stundenplan")){
+            stundenplanfragment = new fragment_stundenplan();
+
+
+
+            ft.remove(fm.findFragmentByTag("stundenplan"));
+
+            ft.add(R.id.simpleframelayout, stundenplanfragment, "stundenplan");
+
+            ft.show(fm.findFragmentByTag("AktiveTap"));
+        }else{
+            stundenplanfragment = new fragment_stundenplan();
+
+            ft.remove(fm.findFragmentByTag("stundenplan"));
+
+            ft.add(R.id.simpleframelayout, stundenplanfragment, "stundenplan");
+            ft.show(stundenplanfragment);
+        }
+
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+        }
+
     @Override
     public void onBackPressed() {
         if (AktiveTap.equals("Homepage")) {
@@ -322,6 +362,214 @@ public class vertretungsplan extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(created){
+
+            SimpleFrameLayout = findViewById(R.id.simpleframelayout);
+            tablayout = findViewById(R.id.tablayout);
+
+            tablayout.removeAllTabs();
+            tablayout.clearOnTabSelectedListeners();
+            SimpleFrameLayout.removeAllViews();
+
+
+            final TabLayout.Tab StundenplanTab = tablayout.newTab();
+            StundenplanTab.setIcon(R.drawable.stundenplaninactive);
+            tablayout.addTab(StundenplanTab);
+
+            final TabLayout.Tab VertretungsplanTab = tablayout.newTab();
+            VertretungsplanTab.setIcon(R.drawable.vertretungsplaninactive);
+            tablayout.addTab(VertretungsplanTab);
+
+            final TabLayout.Tab NotenTab = tablayout.newTab();
+            NotenTab.setIcon(R.drawable.noteninactive);
+            tablayout.addTab(NotenTab);
+
+            final TabLayout.Tab WebsiteTab = tablayout.newTab();
+            WebsiteTab.setIcon(R.drawable.webiteinactive);
+            tablayout.addTab(WebsiteTab);
+
+            final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
+            websitefragment = new fragment_website();
+            final Fragment notenfragment = new fragment_kalender();
+
+
+            SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp", 0);
+            if (settings3.contains("Stundenliste")) {
+                childstundenplanfragment = new fragment_parent_stundenplan();
+                stundenplanfragment = childstundenplanfragment;
+
+            } else {
+                stundenplanfragment = new fragment_no_existing_stundenplan();
+            }
+
+
+            Title = findViewById(R.id.title);
+
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            ft.add(R.id.simpleframelayout, stundenplanfragment, "stundenplan");
+            ft.hide(stundenplanfragment);
+
+            ft.add(R.id.simpleframelayout, vertretungsplanfragment, "vertretungsplan");
+            ft.hide(vertretungsplanfragment);
+
+            ft.add(R.id.simpleframelayout, notenfragment);
+            ft.hide(notenfragment);
+
+            ft.add(R.id.simpleframelayout, websitefragment);
+            ft.hide(websitefragment);
+
+
+            switch (AktiveTap) {
+                    case "Stundenplan":
+                        ft.show(stundenplanfragment);
+                        Title.setText("Stundenplan");
+                        tablayout.getTabAt(0).select();
+                        StundenplanTab.setIcon(R.drawable.stundenplanacctive);
+                        break;
+                    case "Vertretungsplan":
+                        ft.show(vertretungsplanfragment);
+                        Title.setText("Vertretungsplan");
+                        tablayout.getTabAt(1).select();
+                        VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
+                        break;
+                    case "Noten/Arbeiten":
+                        ft.show(notenfragment);
+                        Title.setText("Kalender");
+                        tablayout.getTabAt(2).select();
+                        NotenTab.setIcon(R.drawable.notenactive);
+                        break;
+                    case "Homepage":
+                        ft.show(websitefragment);
+                        Title = findViewById(R.id.title);
+                        Title.setText("Homepage");
+                        tablayout.getTabAt(3).select();
+                        WebsiteTab.setIcon(R.drawable.webiteactive);
+                        break;
+                }
+
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.setCustomAnimations(0,0);
+            ft.commit();
+
+            tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+                public boolean noten_created = false;
+                public boolean website_created = false;
+                public boolean vertretungsplan_created = false;
+
+
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+
+                    switch (AktiveTap) {
+                        case "Stundenplan":
+                            StundenplanTab.setIcon(R.drawable.stundenplaninactive);
+                            ft.hide(stundenplanfragment);
+                            stundenplan_active = false;
+                            break;
+                        case "Vertretungsplan":
+                            VertretungsplanTab.setIcon(R.drawable.vertretungsplaninactive);
+                            ft.hide(vertretungsplanfragment);
+                            break;
+                        case "Noten/Arbeiten":
+                            NotenTab.setIcon(R.drawable.noteninactive);
+                            ft.hide(notenfragment);
+                            break;
+                        case "Homepage":
+                            WebsiteTab.setIcon(R.drawable.webiteinactive);
+                            ft.hide(websitefragment);
+                            break;
+                    }
+
+                    switch (tab.getPosition()) {
+                        case 0:
+                            ft.show(stundenplanfragment);
+                            AktiveTap = "Stundenplan";
+                            Title.setText("Stundenplan");
+                            stundenplan_active = true;
+                            break;
+
+                        case 1:
+                            ft.show(vertretungsplanfragment);
+                            AktiveTap = "Vertretungsplan";
+                            Title.setText("Vertretungsplan");
+                            break;
+
+                        case 2:
+                            ft.show(notenfragment);
+                            AktiveTap = "Noten/Arbeiten";
+                            Title.setText("Kalender");
+                            break;
+
+                        case 3:
+                            ft.show(websitefragment);
+                            AktiveTap = "Homepage";
+                            Title.setText("Homepage");
+                            break;
+
+                        default:
+
+                            break;
+                    }
+
+
+                    if (AktiveTap == "Stundenplan") {
+                        StundenplanTab.setIcon(R.drawable.stundenplanacctive);
+                        if (!(childstundenplanfragment == null)) {
+                            //childstundenplanfragment.timereload();
+                            while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {
+                            }
+                        }
+                    } else if (AktiveTap == "Vertretungsplan") {
+                        VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
+                    } else if (AktiveTap == "Noten/Arbeiten") {
+                        NotenTab.setIcon(R.drawable.notenactive);
+                    } else if (AktiveTap == "Homepage") {
+                        WebsiteTab.setIcon(R.drawable.webiteactive);
+                    }
+
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+
+            });
+
+
+            //Alternative Option
+            /*
+            Intent i = new Intent(vertretungsplan.this, vertretungsplan.class);
+            i.putExtra("Tab", AktiveTap);
+            i.putExtra("Stufe", "EXISTINGSTUNDE");
+            startActivity(i);
+            */
+
+
+        }else{
+            created = true;
+        }
+
+    }
 
     public static int getheight() {
         return Height;
@@ -334,28 +582,10 @@ public class vertretungsplan extends AppCompatActivity {
         }
     }
 
-    public void ManuellSave() {
-        SharedPreferences prefs = getSharedPreferences("RatsVertretungsPlanApp", 0);
-        HashSet<String> nichtmeineKurse = new HashSet<String>();
-        HashSet<String> meineKurse = new HashSet<String>();
-        meineKurse = (HashSet<String>) prefs.getStringSet("ManuellmeineKurse", null);
-        nichtmeineKurse = (HashSet<String>) prefs.getStringSet("ManuellNichtMeineKurse", null);
 
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet("ManuellmeineKurse", meineKurse);
-        editor.putStringSet("ManuellNichtMeineKurse", nichtmeineKurse);
-        editor.apply();
-    }
 
-    public void reloadStundenplan() {
-        if(settings.contains("Stundenliste")) {
-            if (AktiveTap.equals("Stundenplan")) {
-                ((fragment_parent_stundenplan) stundenplanfragment).reload();
-            } else {
-                reloadStundenplan = true;
-            }
-        }
-    }
+
+
 }
 
 
