@@ -67,8 +67,6 @@ static final int NUM_ITEMS = 26;
 
     public void reload(){
         frameAdapter.notifyDataSetChanged();
-        fragment_stundenplan currentitem = (fragment_stundenplan) frameAdapter.getItem(viewPager.getCurrentItem());
-        currentitem.reload();
     }
 
 }

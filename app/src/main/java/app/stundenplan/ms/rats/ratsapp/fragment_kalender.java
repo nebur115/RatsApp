@@ -161,13 +161,15 @@ public class fragment_kalender extends Fragment {
                         Type type = new TypeToken<ArrayList<kalender_event>>() {
                         }.getType();
 
+
+
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("Kalender", gson.toJson(kalenderListe));
                         editor.apply();
                         dialogInterface.dismiss();
-                        //Hier refresh einfügen
 
 
+                        init();
 
 
                     }
@@ -396,32 +398,35 @@ public class fragment_kalender extends Fragment {
                         Type type = new TypeToken<ArrayList<Memory_Stunde>>() {
                         }.getType();
 
-                        if (!preferences.getBoolean("zweiWöchentlich", false)) {
-                            if(WeekofYear % 2 == 0){
-                            json = preferences.getString("Stundenliste", null);
-                            StundenListeA = gson.fromJson(json, type);
-                        } else {
-                            json = preferences.getString("WocheBStundenListe", null);
-                            StundenListeB = gson.fromJson(json, type);
+                        if(preferences.contains("Stundenliste")) {
 
-                        }}else{
-                            json = preferences.getString("Stundenliste", null);
-                            StundenListeA = gson.fromJson(json, type);
-                            StundenListeB = gson.fromJson(json, type);
-                        }
+                            if (!preferences.getBoolean("zweiWöchentlich", false)) {
+                                if (WeekofYear % 2 == 0) {
+                                    json = preferences.getString("Stundenliste", null);
+                                    StundenListeA = gson.fromJson(json, type);
+                                } else {
+                                    json = preferences.getString("WocheBStundenListe", null);
+                                    StundenListeB = gson.fromJson(json, type);
+
+                                }
+                            } else {
+                                json = preferences.getString("Stundenliste", null);
+                                StundenListeA = gson.fromJson(json, type);
+                                StundenListeB = gson.fromJson(json, type);
+                            }
 
 
+                            int DtL = DaystoLesson(Fach.getText().toString(), StundenListeA, day);
 
-                        int DtL = DaystoLesson(Fach.getText().toString(), StundenListeA, day);
+                            if (DtL == -1 && !(DaystoLesson(Fach.getText().toString(), StundenListeA, -1) == -1)) {
+                                DtL = DaystoLesson(Fach.getText().toString(), StundenListeA, -1) + 6 - day;
 
-                        if(DtL == -1 && !(DaystoLesson(Fach.getText().toString(), StundenListeA, -1)==-1)){
-                            DtL = DaystoLesson(Fach.getText().toString(), StundenListeA, -1) + 6-day;
+                            }
 
-                        }
-
-                        if(!(DtL ==-1)) {
-                            calendar.add(Calendar.DATE, DtL);
-                            Datum.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + Integer.toString(calendar.get(Calendar.MONTH) + 1) + "." + Integer.toString(calendar.get(Calendar.YEAR)));
+                            if (!(DtL == -1)) {
+                                calendar.add(Calendar.DATE, DtL);
+                                Datum.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + "." + Integer.toString(calendar.get(Calendar.MONTH) + 1) + "." + Integer.toString(calendar.get(Calendar.YEAR)));
+                            }
                         }
 
 
