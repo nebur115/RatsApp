@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -377,6 +378,28 @@ public class vertretungsplan extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(created){
+
+            try {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), true);
+                        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
+                        }
+                        while(VertretungsPlanMethoden.stundenplanfrag ==null || VertretungsPlanMethoden.changed == -1){}
+                        return null;
+                    }
+
+                    @Override
+                    public void onPostExecute(Void result) {
+                        if(VertretungsPlanMethoden.changed == 1)
+                            VertretungsPlanMethoden.stundenplanfrag.reload();
+                    }
+
+                }.execute();
+            }catch(Exception e){
+            }
+
 
             SimpleFrameLayout = findViewById(R.id.simpleframelayout);
             tablayout = findViewById(R.id.tablayout);
