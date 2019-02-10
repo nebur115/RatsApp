@@ -171,17 +171,20 @@ public class vertretungsplan extends AppCompatActivity {
                     ft.show(vertretungsplanfragment);
                     Title.setText("Vertretungsplan");
                     AktiveTap = "Vertretungsplan";
+                    StundenplanTab.setIcon(R.drawable.stundenplaninactive);
                     break;
                 case "Noten/Arbeiten":
                     ft.show(notenfragment);
                     Title.setText("Kalender");
                     AktiveTap = "Noten/Arbeiten";
+                    StundenplanTab.setIcon(R.drawable.stundenplaninactive);
                     break;
                 case "Homepage":
                     ft.show(websitefragment);
                     Title = findViewById(R.id.title);
                     Title.setText("Homepage");
                     AktiveTap = "Homepage";
+                    StundenplanTab.setIcon(R.drawable.stundenplaninactive);
                     break;
             }
         }
@@ -387,10 +390,13 @@ public class vertretungsplan extends AppCompatActivity {
             long diff = currentTime.getTime() - Open.getTime();
             long diffMinutes = diff / (60 * 1000) % 60;
 
-            if(diffMinutes>5){
+            if(diffMinutes>3){
                 Intent i = new Intent(vertretungsplan.this, loading.class);
                 i.putExtra("Stufe", Stufe);
                 startActivity(i);
+            }else{
+                Open = currentTime;
+
             }
 
         }else {
