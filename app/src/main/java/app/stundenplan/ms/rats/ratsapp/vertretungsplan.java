@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import java.util.Date;
+import java.util.Calendar;
+
 
 public class vertretungsplan extends AppCompatActivity {
 
@@ -36,7 +38,8 @@ public class vertretungsplan extends AppCompatActivity {
     static boolean stundenplan_active;
     fragment_website websitefragment;
     boolean created = false;
-
+    String Stufe;
+    Date Open;
 
 
     @Override
@@ -49,8 +52,10 @@ public class vertretungsplan extends AppCompatActivity {
         stundenplan_active = true;
         setContentView(R.layout.activity_vertretungsplan);
 
+
         Intent intent = getIntent();
-        String Stufe = intent.getExtras().getString("Stufe").toUpperCase();
+        Open = (Date) intent.getSerializableExtra("Date");
+        Stufe = intent.getExtras().getString("Stufe").toUpperCase();
 
         if (!(Stufe.equals("EXISTINGSTUNDE"))) {
             if (Stufe.charAt(0) != '0' && !(Stufe.equals("EF") || Stufe.equals("Q1") || Stufe.equals("Q2"))) {
@@ -378,227 +383,17 @@ public class vertretungsplan extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(created){
+            final Date currentTime = Calendar.getInstance().getTime();
+            long diff = currentTime.getTime() - Open.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
 
-            try {
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        VertretungsPlanMethoden.downloadDaten(getSharedPreferences("RatsVertretungsPlanApp", 0), true);
-                        while (!VertretungsPlanMethoden.downloadedDaten & !VertretungsPlanMethoden.offline) {
-                        }
-                        while(VertretungsPlanMethoden.stundenplanfrag ==null || VertretungsPlanMethoden.changed == -1){}
-                        return null;
-                    }
-
-                    @Override
-                    public void onPostExecute(Void result) {
-                        if(VertretungsPlanMethoden.changed == 1)
-                            VertretungsPlanMethoden.stundenplanfrag.reload();
-                    }
-
-                }.execute();
-            }catch(Exception e){
+            if(diffMinutes>5){
+                Intent i = new Intent(vertretungsplan.this, loading.class);
+                i.putExtra("Stufe", Stufe);
+                startActivity(i);
             }
 
-
-            SimpleFrameLayout = findViewById(R.id.simpleframelayout);
-            tablayout = findViewById(R.id.tablayout);
-
-            tablayout.removeAllTabs();
-            tablayout.clearOnTabSelectedListeners();
-            SimpleFrameLayout.removeAllViews();
-
-
-            final TabLayout.Tab StundenplanTab = tablayout.newTab();
-            StundenplanTab.setIcon(R.drawable.stundenplaninactive);
-            tablayout.addTab(StundenplanTab);
-
-            final TabLayout.Tab VertretungsplanTab = tablayout.newTab();
-            VertretungsplanTab.setIcon(R.drawable.vertretungsplaninactive);
-            tablayout.addTab(VertretungsplanTab);
-
-            final TabLayout.Tab NotenTab = tablayout.newTab();
-            NotenTab.setIcon(R.drawable.noteninactive);
-            tablayout.addTab(NotenTab);
-
-            final TabLayout.Tab WebsiteTab = tablayout.newTab();
-            WebsiteTab.setIcon(R.drawable.webiteinactive);
-            tablayout.addTab(WebsiteTab);
-
-            final Fragment vertretungsplanfragment = new fragment_vertretungsplan();
-            websitefragment = new fragment_website();
-            final Fragment notenfragment = new fragment_kalender();
-
-
-            SharedPreferences settings3 = getSharedPreferences("RatsVertretungsPlanApp", 0);
-            if (settings3.contains("Stundenliste")) {
-                childstundenplanfragment = new fragment_parent_stundenplan();
-                stundenplanfragment = childstundenplanfragment;
-
-            } else {
-                stundenplanfragment = new fragment_no_existing_stundenplan();
-            }
-
-
-            Title = findViewById(R.id.title);
-
-
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-
-            ft.add(R.id.simpleframelayout, stundenplanfragment, "stundenplan");
-            ft.hide(stundenplanfragment);
-
-            ft.add(R.id.simpleframelayout, vertretungsplanfragment, "vertretungsplan");
-            ft.hide(vertretungsplanfragment);
-
-            ft.add(R.id.simpleframelayout, notenfragment);
-            ft.hide(notenfragment);
-
-            ft.add(R.id.simpleframelayout, websitefragment);
-            ft.hide(websitefragment);
-
-
-            switch (AktiveTap) {
-                    case "Stundenplan":
-                        ft.show(stundenplanfragment);
-                        Title.setText("Stundenplan");
-                        tablayout.getTabAt(0).select();
-                        StundenplanTab.setIcon(R.drawable.stundenplanacctive);
-                        break;
-                    case "Vertretungsplan":
-                        ft.show(vertretungsplanfragment);
-                        Title.setText("Vertretungsplan");
-                        tablayout.getTabAt(1).select();
-                        VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
-                        break;
-                    case "Noten/Arbeiten":
-                        ft.show(notenfragment);
-                        Title.setText("Kalender");
-                        tablayout.getTabAt(2).select();
-                        NotenTab.setIcon(R.drawable.notenactive);
-                        break;
-                    case "Homepage":
-                        ft.show(websitefragment);
-                        Title = findViewById(R.id.title);
-                        Title.setText("Homepage");
-                        tablayout.getTabAt(3).select();
-                        WebsiteTab.setIcon(R.drawable.webiteactive);
-                        break;
-                }
-
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            ft.setCustomAnimations(0,0);
-            ft.commit();
-
-            tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-                public boolean noten_created = false;
-                public boolean website_created = false;
-                public boolean vertretungsplan_created = false;
-
-
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-
-                    switch (AktiveTap) {
-                        case "Stundenplan":
-                            StundenplanTab.setIcon(R.drawable.stundenplaninactive);
-                            ft.hide(stundenplanfragment);
-                            stundenplan_active = false;
-                            break;
-                        case "Vertretungsplan":
-                            VertretungsplanTab.setIcon(R.drawable.vertretungsplaninactive);
-                            ft.hide(vertretungsplanfragment);
-                            break;
-                        case "Noten/Arbeiten":
-                            NotenTab.setIcon(R.drawable.noteninactive);
-                            ft.hide(notenfragment);
-                            break;
-                        case "Homepage":
-                            WebsiteTab.setIcon(R.drawable.webiteinactive);
-                            ft.hide(websitefragment);
-                            break;
-                    }
-
-                    switch (tab.getPosition()) {
-                        case 0:
-                            ft.show(stundenplanfragment);
-                            AktiveTap = "Stundenplan";
-                            Title.setText("Stundenplan");
-                            stundenplan_active = true;
-                            break;
-
-                        case 1:
-                            ft.show(vertretungsplanfragment);
-                            AktiveTap = "Vertretungsplan";
-                            Title.setText("Vertretungsplan");
-                            break;
-
-                        case 2:
-                            ft.show(notenfragment);
-                            AktiveTap = "Noten/Arbeiten";
-                            Title.setText("Kalender");
-                            break;
-
-                        case 3:
-                            ft.show(websitefragment);
-                            AktiveTap = "Homepage";
-                            Title.setText("Homepage");
-                            break;
-
-                        default:
-
-                            break;
-                    }
-
-
-                    if (AktiveTap == "Stundenplan") {
-                        StundenplanTab.setIcon(R.drawable.stundenplanacctive);
-                        if (!(childstundenplanfragment == null)) {
-                            //childstundenplanfragment.timereload();
-                            while (!VertretungsPlanMethoden.downloadedDaten && !VertretungsPlanMethoden.offline) {
-                            }
-                        }
-                    } else if (AktiveTap == "Vertretungsplan") {
-                        VertretungsplanTab.setIcon(R.drawable.vertretungsplanactive);
-                    } else if (AktiveTap == "Noten/Arbeiten") {
-                        NotenTab.setIcon(R.drawable.notenactive);
-                    } else if (AktiveTap == "Homepage") {
-                        WebsiteTab.setIcon(R.drawable.webiteactive);
-                    }
-
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    ft.commit();
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-
-            });
-
-
-            //Alternative Option
-            /*
-            Intent i = new Intent(vertretungsplan.this, vertretungsplan.class);
-            i.putExtra("Tab", AktiveTap);
-            i.putExtra("Stufe", "EXISTINGSTUNDE");
-            startActivity(i);
-            */
-
-
-        }else{
+        }else {
             created = true;
         }
 

@@ -9,6 +9,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewTreeObserver;
 
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by User on 27.03.2018.
@@ -19,6 +21,7 @@ public class loading extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final Date currentTime = Calendar.getInstance().getTime();
 
         setContentView(R.layout.loading);
 
@@ -66,7 +69,7 @@ public class loading extends AppCompatActivity {
                                 settings.edit().putInt("Height", Height).apply();
                                 Intent i = new Intent(loading.this, vertretungsplan.class);
                                 i.putExtra("Stufe", Stufe);
-
+                                i.putExtra("Date", currentTime);
                                 startActivity(i);
 
 
