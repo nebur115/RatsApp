@@ -7,8 +7,8 @@ android {
         applicationId "app.stundenplan.ms.rats.ratsapp"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 180923
-        versionName "Beta 1.6"
+        versionCode 190308
+        versionName "Beta 2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -16,6 +16,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        lintOptions {
+            checkReleaseBuilds false
         }
     }
 }

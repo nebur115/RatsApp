@@ -248,7 +248,7 @@ public class create_stundenplan extends AppCompatActivity {
 
             if(!pStundenListe.get(i).isFreistunde()) {
 
-                String Kursname = "";
+                String Kursname = "leer";
                 String Fach = pStundenListe.get(i).getFach();
                 int Kursnummer = pStundenListe.get(i).getKursnummer();
                 String Kursart = pStundenListe.get(i).getKursart();

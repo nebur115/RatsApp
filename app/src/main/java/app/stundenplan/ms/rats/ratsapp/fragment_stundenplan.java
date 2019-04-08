@@ -403,27 +403,21 @@ public class fragment_stundenplan extends Fragment  {
                     String kalender_json = settings.getString("Kalender", "");
                     List<kalender_event> kalenderListe;
                     if (!kalender_json.equals("")) {
-
-                        Type kalender_type = new TypeToken<ArrayList<kalender_event>>() {
-                        }.getType();
+                        Type kalender_type = new TypeToken<ArrayList<kalender_event>>(){}.getType();
                         kalenderListe = gson.fromJson(kalender_json, kalender_type);
                         String Ferienbeginn = "";
                         for (int j = 0; j < kalenderListe.size(); j++) {
                             if (kalenderListe.get(j).getDate().replace(".20", ".").replace(".0", ".").equals(Datum.replace(".0", "."))) {
-                                if (kalenderListe.get(j).getType().equals("Freier Tag")) {
+                                if (kalenderListe.get(j).getType().equals("Frei")) {
                                     Entfaellt = true;
-
                                 } else if (kalenderListe.get(j).getFach().equals(MemoryStundenListe.get(i).getFach())) {
                                     if (kalenderListe.get(j).getType().equals("Hausaufgabe")) {
                                         Lehrerwechsel = true;
                                         Lehrer = "HA";
-
-
                                     } else if (kalenderListe.get(j).getType().equals("Klausur")) {
                                         Klausur = true;
                                     }
                                 }
-
                             }
                             if (kalenderListe.get(j).getType().equals("Ferienbeginn")) {
                                 Ferienbeginn = kalenderListe.get(j).getDate();

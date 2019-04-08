@@ -138,6 +138,7 @@ public class fragment_vertretungsplan extends Fragment {
             }
         }
         public void Finished(){
+
             ItemAdapter.notifyDataSetChanged();
             mSwipeRefreshLayout.setRefreshing(false);
         }

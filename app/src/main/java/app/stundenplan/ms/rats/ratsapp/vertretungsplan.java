@@ -17,8 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import java.util.Date;
+
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class vertretungsplan extends AppCompatActivity {
@@ -381,11 +382,18 @@ public class vertretungsplan extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(created){
+    protected void onPostResume() {
+        super.onPostResume();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("Open", true);
+        editor.apply();
+        if(created && Open!=null){
             final Date currentTime = Calendar.getInstance().getTime();
             long diff = currentTime.getTime() - Open.getTime();
             long diffMinutes = diff / (60 * 1000) % 60;
@@ -402,8 +410,8 @@ public class vertretungsplan extends AppCompatActivity {
         }else {
             created = true;
         }
-
     }
+
 
     public static int getheight() {
         return Height;
@@ -415,6 +423,9 @@ public class vertretungsplan extends AppCompatActivity {
             childnotenfragment.newnumbers();
         }
     }
+
+
+
 
 
 

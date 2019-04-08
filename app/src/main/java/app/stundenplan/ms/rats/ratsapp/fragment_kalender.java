@@ -147,9 +147,19 @@ public class fragment_kalender extends Fragment {
                                 }
                                 */
 
+
                             String EventType = Type.getSelectedItem().toString();
                             if(!(Titel.getText().toString().equals(""))){
-                                EventType = Titel.getText().toString();
+                                if(EventType.equals("Freier Tag")){
+                                    EventType = "Frei";
+                                }
+
+                                if (EventType.equals("Sonstiges")) {
+                                    EventType = Titel.getText().toString();
+                                }else {
+                                    Fach.setText(Titel.getText().toString());
+                                }
+
                             }
                             kalenderListe.add(position, new kalender_event(EventType, Fach.getText().toString(), Notiz.getText().toString(), Datum.getText().toString().replace("\\D+", "")));
 
@@ -490,13 +500,14 @@ public class fragment_kalender extends Fragment {
         String CurrentDate = dateFormat.format(Calendar.getInstance().getTime());
 
 
-
         if (kalenderListe.size() > 0) {
+
             while(DatumalsInt(kalenderListe.get(0).getDate())< DatumalsInt(CurrentDate)){
                 kalenderListe.remove(0);
+                if(kalenderListe.size()==0){
+                    break;
+                }
             }
-
-
 
             CurrentDate = kalenderListe.get(0).getDate();
             ItemList.add(new Datum(CurrentDate));
