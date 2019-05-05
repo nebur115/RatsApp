@@ -509,18 +509,19 @@ public class fragment_kalender extends Fragment {
                 }
             }
 
-            CurrentDate = kalenderListe.get(0).getDate();
-            ItemList.add(new Datum(CurrentDate));
-            for (int i = 0; kalenderListe.size() > i; i++) {
-                if ((kalenderListe.get(i).getDate()).equals(CurrentDate)) {
-                    ItemList.add(kalenderListe.get(i));
-                } else {
-                    CurrentDate = kalenderListe.get(i).getDate();
-                    ItemList.add(new Datum(CurrentDate));
-                    ItemList.add(kalenderListe.get(i));
+            if (kalenderListe.size() > 0) {
+                CurrentDate = kalenderListe.get(0).getDate();
+                ItemList.add(new Datum(CurrentDate));
+                for (int i = 0; kalenderListe.size() > i; i++) {
+                    if ((kalenderListe.get(i).getDate()).equals(CurrentDate)) {
+                        ItemList.add(kalenderListe.get(i));
+                    } else {
+                        CurrentDate = kalenderListe.get(i).getDate();
+                        ItemList.add(new Datum(CurrentDate));
+                        ItemList.add(kalenderListe.get(i));
+                    }
                 }
             }
-
         }
         Adapter.setitemFeed(ItemList);
         Adapter.notifyDataSetChanged();

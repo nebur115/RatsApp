@@ -26,7 +26,7 @@ public class loading extends AppCompatActivity {
 
     String Stufe;
     Date currentTime;
-    SharedPreferences pref = getSharedPreferences("RatsVertretungsPlanApp", 0);
+    SharedPreferences pref;
     EditText Passworteingabe;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class loading extends AppCompatActivity {
 
 
         currentTime = Calendar.getInstance().getTime();
-
+        pref = getSharedPreferences("RatsVertretungsPlanApp", 0);
         setContentView(R.layout.loading);
 
         Intent intent = getIntent();
