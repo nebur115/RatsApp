@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 
 public class Stufenwahl extends AppCompatActivity {
 
@@ -45,6 +47,20 @@ public class Stufenwahl extends AppCompatActivity {
 
             public void onClick(View v) {
                 String Stufe = Textfeld.getText().toString();
+                Calendar calendar = Calendar.getInstance();
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                int lastyear;
+
+
+                if(month<7){
+                    lastyear = year-1;
+                }else{
+                    lastyear = year;
+                }
+                SharedPreferences.Editor editor = getSharedPreferences("RatsVertretungsPlanApp", 0).edit();
+                editor.putInt("year", lastyear);
+                editor.apply();
 
                 if(!Stufe.equals("")){
                     fehler.setVisibility(View.INVISIBLE);
@@ -52,6 +68,7 @@ public class Stufenwahl extends AppCompatActivity {
                     int height = frame.getHeight();
                     Intent i = new Intent(Stufenwahl.this, loading.class);
                     i.putExtra("Stufe", Stufe);
+                    i.putExtra("Stufegewählt", true);
                     startActivity(i);
                 }else{
                     fehler.setVisibility(View.VISIBLE);

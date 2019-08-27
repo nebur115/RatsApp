@@ -26,6 +26,7 @@ public class vertretungsplan extends AppCompatActivity {
 
 
     SharedPreferences settings;
+
     static ProgressBar progressBar2;
     public String AktiveTap;
     static fragment_noten childnotenfragment;
@@ -72,6 +73,8 @@ public class vertretungsplan extends AppCompatActivity {
                 //Falls settings.contains eine exception auslöst
             }
         }
+
+
         settings.getInt("Height", 0);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(vertretungsplan.this);
@@ -96,6 +99,39 @@ public class vertretungsplan extends AppCompatActivity {
             });
             alertDialog.show();
         }
+
+
+        Calendar calendar = Calendar.getInstance();
+        final int month = calendar.get(Calendar.MONTH);
+        final int year = calendar.get(Calendar.YEAR);
+
+        if(month==7 && settings.getInt("year",year)<year){
+
+            AlertDialog alertDialog = new AlertDialog.Builder(vertretungsplan.this).create();
+            alertDialog.setTitle("Ein neues Schuljahr beginnt");
+            alertDialog.setMessage("Willst du deine Stufe ändern?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ja",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent j = new Intent(vertretungsplan.this, Stufenwahl.class);
+                            startActivity(j);
+                        }
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Später",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            SharedPreferences.Editor editor = getSharedPreferences("RatsVertretungsPlanApp", 0).edit();
+                            editor.putInt("year", year);
+                            editor.apply();
+                        }
+                    });
+            alertDialog.show();
+        }
+
+
+
 
         SimpleFrameLayout = findViewById(R.id.simpleframelayout);
         tablayout = findViewById(R.id.tablayout);

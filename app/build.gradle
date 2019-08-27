@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "app.stundenplan.ms.rats.ratsapp"
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 190308
-        versionName "Beta 2.2"
+        targetSdkVersion 28
+        versionCode 1908273
+        versionName "Beta 2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
