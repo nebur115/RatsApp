@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,11 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 /**
  * Created by User on 27.03.2018.
  */
@@ -28,6 +34,7 @@ public class loading extends AppCompatActivity {
     Date currentTime;
     SharedPreferences pref;
     EditText Passworteingabe;
+    String PasswordAnswer;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,32 +51,32 @@ public class loading extends AppCompatActivity {
             pass();
         }else {
 
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(loading.this);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(loading.this);
 
-                    LayoutInflater inflater = loading.this.getLayoutInflater();
-                    View dialogView = inflater.inflate(R.layout.passwort_alertdialog, null);
-                    dialogBuilder.setView(dialogView);
-                    AlertDialog alertDialog = dialogBuilder.create();
-                    alertDialog.setCancelable(false);
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if(Passwort_Check(Passworteingabe.getText().toString().toLowerCase())){
+            LayoutInflater inflater = loading.this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.passwort_alertdialog, null);
+            dialogBuilder.setView(dialogView);
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if(Passwort_Check(Passworteingabe.getText().toString().toLowerCase())){
 
-                            //Sichert Passwort in der SharedPref.
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("Passwort", Passworteingabe.getText().toString().toLowerCase());
-                            editor.apply();
+                        //Sichert Passwort in der SharedPref.
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("Passwort", Passworteingabe.getText().toString().toLowerCase());
+                        editor.apply();
 
-                            //Lasst nutzer weiter gehen
-                            pass();
-                        }else{
-                            Toast.makeText(getBaseContext(), "Falsches Passwort!", Toast.LENGTH_SHORT).show();
-                        }
+                        //Lasst nutzer weiter gehen
+                        pass();
+                    }else{
+                        Toast.makeText(getBaseContext(), "Falsches Passwort!", Toast.LENGTH_SHORT).show();
                     }
-                    });
-                    alertDialog.show();
-                    Passworteingabe = alertDialog.findViewById(R.id.passwort);
+                }
+            });
+            alertDialog.show();
+            Passworteingabe = alertDialog.findViewById(R.id.passwort);
 
 
         }
@@ -78,8 +85,40 @@ public class loading extends AppCompatActivity {
     }
 
 
-    public boolean Passwort_Check(String input) {
-        return (true); //Hier einmaliger Check ob das Passwort korrekt ist
+    public boolean Passwort_Check(final String input) {
+        final String Ziel = VertretungsPlanMethoden.baseDomain+"check.php";
+        final SpeicherVerwaltung s = new SpeicherVerwaltung(pref);
+        try {
+            Thread download = new HandlerThread("DownloadHandler") {
+                @Override
+                public void run() {
+                    try {
+                        RequestBody rq = new MultipartBody.Builder()
+                                .setType(MultipartBody.FORM)
+                                .addFormDataPart("password", input)
+                                .build();
+                        Request request = new Request.Builder()
+                                .url(Ziel).header("Content-Type", "application/json; charset=utf-8")
+                                .post(rq)
+                                .build();
+                        PasswordAnswer = new OkHttpClient()
+                                .newCall(request)
+                                .execute()
+                                .body()
+                                .string();
+                    } catch (Exception e) {
+                        PasswordAnswer = "";
+                    }
+                }
+            };
+
+            download.start();
+            download.join();
+            if (PasswordAnswer.equals("true")) {
+                return true;
+            }
+        }catch(Exception e) {}
+        return false;
     }
 
 

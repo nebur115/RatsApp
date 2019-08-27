@@ -125,23 +125,23 @@ public class fragment_vertretungsplan extends Fragment {
         }
     }
 
-        void refreshItems(){
-            if(setting.contains("Stundenliste"))
-                new DownloadTask().execute();
-            else{
-                VertretungsPlanMethoden.downloadedDaten = false;
-                VertretungsPlanMethoden.offline = false;
-                VertretungsPlanMethoden.downloadDaten(setting, false);
-                ItemList.clear();
-                VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
-                Finished();
-            }
+    void refreshItems(){
+        if(setting.contains("Stundenliste"))
+            new DownloadTask().execute();
+        else{
+            VertretungsPlanMethoden.downloadedDaten = false;
+            VertretungsPlanMethoden.offline = false;
+            VertretungsPlanMethoden.downloadDaten(setting, false);
+            ItemList.clear();
+            VertretungsPlanMethoden.VertretungsPlan(ItemList, getActivity().getSharedPreferences("RatsVertretungsPlanApp", 0), VertretungsPlanMethoden.all, null);
+            Finished();
         }
-        public void Finished(){
+    }
+    public void Finished(){
 
-            ItemAdapter.notifyDataSetChanged();
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+        ItemAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     class DownloadTask extends AsyncTask<Void, Void, Void> {
         @Override
@@ -162,7 +162,7 @@ public class fragment_vertretungsplan extends Fragment {
         @Override
         public void onPostExecute(Void result) {
             Finished();
+        }
     }
-}
 }
 

@@ -3,9 +3,6 @@ package app.stundenplan.ms.rats.ratsapp;
 import android.content.SharedPreferences;
 import android.os.HandlerThread;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -15,6 +12,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 
 /**
@@ -46,6 +48,8 @@ public class VertretungsPlanMethoden {
             {"I", "Italienisch"},{"D", "Deutsch"}, {"S", "Spanisch"}, {"F", "Französisch"}, {"M", "Mathe"}, {"N", "Niederländisch"}, {"L", "Latein"}, {"E", "Englisch"}};
     public static fragment_stundenplan stundenplanfrag;
     public static int changed = -1;
+    //Domain für PHP-Skripte
+    public static String baseDomain="https://rats-ms.de/services/";
 
     /**
      * Bereitet das ergebnis von htmlGet auf
@@ -54,20 +58,29 @@ public class VertretungsPlanMethoden {
      * @return
      * @throws Exception
      */
-    public static String[] htmlGetVertretung(String pZiel) throws Exception {
+    public static String[] htmlGetVertretung(String pZiel, final SpeicherVerwaltung s) throws Exception {
 
         //Deklarieren + Initialisieren der Variablen
         String[] output = new String[2];
-
-        //vertretungsplan.zeigeLaden();
-
         Ziel = pZiel;
+
         Thread download = new HandlerThread("DownloadHandler") {
             @Override
             public void run() {
                 try {
-                    Request request = new Request.Builder().url(Ziel).header("Content-Type", "application/json; charset=utf-8").build();
-                    input = new OkHttpClient().newCall(request).execute().body().string();
+                    RequestBody rq = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("password", s.getString("Passwort"))
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(Ziel).header("Content-Type", "application/json; charset=utf-8")
+                            .post(rq)
+                            .build();
+                    input = new OkHttpClient()
+                            .newCall(request)
+                            .execute()
+                            .body()
+                            .string();
                 } catch (Exception e) {
                     input = "";
                 }
@@ -78,8 +91,7 @@ public class VertretungsPlanMethoden {
 
         //vertretungsplan.versteckeLaden();
         //Wenn es geupdated werden soll
-        if (!input.equals("FAIL") && !input.equals("Kein Update")) {
-
+        if (!input.equals("FAIL") &&!input.equals("Fail") && !input.equals("Kein Update")) {
             //Teilt den input in die verschiedenen Zeilen auf
             String[] in = input.split("\n");
             if(in.length<2)
@@ -116,9 +128,8 @@ public class VertretungsPlanMethoden {
 
 
         //Variablen werden Deklariert und zum Teil initialisiert
-        String request = "https://rats-ms.de/services/stupla_s/output.php";
+        String request = baseDomain+"output.php";
         SpeicherVerwaltung s;
-
         //Vereinfachter Zugriff auf die SharedPreference
         s = new SpeicherVerwaltung(share);
         //Holt die beiden Variablen aus der SharedPreference
@@ -128,7 +139,7 @@ public class VertretungsPlanMethoden {
             } catch (Exception e) {}
         }
         try {
-            String[] y = htmlGetVertretung(request);
+            String[] y = htmlGetVertretung(request, s);
             if (y.length > 0) {
                 if (!y[0].equals("") && !y[1].equals("") && y[1] != null) {
                     s.setString("Stand", y[0]);
@@ -140,9 +151,7 @@ public class VertretungsPlanMethoden {
         catch(Exception e){
             offline = true;
         }
-
         downloadedDaten = true;
-
     }
 
     /**
@@ -243,6 +252,7 @@ public class VertretungsPlanMethoden {
 
 
     private static boolean nachGestern(String Tag) {
+
         try {
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
             Date result = df.parse(Tag);
