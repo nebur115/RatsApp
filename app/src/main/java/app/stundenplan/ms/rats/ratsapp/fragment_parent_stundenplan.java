@@ -66,7 +66,9 @@ static final int NUM_ITEMS = 26;
     }
 
     public void reload(){
-        frameAdapter.notifyDataSetChanged();
+        if(!(frameAdapter==null))
+            frameAdapter.notifyDataSetChanged();
+
     }
 
 }
